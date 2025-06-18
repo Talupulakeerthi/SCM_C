@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Data</title>
+    <meta http-equiv="refresh" content="15">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+       /* Global reset and background */
+/* Global reset and background */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background-image: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: #222;
+  backdrop-filter: blur(4px);
+}
+
+/* Topbar - optional if you want a nav bar */
+.topbar {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.nav-menu a,
+.logout-btn {
+  color: #fff;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-menu a:hover,
+.logout-btn:hover {
+  color: #ffd700;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Main container */
+.container {
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Page title */
+.container h1 {
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  text-shadow: 1px 1px 4px #000;
+  font-size: 32px;
+}
+
+/* Filter form */
+.device-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.device-form select,
+.device-form button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  min-width: 180px;
+}
+
+.device-form select {
+  background-color: #fff;
+}
+
+.device-form button {
+  background-color: #004aad;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.device-form button:hover {
+  background-color: #003580;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+th, td {
+  padding: 14px 18px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #004aad;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+td {
+  color: #333;
+  font-size: 15px;
+}
+
+tr:hover {
+  background-color: #f7faff;
+}
+
+/* No data row */
+td[colspan="5"] {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .device-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .device-form select,
+  .device-form button {
+    width: 100%;
+  }
+
+  table, th, td {
+    font-size: 14px;
+  }
+
+  .container h1 {
+    font-size: 24px;
+  }
+}
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa fa-microchip"></i> Device Data</h1>
+        <form class="device-form" action="/device-data" method="get">
+            <select name="device_id" id="device_id">
+                <option value="">All Devices</option>
+                {% for id in device_ids %}
+                    <option value="{{ id }}" {% if selected_device_id and selected_device_id|int == id %}selected{% endif %}>
+                        Device {{ id }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit"><i class="fa fa-filter"></i> Filter</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fa fa-battery-half"></i> Battery Level</th>
+                    <th><i class="fa fa-id-badge"></i> Device ID</th>
+                    <th><i class="fa fa-thermometer-half"></i> Temperature</th>
+                    <th><i class="fa fa-route"></i> Route From</th>
+                    <th><i class="fa fa-route"></i> Route To</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if devices %}
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device.Battery_Level }}</td>
+                        <td>{{ device.Device_ID }}</td>
+                        <td>{{ device.First_Sensor_temperature }}</td>
+                        <td>{{ device.Route_From }}</td>
+                        <td>{{ device.Route_To }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;">No data available.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

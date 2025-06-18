@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Shipment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* === SCMLite Unified Dashboard + Shipment Styling === */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  background: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #1c1c1e;
+}
+
+.topbar {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0077b6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-menu a, .logout-btn {
+  text-decoration: none;
+  background: rgba(255,255,255,0.5);
+  color: #1c1c1e;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-menu a:hover, .logout-btn:hover {
+  background: linear-gradient(to right, #007f5f, #00b4d8);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.create-shipment-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 40px 32px;
+  border-radius: 20px;
+  max-width: 850px;
+  width: 100%;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.create-shipment-card h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0077b6;
+  margin-bottom: 30px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #023e8a;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+input, select, textarea {
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1.5px solid #90e0ef;
+  background: #f7f7f7;
+  color: #1c1c1e;
+  font-weight: 500;
+  transition: border-color 0.3s ease;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #00b4d8;
+  background: #f0fbff;
+  box-shadow: 0 0 6px #00b4d888;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.submit-btn, .clear-btn {
+  padding: 14px 32px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  transition: background 0.3s ease, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submit-btn {
+  background: linear-gradient(to right, #00b4d8, #0077b6);
+  color: white;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(to right, #0096c7, #005f73);
+  transform: translateY(-2px);
+}
+
+.clear-btn {
+  background: linear-gradient(to right, #f94144, #f3722c);
+  color: white;
+}
+
+.clear-btn:hover {
+  background: linear-gradient(to right, #d62828, #f8961e);
+  transform: translateY(-2px);
+}
+
+.flash-message {
+  background: #dff0d8;
+  color: #155724;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  border-left: 6px solid #28a745;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-group {
+    min-width: 100%;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <div class="topbar">
+    <div class="brand">
+   
+      <span style="font-size:1.3rem; font-weight:700; color:#1976d2; letter-spacing:1px;">
+        <i class="fa fa-truck"></i> SCMLite
+      </span>
+    </div>
+    <div class="nav-menu">
+      {% if role == "admin" %}
+        <a href="/admin_dashboard"><i class="fa fa-home"></i> Home</a>
+      {% else %}
+        <a href="/dashboard"><i class="fa fa-home"></i> Home</a>
+      {% endif %}
+      <button class="logout-btn" onclick="window.location.href='/logout'">
+        <i class="fa fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Shipment Form Section -->
+  <div class="container">
+    <div class="create-shipment-wrapper">
+      <div class="create-shipment-card">
+        <h2><i class="fa fa-plus-circle"></i> Create New Shipment</h2>
+        {% if flash %}
+          <div class="flash-message">
+            {{ flash }}
+          </div>
+        {% endif %}
+
+        <form action="/create-shipment" method="post">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="shipment_id"><i class="fa fa-barcode"></i> Shipment Number</label>
+              <input type="text" id="shipment_id" name="shipment_id" required>
+            </div>
+            <div class="form-group">
+              <label for="po_number"><i class="fa fa-file-invoice"></i> PO Number</label>
+              <input type="text" id="po_number" name="po_number" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="route_details"><i class="fa fa-route"></i> Route Details</label>
+              <select id="route_details" name="route_details" required>
+                <option value="">Select Route</option>
+                <option value="Chennai - Mumbai">Delhi - Mumbai</option>
+                <option value="Hyderabad - Bangalore">Hyderabad - Bangalore</option>
+                <option value="Chennai - Pune">Chennai - Pune</option>
+                <option value="Delhi - Kolkata">Delhi - Kolkata</option>
+                <option value="Mumbai - Chennai">Mumbai - Chennai</option>
+                <option value="Bangalore - Hyderabad">Bangalore - Hyderabad</option>
+                <option value="Pune - Delhi">Pune - Delhi</option>
+                <option value="Kolkata - Chennai">Kolkata - Chennai</option>
+                <option value="Mumbai - Hyderabad">Mumbai - Hyderabad</option>
+                <option value="Delhi - Bangalore">Delhi - Bangalore</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="device"><i class="fa fa-microchip"></i> Device</label>
+              <select id="device" name="device" required>
+                <option value="">Select Device</option>
+                <option value="Sensor 1">Sensor 1</option>
+                <option value="Sensor 2">Sensor 2</option>
+                <option value="Sensor 3">Sensor 3</option>
+                <option value="Sensor 4">Sensor 4</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="ndc_number"><i class="fa fa-hashtag"></i> NDC Number</label>
+              <input type="text" id="ndc_number" name="ndc_number" required>
+            </div>
+            <div class="form-group">
+              <label for="serial_number"><i class="fa fa-box-open"></i> Serial Number</label>
+              <input type="text" id="serial_number" name="serial_number" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="container_number"><i class="fa fa-box"></i> Container Number</label>
+              <input type="text" id="container_number" name="container_number" required>
+            </div>
+            <div class="form-group">
+              <label for="goods_type"><i class="fa fa-tags"></i> Goods Type</label>
+              <select id="goods_type" name="goods_type" required>
+                <option value="Pharma">Pharma</option>
+                <option value="Food">Food</option>
+                <option value="Electronics">Electronics</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expected_delivery_date"><i class="fa fa-calendar-alt"></i> Expected Delivery Date</label>
+              <input type="date" id="expected_delivery_date" name="expected_delivery_date" required>
+            </div>
+            <div class="form-group">
+              <label for="delivery_number"><i class="fa fa-truck"></i> Delivery Number</label>
+              <input type="text" id="delivery_number" name="delivery_number" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="batch_id"><i class="fa fa-barcode"></i> Batch ID</label>
+              <input type="text" id="batch_id" name="batch_id" required>
+            </div>
+            <div class="form-group">
+              <label for="origin"><i class="fa fa-map-marker-alt"></i> Origin</label>
+              <input type="text" id="origin" name="origin" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="destination"><i class="fa fa-location-arrow"></i> Destination</label>
+              <input type="text" id="destination" name="destination" required>
+            </div>
+            <div class="form-group">
+              <label for="status"><i class="fa fa-info-circle"></i> Status</label>
+              <select id="status" name="status" required>
+                <option value="">Select Status</option>
+                <option value="Created">Created</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="shipment_description"><i class="fa fa-align-left"></i> Shipment Description</label>
+            <textarea id="shipment_description" name="shipment_description" required></textarea>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="submit-btn"><i class="fa fa-check"></i> Create Shipment</button>
+            <button type="reset" class="clear-btn"><i class="fa fa-eraser"></i> Clear Details</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === User Account Page - Clean and Modern Theme === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #1c1c1e;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 18px;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            color: #0077b6;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 14px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eaf6ff;
+            margin: 18px 0;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 1rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .label {
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+
+        .label i {
+            color: #0077b6;
+        }
+
+        .value {
+            color: #000;
+            font-weight: 500;
+            word-break: break-word;
+            text-align: right;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 28px;
+            background: linear-gradient(to right, #27ae60, #3498db);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 18px rgba(39, 174, 96, 0.15);
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(to right, #1e8449, #2980b9);
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                margin: 40px 16px;
+                padding: 28px 20px;
+            }
+
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .label {
+                min-width: unset;
+            }
+
+            .value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fa fa-user"></i> User Account</h2>
+        <div class="info-item">
+            <span class="label"><i class="fa fa-user"></i> Full Name:</span>
+            <span class="value">{{ user.name }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label"><i class="fa fa-envelope"></i> Email:</span>
+            <span class="value">{{ user.email }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label"><i class="fa fa-calendar"></i> Account Created on(Date/Time):</span>
+            <span class="value">{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+        </div>
+        <a href="/dashboard" class="back-btn"><i class="fa fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+</body>
+</html>

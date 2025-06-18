@@ -1,0 +1,569 @@
+2025-06-17 15:15:52,699 - app - INFO - Root endpoint accessed
+2025-06-17 15:15:52,713 - app - INFO - Login endpoint accessed
+2025-06-17 17:01:10,202 - app - INFO - Root endpoint accessed
+2025-06-17 17:01:10,214 - app - INFO - Login endpoint accessed
+2025-06-17 17:11:16,297 - app - INFO - Signup endpoint accessed
+2025-06-17 17:11:47,683 - app - INFO - Signup form submitted
+2025-06-17 17:11:48,729 - app - INFO - Account created successfully
+2025-06-17 17:11:48,735 - app - INFO - Login endpoint accessed
+2025-06-17 17:12:26,510 - app - INFO - Login form submitted
+2025-06-17 17:12:27,527 - app - INFO - Login successful
+2025-06-17 17:12:27,660 - app - INFO - Dashboard endpoint accessed by user1@gmail.com
+2025-06-17 17:16:07,984 - app - INFO - Root endpoint accessed
+2025-06-17 17:16:07,990 - app - INFO - Login endpoint accessed
+2025-06-17 17:16:23,581 - app - INFO - Login form submitted
+2025-06-17 17:16:25,358 - app - INFO - Login successful
+2025-06-17 17:16:25,464 - app - INFO - Dashboard endpoint accessed by user1@gmail.com
+2025-06-17 17:20:16,286 - app - INFO - Login endpoint accessed
+2025-06-17 17:20:59,524 - app - INFO - Signup endpoint accessed
+2025-06-17 17:21:24,007 - app - INFO - Signup form submitted
+2025-06-17 17:21:25,602 - app - INFO - Account created successfully
+2025-06-17 17:21:25,609 - app - INFO - Login endpoint accessed
+2025-06-17 17:21:41,027 - app - INFO - Login form submitted
+2025-06-17 17:21:42,082 - app - INFO - Login successful
+2025-06-17 17:21:42,164 - app - INFO - Dashboard endpoint accessed by user2@gmail.com
+2025-06-17 18:00:07,303 - app - INFO - Root endpoint accessed
+2025-06-17 18:00:07,311 - app - INFO - Login endpoint accessed
+2025-06-17 18:00:36,262 - app - INFO - Login form submitted
+2025-06-17 18:00:37,120 - app - WARNING - Invalid credentials
+2025-06-17 18:00:37,125 - app - INFO - Login endpoint accessed
+2025-06-17 18:00:40,433 - app - INFO - Signup endpoint accessed
+2025-06-17 18:04:43,581 - app - INFO - Root endpoint accessed
+2025-06-17 18:04:43,585 - app - INFO - Login endpoint accessed
+2025-06-17 18:05:13,593 - app - INFO - Login form submitted
+2025-06-17 18:05:14,552 - app - WARNING - Invalid credentials
+2025-06-17 18:05:14,558 - app - INFO - Login endpoint accessed
+2025-06-18 10:25:14,251 - app - INFO - Root endpoint accessed
+2025-06-18 10:25:14,256 - app - INFO - Login endpoint accessed
+2025-06-18 10:27:05,207 - app - INFO - Root endpoint accessed
+2025-06-18 10:27:05,218 - app - INFO - Login endpoint accessed
+2025-06-18 10:27:24,232 - app - INFO - Root endpoint accessed
+2025-06-18 10:27:24,242 - app - INFO - Login endpoint accessed
+2025-06-18 10:28:33,370 - app - INFO - Root endpoint accessed
+2025-06-18 10:28:33,376 - app - INFO - Login endpoint accessed
+2025-06-18 10:31:23,659 - app - INFO - Root endpoint accessed
+2025-06-18 10:31:23,666 - app - INFO - Login endpoint accessed
+2025-06-18 10:32:53,448 - app - INFO - Signup endpoint accessed
+2025-06-18 10:34:37,223 - app - INFO - Root endpoint accessed
+2025-06-18 10:34:37,231 - app - INFO - Login endpoint accessed
+2025-06-18 10:34:58,560 - app - INFO - Root endpoint accessed
+2025-06-18 10:34:58,577 - app - INFO - Login endpoint accessed
+2025-06-18 10:35:00,776 - app - INFO - Signup endpoint accessed
+2025-06-18 10:36:54,779 - app - INFO - Root endpoint accessed
+2025-06-18 10:36:54,785 - app - INFO - Login endpoint accessed
+2025-06-18 10:37:11,325 - app - INFO - Root endpoint accessed
+2025-06-18 10:37:11,336 - app - INFO - Login endpoint accessed
+2025-06-18 10:37:13,426 - app - INFO - Signup endpoint accessed
+2025-06-18 10:43:43,377 - app - INFO - Root endpoint accessed
+2025-06-18 10:43:43,401 - app - INFO - Login endpoint accessed
+2025-06-18 10:43:45,555 - app - INFO - Signup endpoint accessed
+2025-06-18 10:51:27,559 - app - INFO - Root endpoint accessed
+2025-06-18 10:51:27,567 - app - INFO - Login endpoint accessed
+2025-06-18 10:51:29,575 - app - INFO - Signup endpoint accessed
+2025-06-18 10:53:38,043 - app - INFO - Root endpoint accessed
+2025-06-18 10:53:38,053 - app - INFO - Login endpoint accessed
+2025-06-18 10:53:45,765 - app - INFO - Signup endpoint accessed
+2025-06-18 10:56:21,974 - app - INFO - Root endpoint accessed
+2025-06-18 10:56:21,979 - app - INFO - Login endpoint accessed
+2025-06-18 10:56:24,693 - app - INFO - Signup endpoint accessed
+2025-06-18 10:59:34,221 - app - INFO - Root endpoint accessed
+2025-06-18 10:59:34,236 - app - INFO - Login endpoint accessed
+2025-06-18 10:59:35,948 - app - INFO - Signup endpoint accessed
+2025-06-18 11:07:08,976 - app - INFO - Root endpoint accessed
+2025-06-18 11:07:08,988 - app - INFO - Login endpoint accessed
+2025-06-18 11:07:59,363 - app - INFO - Root endpoint accessed
+2025-06-18 11:07:59,372 - app - INFO - Login endpoint accessed
+2025-06-18 11:11:19,172 - app - INFO - Root endpoint accessed
+2025-06-18 11:11:19,181 - app - INFO - Login endpoint accessed
+2025-06-18 11:13:13,890 - app - INFO - Root endpoint accessed
+2025-06-18 11:13:13,931 - app - INFO - Login endpoint accessed
+2025-06-18 11:14:01,244 - app - INFO - Root endpoint accessed
+2025-06-18 11:14:01,256 - app - INFO - Login endpoint accessed
+2025-06-18 11:14:24,392 - app - INFO - Root endpoint accessed
+2025-06-18 11:14:24,412 - app - INFO - Login endpoint accessed
+2025-06-18 11:14:26,571 - app - INFO - Signup endpoint accessed
+2025-06-18 11:22:53,591 - app - INFO - Signup form submitted
+2025-06-18 11:22:53,711 - app - INFO - Signup form submitted
+2025-06-18 11:22:53,885 - app - INFO - Signup form submitted
+2025-06-18 11:22:54,075 - app - INFO - Signup form submitted
+2025-06-18 11:22:54,258 - app - INFO - Signup form submitted
+2025-06-18 11:22:54,436 - app - INFO - Signup form submitted
+2025-06-18 11:22:54,602 - app - INFO - Account created successfully
+2025-06-18 11:22:54,613 - app - INFO - Account created successfully
+2025-06-18 11:22:54,620 - app - INFO - Signup form submitted
+2025-06-18 11:22:54,680 - app - WARNING - Email already registered
+2025-06-18 11:22:54,691 - app - INFO - Signup endpoint accessed
+2025-06-18 11:22:54,788 - app - INFO - Account created successfully
+2025-06-18 11:22:55,025 - app - INFO - Account created successfully
+2025-06-18 11:22:55,026 - app - INFO - Account created successfully
+2025-06-18 11:22:55,026 - app - INFO - Account created successfully
+2025-06-18 11:23:21,502 - app - INFO - Signup endpoint accessed
+2025-06-18 11:23:42,281 - app - INFO - Signup form submitted
+2025-06-18 11:23:42,859 - app - INFO - Account created successfully
+2025-06-18 11:23:42,868 - app - INFO - Login endpoint accessed
+2025-06-18 11:23:59,503 - app - INFO - Login form submitted
+2025-06-18 11:24:00,519 - app - INFO - Login successful
+2025-06-18 11:24:00,658 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:24:00,659 - app - INFO - Login form submitted
+2025-06-18 11:24:00,973 - app - WARNING - reCAPTCHA failed
+2025-06-18 11:24:00,982 - app - INFO - Login endpoint accessed
+2025-06-18 11:24:07,493 - app - INFO - Login form submitted
+2025-06-18 11:24:08,331 - app - INFO - Login successful
+2025-06-18 11:24:08,405 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:24:19,434 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:24:25,542 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 11:24:30,260 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 11:24:34,334 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:30:38,057 - app - INFO - Root endpoint accessed
+2025-06-18 11:30:38,063 - app - INFO - Login endpoint accessed
+2025-06-18 11:30:42,634 - app - INFO - Login form submitted
+2025-06-18 11:30:43,618 - app - INFO - Login successful
+2025-06-18 11:30:43,679 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:42:37,663 - app - INFO - Root endpoint accessed
+2025-06-18 11:42:37,686 - app - INFO - Login endpoint accessed
+2025-06-18 11:42:42,012 - app - INFO - Login form submitted
+2025-06-18 11:42:42,940 - app - INFO - Login successful
+2025-06-18 11:42:43,036 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:42:46,461 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:43:19,405 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 11:43:23,655 - app - INFO - Login endpoint accessed
+2025-06-18 11:43:29,498 - app - INFO - Login endpoint accessed
+2025-06-18 11:43:33,761 - app - INFO - Login endpoint accessed
+2025-06-18 11:43:40,409 - app - INFO - Login form submitted
+2025-06-18 11:43:41,250 - app - INFO - Login successful
+2025-06-18 11:43:41,298 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:43:44,605 - app - INFO - Login endpoint accessed
+2025-06-18 11:44:26,409 - app - INFO - Root endpoint accessed
+2025-06-18 11:44:26,429 - app - INFO - Login endpoint accessed
+2025-06-18 11:44:30,345 - app - INFO - Login form submitted
+2025-06-18 11:44:31,099 - app - INFO - Login successful
+2025-06-18 11:44:31,153 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:44:31,704 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 11:44:35,026 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:44:36,454 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:44:46,668 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:44:47,861 - app - INFO - Login endpoint accessed
+2025-06-18 11:45:04,300 - app - INFO - Login form submitted
+2025-06-18 11:45:05,178 - app - INFO - Login successful
+2025-06-18 11:45:05,248 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:45:52,948 - app - INFO - Root endpoint accessed
+2025-06-18 11:45:52,974 - app - INFO - Login endpoint accessed
+2025-06-18 11:45:57,234 - app - INFO - Login form submitted
+2025-06-18 11:45:58,009 - app - INFO - Login successful
+2025-06-18 11:45:58,089 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:46:01,406 - app - INFO - Login endpoint accessed
+2025-06-18 11:46:05,948 - app - INFO - Login endpoint accessed
+2025-06-18 11:46:09,787 - app - INFO - Login endpoint accessed
+2025-06-18 11:46:15,192 - app - INFO - Login endpoint accessed
+2025-06-18 11:50:10,462 - app - INFO - Root endpoint accessed
+2025-06-18 11:50:10,468 - app - INFO - Login endpoint accessed
+2025-06-18 11:50:15,548 - app - INFO - Login form submitted
+2025-06-18 11:50:16,598 - app - INFO - Login successful
+2025-06-18 11:50:16,603 - app - INFO - Login form submitted
+2025-06-18 11:50:16,995 - app - WARNING - reCAPTCHA failed
+2025-06-18 11:50:17,003 - app - INFO - Login endpoint accessed
+2025-06-18 11:50:20,221 - app - INFO - Login form submitted
+2025-06-18 11:50:21,089 - app - INFO - Login successful
+2025-06-18 11:50:21,150 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:50:23,322 - app - INFO - Login endpoint accessed
+2025-06-18 11:50:37,498 - app - INFO - Login form submitted
+2025-06-18 11:50:38,567 - app - INFO - Login successful
+2025-06-18 11:50:38,663 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:50:41,857 - app - INFO - Login endpoint accessed
+2025-06-18 11:52:41,245 - app - INFO - Root endpoint accessed
+2025-06-18 11:52:41,267 - app - INFO - Login endpoint accessed
+2025-06-18 11:52:53,714 - app - INFO - Login form submitted
+2025-06-18 11:52:54,751 - app - INFO - Login successful
+2025-06-18 11:52:54,806 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:52:58,671 - app - INFO - Login endpoint accessed
+2025-06-18 11:54:37,621 - app - INFO - Root endpoint accessed
+2025-06-18 11:54:37,654 - app - INFO - Login endpoint accessed
+2025-06-18 11:55:10,217 - app - INFO - Login form submitted
+2025-06-18 11:55:10,615 - app - WARNING - reCAPTCHA failed
+2025-06-18 11:55:10,626 - app - INFO - Login endpoint accessed
+2025-06-18 11:56:13,041 - app - INFO - Root endpoint accessed
+2025-06-18 11:56:13,047 - app - INFO - Login endpoint accessed
+2025-06-18 11:56:26,720 - app - INFO - Login form submitted
+2025-06-18 11:56:28,194 - app - INFO - Login successful
+2025-06-18 11:56:28,252 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 11:56:38,940 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:56:42,341 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:56:48,484 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 11:59:49,976 - app - INFO - Root endpoint accessed
+2025-06-18 11:59:49,980 - app - INFO - Login endpoint accessed
+2025-06-18 12:00:02,794 - app - INFO - Login form submitted
+2025-06-18 12:00:04,142 - app - INFO - Login successful
+2025-06-18 12:00:04,215 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:00:07,654 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:00:10,874 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:05:24,524 - app - INFO - Root endpoint accessed
+2025-06-18 12:05:24,531 - app - INFO - Login endpoint accessed
+2025-06-18 12:05:39,202 - app - INFO - Login form submitted
+2025-06-18 12:05:40,647 - app - INFO - Login successful
+2025-06-18 12:05:40,743 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:09:58,394 - app - INFO - Root endpoint accessed
+2025-06-18 12:09:58,409 - app - INFO - Login endpoint accessed
+2025-06-18 12:10:08,462 - app - INFO - Login form submitted
+2025-06-18 12:10:09,631 - app - INFO - Login successful
+2025-06-18 12:10:09,715 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:11:35,895 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:11:40,193 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:12:20,885 - app - INFO - Root endpoint accessed
+2025-06-18 12:12:20,898 - app - INFO - Login endpoint accessed
+2025-06-18 12:12:38,593 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:12:47,223 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:12:51,878 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:12:55,693 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:15:19,728 - app - INFO - Logout endpoint accessed
+2025-06-18 12:15:19,734 - app - INFO - Login endpoint accessed
+2025-06-18 12:15:22,950 - app - INFO - Signup endpoint accessed
+2025-06-18 12:16:21,504 - app - INFO - Signup form submitted
+2025-06-18 12:16:21,507 - app - WARNING - Passwords do not match
+2025-06-18 12:16:21,513 - app - INFO - Signup endpoint accessed
+2025-06-18 12:17:30,331 - app - INFO - Signup form submitted
+2025-06-18 12:17:30,775 - app - INFO - Account created successfully
+2025-06-18 12:17:30,782 - app - INFO - Login endpoint accessed
+2025-06-18 12:18:05,950 - app - INFO - Login form submitted
+2025-06-18 12:18:06,817 - app - INFO - Login successful
+2025-06-18 12:18:06,891 - app - INFO - Dashboard endpoint accessed by admin@gmail.com
+2025-06-18 12:20:25,586 - app - INFO - Logout endpoint accessed
+2025-06-18 12:20:25,591 - app - INFO - Login endpoint accessed
+2025-06-18 12:20:41,052 - app - INFO - Login form submitted
+2025-06-18 12:20:41,869 - app - INFO - Login successful
+2025-06-18 12:20:41,948 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 12:21:00,824 - app - INFO - Logout endpoint accessed
+2025-06-18 12:21:00,831 - app - INFO - Login endpoint accessed
+2025-06-18 12:21:13,433 - app - INFO - Login form submitted
+2025-06-18 12:21:14,373 - app - INFO - Login successful
+2025-06-18 12:21:14,495 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:21:18,231 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:25:58,760 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:26:02,392 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:26:07,696 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:26:09,627 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:26:13,588 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:26:15,165 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:26:24,659 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:26:37,521 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:32:22,520 - app - INFO - Root endpoint accessed
+2025-06-18 12:32:22,534 - app - INFO - Login endpoint accessed
+2025-06-18 12:32:39,979 - app - INFO - Login form submitted
+2025-06-18 12:32:41,217 - app - INFO - Login successful
+2025-06-18 12:32:41,312 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:32:44,768 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:34:05,617 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:34:07,636 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:35:00,603 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:36:27,602 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:37:10,656 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:38:28,894 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:39:07,871 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:39:24,488 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:39:27,200 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:41:29,263 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:41:36,939 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:41:39,629 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:44:54,177 - app - INFO - Root endpoint accessed
+2025-06-18 12:44:54,183 - app - INFO - Login endpoint accessed
+2025-06-18 12:45:13,777 - app - INFO - Login form submitted
+2025-06-18 12:45:14,999 - app - INFO - Login successful
+2025-06-18 12:45:15,070 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:45:21,189 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:45:25,412 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 12:45:31,432 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:48:02,019 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:52:20,145 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:52:26,195 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:53:15,817 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 12:53:23,656 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 12:53:24,946 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 13:01:05,544 - app - INFO - Root endpoint accessed
+2025-06-18 13:01:05,551 - app - INFO - Login endpoint accessed
+2025-06-18 13:01:21,531 - app - INFO - Root endpoint accessed
+2025-06-18 13:01:21,548 - app - INFO - Login endpoint accessed
+2025-06-18 13:01:32,857 - app - INFO - Login form submitted
+2025-06-18 13:01:33,967 - app - INFO - Login successful
+2025-06-18 13:01:34,031 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 13:01:38,310 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 13:01:41,360 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 13:02:20,255 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:28:05,153 - app - INFO - Root endpoint accessed
+2025-06-18 14:28:05,160 - app - INFO - Login endpoint accessed
+2025-06-18 14:28:15,770 - app - INFO - Root endpoint accessed
+2025-06-18 14:28:15,781 - app - INFO - Login endpoint accessed
+2025-06-18 14:28:27,179 - app - INFO - Login form submitted
+2025-06-18 14:28:28,885 - app - INFO - Login successful
+2025-06-18 14:28:28,980 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 14:28:34,773 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:28:41,706 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 14:28:47,279 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:28:51,598 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 14:33:35,581 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:37,903 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,025 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,179 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,362 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,542 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,764 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:33:39,932 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:35:16,591 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:45:04,899 - app - INFO - Root endpoint accessed
+2025-06-18 14:45:04,907 - app - INFO - Login endpoint accessed
+2025-06-18 14:45:20,741 - app - INFO - Root endpoint accessed
+2025-06-18 14:45:20,748 - app - INFO - Login endpoint accessed
+2025-06-18 14:45:35,788 - app - INFO - Login form submitted
+2025-06-18 14:45:36,866 - app - INFO - Login successful
+2025-06-18 14:45:36,948 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 14:45:40,686 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 14:45:46,790 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:45:54,599 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:45:57,539 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 14:46:13,801 - app - INFO - Logout endpoint accessed
+2025-06-18 14:46:13,807 - app - INFO - Login endpoint accessed
+2025-06-18 14:46:39,241 - app - INFO - Login form submitted
+2025-06-18 14:46:40,310 - app - INFO - Login successful
+2025-06-18 14:46:40,391 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 14:46:48,505 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 14:46:54,395 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 14:47:03,778 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 14:47:07,394 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 14:47:13,796 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 14:47:15,854 - app - INFO - Login endpoint accessed
+2025-06-18 14:47:38,320 - app - INFO - Login endpoint accessed
+2025-06-18 14:51:46,826 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 14:51:57,175 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 14:52:03,646 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 14:52:07,149 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 14:52:14,509 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 14:52:24,388 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 14:52:30,983 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 14:52:37,215 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:00:24,905 - app - INFO - Root endpoint accessed
+2025-06-18 15:00:24,913 - app - INFO - Login endpoint accessed
+2025-06-18 15:00:37,562 - app - INFO - Login form submitted
+2025-06-18 15:00:38,619 - app - INFO - Login successful
+2025-06-18 15:00:38,693 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:00:41,019 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:00:48,792 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:01:05,399 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:01:11,331 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:02:15,439 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:02:17,115 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:04:56,975 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:05:00,740 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:05:02,789 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:05:47,082 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:05:56,066 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:06:00,231 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:06:02,889 - app - INFO - Login endpoint accessed
+2025-06-18 15:06:17,131 - app - INFO - Login endpoint accessed
+2025-06-18 15:06:21,367 - app - INFO - Login endpoint accessed
+2025-06-18 15:06:47,474 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:06:50,113 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:06:55,199 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:06:56,844 - app - INFO - Login endpoint accessed
+2025-06-18 15:08:21,733 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:16:18,558 - app - INFO - Login endpoint accessed
+2025-06-18 15:16:23,481 - app - INFO - Login endpoint accessed
+2025-06-18 15:20:01,461 - app - INFO - Root endpoint accessed
+2025-06-18 15:20:01,473 - app - INFO - Login endpoint accessed
+2025-06-18 15:20:14,335 - app - INFO - Login form submitted
+2025-06-18 15:20:15,951 - app - INFO - Login successful
+2025-06-18 15:20:16,084 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:20:18,362 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:20:19,783 - app - INFO - Login endpoint accessed
+2025-06-18 15:20:36,628 - app - INFO - Login endpoint accessed
+2025-06-18 15:23:18,212 - app - INFO - Login endpoint accessed
+2025-06-18 15:24:14,804 - app - INFO - Login form submitted
+2025-06-18 15:24:15,664 - app - INFO - Login successful
+2025-06-18 15:24:15,740 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:24:18,610 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:24:30,983 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 15:24:34,501 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:24:45,235 - app - INFO - Login endpoint accessed
+2025-06-18 15:32:19,600 - app - INFO - Login form submitted
+2025-06-18 15:32:20,531 - app - INFO - Login successful
+2025-06-18 15:32:20,602 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:32:25,601 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:32:26,875 - app - INFO - Login endpoint accessed
+2025-06-18 15:34:39,890 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,891 - app - INFO - Logout endpoint accessed
+2025-06-18 15:34:39,892 - app - INFO - Logout endpoint accessed
+2025-06-18 15:34:39,893 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,895 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,896 - app - INFO - Logout endpoint accessed
+2025-06-18 15:34:39,897 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,900 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,902 - app - INFO - Logout endpoint accessed
+2025-06-18 15:34:39,903 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,905 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:34:39,908 - app - INFO - Logout endpoint accessed
+2025-06-18 15:34:39,915 - app - INFO - Login endpoint accessed
+2025-06-18 15:35:15,890 - app - INFO - Root endpoint accessed
+2025-06-18 15:35:15,895 - app - INFO - Login endpoint accessed
+2025-06-18 15:35:21,443 - app - INFO - Login form submitted
+2025-06-18 15:35:23,215 - app - INFO - Login successful
+2025-06-18 15:35:23,275 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:35:25,661 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:35:27,173 - app - INFO - Login endpoint accessed
+2025-06-18 15:37:05,401 - app - INFO - Login endpoint accessed
+2025-06-18 15:37:18,745 - app - INFO - Login form submitted
+2025-06-18 15:37:19,911 - app - INFO - Login successful
+2025-06-18 15:37:20,057 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:37:21,679 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:37:23,518 - app - INFO - Login endpoint accessed
+2025-06-18 15:38:03,563 - app - INFO - Login endpoint accessed
+2025-06-18 15:38:53,268 - app - INFO - Login endpoint accessed
+2025-06-18 15:38:56,345 - app - INFO - Login endpoint accessed
+2025-06-18 15:39:01,540 - app - INFO - Login endpoint accessed
+2025-06-18 15:39:13,838 - app - INFO - Login form submitted
+2025-06-18 15:39:15,259 - app - INFO - Login successful
+2025-06-18 15:39:15,340 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:39:19,640 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:39:24,152 - app - INFO - Login endpoint accessed
+2025-06-18 15:39:50,158 - app - INFO - Login endpoint accessed
+2025-06-18 15:40:03,600 - app - INFO - Login form submitted
+2025-06-18 15:40:04,963 - app - INFO - Login successful
+2025-06-18 15:40:05,042 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:40:07,841 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:40:09,903 - app - INFO - Login endpoint accessed
+2025-06-18 15:40:39,984 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:40:40,720 - app - INFO - Login endpoint accessed
+2025-06-18 15:40:48,679 - app - INFO - Login form submitted
+2025-06-18 15:40:49,546 - app - INFO - Login successful
+2025-06-18 15:40:49,625 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:40:51,886 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:40:54,787 - app - INFO - Login endpoint accessed
+2025-06-18 15:41:38,386 - app - INFO - Login form submitted
+2025-06-18 15:41:39,721 - app - INFO - Login successful
+2025-06-18 15:41:39,806 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:41:46,332 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:41:47,955 - app - INFO - Login endpoint accessed
+2025-06-18 15:43:21,261 - app - INFO - Root endpoint accessed
+2025-06-18 15:43:21,267 - app - INFO - Login endpoint accessed
+2025-06-18 15:43:55,420 - app - INFO - Root endpoint accessed
+2025-06-18 15:43:55,431 - app - INFO - Login endpoint accessed
+2025-06-18 15:44:12,416 - app - INFO - Login form submitted
+2025-06-18 15:44:13,797 - app - INFO - Login successful
+2025-06-18 15:44:13,884 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:44:24,962 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:44:26,551 - app - INFO - Login endpoint accessed
+2025-06-18 15:45:17,768 - app - INFO - Login endpoint accessed
+2025-06-18 15:45:28,763 - app - INFO - Login form submitted
+2025-06-18 15:45:30,171 - app - INFO - Login successful
+2025-06-18 15:45:30,248 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:45:32,786 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:45:33,893 - app - INFO - Login endpoint accessed
+2025-06-18 15:45:43,661 - app - INFO - Login endpoint accessed
+2025-06-18 15:47:35,815 - app - INFO - Login form submitted
+2025-06-18 15:47:37,156 - app - INFO - Login successful
+2025-06-18 15:47:37,237 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:47:42,122 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:47:43,692 - app - INFO - Login endpoint accessed
+2025-06-18 15:49:37,501 - app - INFO - Login endpoint accessed
+2025-06-18 15:49:48,326 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:49:52,551 - app - INFO - Login endpoint accessed
+2025-06-18 15:55:40,338 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:55:42,814 - app - INFO - Login endpoint accessed
+2025-06-18 15:56:01,143 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 15:56:05,677 - app - INFO - Login endpoint accessed
+2025-06-18 15:57:43,508 - app - INFO - Login endpoint accessed
+2025-06-18 15:57:49,447 - app - INFO - Login endpoint accessed
+2025-06-18 15:58:24,988 - app - INFO - Login endpoint accessed
+2025-06-18 15:59:16,644 - app - INFO - Login form submitted
+2025-06-18 15:59:18,136 - app - INFO - Login successful
+2025-06-18 15:59:18,230 - app - INFO - Login form submitted
+2025-06-18 15:59:18,230 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:59:18,776 - app - WARNING - reCAPTCHA failed
+2025-06-18 15:59:18,780 - app - INFO - Login endpoint accessed
+2025-06-18 15:59:31,349 - app - INFO - Login form submitted
+2025-06-18 15:59:32,171 - app - INFO - Login successful
+2025-06-18 15:59:32,230 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 15:59:34,070 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 16:00:11,270 - app - INFO - Login endpoint accessed
+2025-06-18 16:00:38,898 - app - INFO - Login form submitted
+2025-06-18 16:00:39,735 - app - INFO - Login successful
+2025-06-18 16:00:39,808 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:00:41,320 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 16:01:33,237 - app - INFO - Login endpoint accessed
+2025-06-18 16:02:02,610 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:02:10,695 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:03:55,869 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:05:48,305 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:05:49,609 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:08:04,489 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:08:24,744 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:08:28,088 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:09:53,875 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:14:46,973 - app - INFO - Root endpoint accessed
+2025-06-18 16:14:46,978 - app - INFO - Login endpoint accessed
+2025-06-18 16:14:57,665 - app - INFO - Login form submitted
+2025-06-18 16:14:59,633 - app - INFO - Login successful
+2025-06-18 16:14:59,709 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:15:01,188 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:15:13,721 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 16:15:21,330 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:17:28,682 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:17:36,033 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 16:17:38,204 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:17:40,046 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:17:43,023 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-06-18 16:17:45,143 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:17:47,673 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:17:50,056 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:18:05,310 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:18:20,511 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:18:35,731 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:18:50,923 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:19:06,121 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:19:21,315 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:19:36,501 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:19:51,763 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:05,448 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:12,888 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:13,284 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:14,358 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:29,535 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:44,730 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:20:59,898 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:21:15,080 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:21:30,252 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:21:45,426 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:22:00,622 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:22:15,814 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:22:30,986 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:22:46,182 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:23:01,386 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:23:09,153 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:23:24,360 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:23:39,539 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:23:54,756 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:24:09,936 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:24:25,111 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:24:40,319 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:24:55,494 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:25:46,457 - app - INFO - Root endpoint accessed
+2025-06-18 16:25:46,463 - app - INFO - Login endpoint accessed
+2025-06-18 16:26:01,880 - app - INFO - Login form submitted
+2025-06-18 16:26:03,260 - app - INFO - Login successful
+2025-06-18 16:26:03,334 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:26:07,972 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:26:11,880 - app - INFO - Logout endpoint accessed
+2025-06-18 16:26:11,888 - app - INFO - Login endpoint accessed
+2025-06-18 16:26:33,925 - app - INFO - Login form submitted
+2025-06-18 16:26:34,942 - app - INFO - Login successful
+2025-06-18 16:26:35,017 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 16:26:38,381 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 16:27:27,750 - app - INFO - Shipment creation form submitted by user123@gmail.com
+2025-06-18 16:27:27,855 - app - INFO - Shipment 1 created by user123@gmail.com
+2025-06-18 16:27:32,640 - app - INFO - Create shipment endpoint accessed by user123@gmail.com
+2025-06-18 16:27:36,360 - app - INFO - Dashboard endpoint accessed by user123@gmail.com
+2025-06-18 16:27:37,951 - app - INFO - Account page accessed by user123@gmail.com
+2025-06-18 16:27:42,232 - app - INFO - Logout endpoint accessed
+2025-06-18 16:27:42,243 - app - INFO - Login endpoint accessed
+2025-06-18 16:27:54,715 - app - INFO - Login form submitted
+2025-06-18 16:27:55,807 - app - INFO - Login successful
+2025-06-18 16:27:55,903 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:27:57,932 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-06-18 16:28:15,905 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-18 16:28:17,961 - app - INFO - Device data endpoint accessed by admin@gmail.com

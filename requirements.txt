@@ -1,0 +1,36 @@
+# Core framework
+fastapi
+
+# ASGI server
+uvicorn[standard]
+
+# MongoDB client
+pymongo
+
+# Templating engine
+jinja2
+
+# Password hashing
+passlib[bcrypt]
+
+# Form and file handling
+python-multipart
+
+# Session management
+itsdangerous
+starlette
+
+# Environment variable loading
+python-dotenv
+
+# HTTP requests
+requests
+
+# Kafka client
+kafka-python
+
+# JWT tokens
+PyJWT
+
+# JOSE (JavaScript Object Signing and Encryption) - for JWT handling
+python-jose

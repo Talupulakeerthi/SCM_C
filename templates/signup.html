@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SCMLite - Sign Up</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eaf4ff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .signup-container {
+      display: flex;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 900px;
+      max-width: 95%;
+    }
+
+    .signup-left {
+      flex: 1;
+      background: #d0e3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signup-left img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .signup-right {
+      flex: 1;
+      padding: 50px 40px;
+      background: #fff;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    p {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px 15px;
+      font-size: 15px;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      background-color: #fafafa;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      border-color: #3f87f5;
+      outline: none;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(63, 135, 245, 0.2);
+    }
+
+    button {
+      background: #3f87f5;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #316fd0;
+    }
+
+    small {
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
+      display: block;
+      text-align: center;
+    }
+
+    .flash {
+      background-color: #ffecec;
+      border-left: 4px solid red;
+      padding: 10px;
+      color: #900;
+      margin-bottom: 15px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .signup-container {
+        flex-direction: column;
+      }
+
+      .signup-left,
+      .signup-right {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <!-- Left panel -->
+    <div class="signup-left">
+      <img src="https://img.freepik.com/premium-vector/woman-sitting-computer-working-minimalist-vector-illustration_760443-390.jpg" alt="Signup Illustration">
+    </div>
+
+    <!-- Right panel -->
+    <div class="signup-right">
+      <h2>SCMLite</h2>
+      <p>Create your account to get started</p>
+
+      {% if flash %}
+        <div class="flash">{{ flash }}</div>
+      {% endif %}
+
+      <form method="POST">
+        <input type="text" name="fullname" placeholder="Full Name" required>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+        <small>I accept the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></small>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

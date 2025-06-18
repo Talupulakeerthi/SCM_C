@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(to right, #c1dfff, #f5e1ff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .edit-form-wrapper {
+            background: rgba(255,255,255,0.19);
+            backdrop-filter: blur(7px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .edit-form-wrapper h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1976d2;
+            font-weight: 700;
+        }
+        .edit-form-wrapper form {
+            display: flex;
+            flex-direction: column;
+        }
+        .edit-form-wrapper label {
+            margin-bottom: 5px;
+            color: #27ae60;
+            font-weight: 600;
+        }
+        .edit-form-wrapper input,
+        .edit-form-wrapper select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1.5px solid #d1d8e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.85);
+            color: #222;
+        }
+        .edit-form-wrapper input:focus,
+        .edit-form-wrapper select:focus {
+            border-color: #27ae60;
+            outline: none;
+        }
+        .edit-form-wrapper button {
+            background: linear-gradient(90deg, #27ae60 0%, #36b1f4 100%);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .edit-form-wrapper button:hover {
+            background: linear-gradient(90deg, #1e8449 0%, #2980b9 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .edit-form-wrapper .back-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .edit-form-wrapper .back-link a {
+            text-decoration: none;
+            color: #27ae60;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .edit-form-wrapper .back-link a:hover {
+            text-decoration: underline;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-form-wrapper">
+        <h2><i class="fa fa-user-edit"></i> Edit User</h2>
+        <form action="/update-user/{{ user.email }}" method="POST">
+            <label for="name"><i class="fa fa-user"></i> Full Name</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}" required>
+            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+            <label for="role"><i class="fa fa-user-tag"></i> Role</label>
+            <select id="role" name="role" required>
+                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+            </select>
+            <button type="submit"><i class="fa fa-save"></i> Save Changes</button>
+        </form>
+        <div class="back-link">
+            <a href="/user-management"><i class="fa fa-arrow-left"></i> Back to User Management</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+/* === Enhanced Creative SCM Dashboard Theme === */
+/* === Modern SCM Dashboard Theme === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100vh;
+  background: linear-gradient(135deg, #0a2647, #144272);
+  background-image: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #1e1e1e;
+}
+
+/* Main Wrapper */
+.dashboard-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.topbar {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #00d4ff;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-menu a:hover {
+  background-color: #00b4d8;
+  color: #fff;
+}
+
+.logout-btn {
+  background: linear-gradient(to right, #ff4e50, #f9d423);
+  color: #000 !important;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.logout-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 3rem 5vw;
+  text-align: center;
+}
+
+.main-content h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  margin-bottom: 2.5rem;
+}
+
+/* Panel Cards */
+.panel-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 280px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.panel:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.panel i {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: #0077b6;
+  background: rgba(0, 119, 182, 0.15);
+  padding: 1rem;
+  border-radius: 50%;
+}
+
+.panel h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #023047;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(to right, #00b4d8, #0077b6);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(to right, #0096c7, #023e8a);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .panel {
+    width: 90%;
+  }
+
+  .nav-menu {
+    flex-wrap: wrap;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="brand">
+            <i class="fa fa-cubes"></i>
+            <h1>SCMLite</h1>
+        </div>
+        <nav class="nav-menu">
+            <a href="/create-shipment"><i class="fa fa-plus"></i> New Shipment</a>
+            <a href="/account"><i class="fa fa-user"></i> My Account</a>
+            <a class="logout-btn" href="/logout"><i class="fa fa-sign-out-alt"></i> Log out</a>
+        </nav>
+    </header>
+    <!-- Main Content -->
+    <main class="main-content">
+        <h2>Hello, Welcome to SCMxpertLite</h2>
+        <div class="panel-container">
+            <div class="panel left-panel">
+                <i class="fa fa-truck"></i>
+                <h3>Create a New Shipment</h3>
+                <button class="btn" onclick="window.location.href='/create-shipment'">Create Shipment</button>
+            </div>
+            <div class="panel right-panel">
+                <i class="fa fa-user"></i>
+                <h3>My Account</h3>
+                <button class="btn" onclick="window.location.href='/account'">Get your Account Details</button>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
