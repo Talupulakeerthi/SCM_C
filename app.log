@@ -567,3 +567,46 @@
 2025-06-18 16:27:57,932 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
 2025-06-18 16:28:15,905 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
 2025-06-18 16:28:17,961 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-18 16:51:26,892 - app - INFO - Root endpoint accessed
+2025-06-18 16:51:26,910 - app - INFO - Login endpoint accessed
+2025-06-18 16:51:37,758 - app - INFO - Signup endpoint accessed
+2025-06-18 16:51:56,189 - app - INFO - Signup form submitted
+2025-06-18 16:51:57,272 - app - INFO - Account created successfully
+2025-06-18 16:51:57,277 - app - INFO - Login endpoint accessed
+2025-06-18 16:52:03,512 - app - INFO - Login form submitted
+2025-06-18 16:52:04,549 - app - INFO - Login successful
+2025-06-18 16:52:04,621 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-06-18 16:52:06,994 - app - INFO - Create shipment endpoint accessed by keerthitalupula246@gmail.com
+2025-06-18 16:52:12,582 - app - INFO - Account page accessed by keerthitalupula246@gmail.com
+2025-06-19 12:40:42,405 - app - INFO - Root endpoint accessed
+2025-06-19 12:40:42,427 - app - INFO - Login endpoint accessed
+2025-06-19 13:00:25,754 - app - INFO - Root endpoint accessed
+2025-06-19 13:00:25,761 - app - INFO - Login endpoint accessed
+2025-06-19 13:00:45,307 - app - INFO - Root endpoint accessed
+2025-06-19 13:00:45,317 - app - INFO - Login endpoint accessed
+2025-06-19 13:00:56,441 - app - INFO - Login form submitted
+2025-06-19 13:00:57,880 - app - INFO - Login successful
+2025-06-19 13:00:57,945 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-19 13:24:15,700 - app - INFO - Login endpoint accessed
+2025-06-19 13:24:19,975 - app - INFO - Login form submitted
+2025-06-19 13:24:22,098 - app - INFO - Login successful
+2025-06-19 13:24:22,225 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-19 13:24:24,553 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:24:40,041 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:24:55,324 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:25:10,560 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:25:25,810 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:25:40,990 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:25:56,135 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:26:11,295 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:26:26,497 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:26:41,686 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 13:26:56,886 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 14:11:07,542 - app - INFO - Login endpoint accessed
+2025-06-19 14:11:39,462 - app - INFO - Root endpoint accessed
+2025-06-19 14:11:39,469 - app - INFO - Login endpoint accessed
+2025-06-19 14:11:43,765 - app - INFO - Login form submitted
+2025-06-19 14:11:44,950 - app - INFO - Login successful
+2025-06-19 14:11:45,012 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-19 14:11:46,591 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-19 14:12:01,793 - app - INFO - Device data endpoint accessed by admin@gmail.com

@@ -496,10 +496,12 @@ async def device_data(request: Request, current_user: dict = Depends(get_current
     for item in data:
         item['_id'] = str(item['_id'])
         formatted_data.append(item)
+
     return templates.TemplateResponse("device_data.html", {
-        "request": request,
-        "data": formatted_data
-    })
+    "request": request,
+    "devices": formatted_data  # ✅ Now matches your Jinja template
+})
+
 
 @app.post("/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
