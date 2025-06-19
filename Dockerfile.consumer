@@ -1,0 +1,18 @@
+# Dockerfile.consumer (for Kafka consumer script)
+
+FROM python:3.12-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the entire kafka directory into the container
+# This ensures that consumer.py can find kafka/.env if it tries to load it,
+# although env_file in docker-compose.yml is the primary mechanism for Docker.
+COPY kafka/ kafka/
+
+# Install Python dependencies for the consumer
+# kafka-python for Kafka client, pymongo for MongoDB interaction
+RUN pip install kafka-python pymongo python-dotenv
+
+# Command to run the consumer script
+CMD ["python", "kafka/consumer.py"]
