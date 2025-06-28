@@ -541,13 +541,22 @@ def custom_openapi():
             "bearerFormat": "JWT",
         }
     }
-    for path in openapi_schema["paths"].values():
-        for op in path.values():
-            op["security"] = [{"BearerAuth": []}]
+
+    # No lock for these paths
+    unsecured_paths = ["/login", "/signup", "/logout", "/token", "/"]
+
+    for path, methods in openapi_schema["paths"].items():
+        for method in methods.values():
+            if path not in unsecured_paths:
+                method["security"] = [{"BearerAuth": []}]
+            else:
+                method["security"] = []
+
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
 app.openapi = custom_openapi
+
 
 @app.get("/logout")
 def logout(request: Request):
