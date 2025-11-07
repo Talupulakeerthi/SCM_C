@@ -769,3 +769,124 @@
 2025-06-28 10:07:20,806 - app - INFO - Root endpoint accessed
 2025-06-28 10:07:20,813 - app - INFO - Login endpoint accessed
 >>>>>>> dev
+2025-06-30 11:45:45,085 - app - INFO - Root endpoint accessed
+2025-06-30 11:45:45,097 - app - INFO - Login endpoint accessed
+2025-06-30 11:45:50,301 - app - INFO - Login form submitted
+2025-06-30 11:45:52,049 - app - INFO - Login successful
+2025-06-30 11:45:52,146 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-30 11:45:53,807 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:46:09,014 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:46:24,204 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:46:39,387 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:46:54,570 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:47:09,724 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:47:24,904 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:47:40,103 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:47:55,332 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:48:10,552 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:48:25,730 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:48:40,924 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:48:56,123 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:49:11,335 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:49:26,570 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:49:41,830 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:49:57,023 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:50:13,597 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:50:28,832 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:50:44,015 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:50:59,200 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 11:51:14,409 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:24:08,757 - app - INFO - Root endpoint accessed
+2025-06-30 12:24:08,761 - app - INFO - Login endpoint accessed
+2025-06-30 12:24:21,973 - app - INFO - Login form submitted
+2025-06-30 12:24:23,584 - app - INFO - Login successful
+2025-06-30 12:24:23,656 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-06-30 12:24:25,826 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:24:41,129 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:24:56,334 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:25:11,556 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:25:26,740 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:25:41,946 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:25:57,136 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:26:12,332 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:26:27,541 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:26:42,740 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:26:57,959 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:27:13,225 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:27:28,467 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:27:43,724 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:27:58,939 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:28:14,117 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:28:29,318 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:28:44,556 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:28:59,823 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:29:15,068 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:29:30,277 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:29:45,494 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:30:00,691 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:30:15,891 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:30:31,097 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:30:46,304 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:31:01,548 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:31:16,770 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:31:32,011 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:31:47,234 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:32:02,436 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:32:17,625 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:32:32,941 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:32:48,179 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:33:03,397 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:33:18,610 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:33:33,809 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:33:49,012 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:34:04,186 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-06-30 12:34:19,414 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-07-07 22:08:17,701 - app - INFO - Root endpoint accessed
+2025-07-07 22:08:17,705 - app - INFO - Login endpoint accessed
+2025-07-07 22:08:24,068 - app - INFO - Login form submitted
+2025-07-07 22:08:25,056 - app - INFO - Login successful
+2025-07-07 22:08:25,097 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:31,378 - app - INFO - Create shipment endpoint accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:38,202 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:39,622 - app - INFO - Create shipment endpoint accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:42,265 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:43,645 - app - INFO - Account page accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:47,634 - app - INFO - Account page accessed by keerthitalupula246@gmail.com
+2025-07-07 22:08:51,588 - app - INFO - Logout endpoint accessed
+2025-07-07 22:08:51,594 - app - INFO - Login endpoint accessed
+2025-07-07 22:09:15,719 - app - INFO - Login form submitted
+2025-07-07 22:09:16,344 - app - INFO - Login successful
+2025-07-07 22:09:16,381 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-07-07 22:09:22,339 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-07-07 22:09:30,614 - app - INFO - Edit shipment endpoint accessed by admin@gmail.com
+2025-07-07 22:09:36,671 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-09-03 10:14:28,368 - app - INFO - Root endpoint accessed
+2025-09-03 10:14:28,379 - app - INFO - Login endpoint accessed
+2025-10-15 16:42:53,618 - app - INFO - Root endpoint accessed
+2025-10-15 16:42:53,624 - app - INFO - Login endpoint accessed
+2025-10-15 16:43:13,350 - app - INFO - Login form submitted
+2025-10-15 16:43:14,990 - app - INFO - Login successful
+2025-10-15 16:43:15,073 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-10-15 16:43:18,659 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:43:33,863 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:43:49,139 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:44:04,330 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:44:19,499 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:44:34,689 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:44:49,857 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:45:05,038 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:45:20,256 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:45:35,480 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:45:50,681 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:46:05,824 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:46:21,024 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:46:41,987 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-10-15 16:47:42,023 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-07 15:30:06,050 - app - INFO - Root endpoint accessed
+2025-11-07 15:30:06,055 - app - INFO - Login endpoint accessed
+2025-11-07 15:30:16,995 - app - INFO - Login form submitted
+2025-11-07 15:30:18,602 - app - INFO - Login successful
+2025-11-07 15:30:18,654 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-07 15:30:20,277 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-07 15:30:35,466 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-07 15:30:50,622 - app - INFO - Device data endpoint accessed by admin@gmail.com
