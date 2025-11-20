@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SCMLite - Sign Up</title>
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -62,9 +63,7 @@
       gap: 18px;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    input {
       padding: 12px 15px;
       font-size: 15px;
       border: 1.5px solid #ccc;
@@ -111,27 +110,16 @@
       margin-bottom: 15px;
       border-radius: 6px;
     }
-
-    @media (max-width: 768px) {
-      .signup-container {
-        flex-direction: column;
-      }
-
-      .signup-left,
-      .signup-right {
-        padding: 30px;
-      }
-    }
   </style>
 </head>
+
 <body>
   <div class="signup-container">
-    <!-- Left panel -->
+
     <div class="signup-left">
       <img src="https://img.freepik.com/premium-vector/woman-sitting-computer-working-minimalist-vector-illustration_760443-390.jpg" alt="Signup Illustration">
     </div>
 
-    <!-- Right panel -->
     <div class="signup-right">
       <h2>SCMLite</h2>
       <p>Create your account to get started</p>
@@ -140,15 +128,23 @@
         <div class="flash">{{ flash }}</div>
       {% endif %}
 
-      <form method="POST">
-        <input type="text" name="fullname" placeholder="Full Name" required>
-        <input type="email" name="email" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <!--  ✅ Correct Signup Form -->
+      <form action="/signup" method="POST" onsubmit="return validateSignupForm()">
+        <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
+        <input type="email" id="email" name="email" placeholder="Email Address" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+
         <button type="submit">Sign Up</button>
+
         <small>I accept the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></small>
       </form>
+
     </div>
   </div>
+
+  <!--  ✅ Load JS Validation -->
+  <script src="/static/js/validation.js"></script>
+
 </body>
 </html>

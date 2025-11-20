@@ -85,24 +85,34 @@
         }
     </style>
 </head>
+
 <body>
     <div class="edit-form-wrapper">
         <h2><i class="fa fa-user-edit"></i> Edit User</h2>
-        <form action="/update-user/{{ user.email }}" method="POST">
+
+        <!-- Validation added -->
+        <form action="/update-user/{{ user.email }}" method="POST" onsubmit="return validateEditUserForm()">
+
             <label for="name"><i class="fa fa-user"></i> Full Name</label>
             <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
             <label for="email"><i class="fa fa-envelope"></i> Email</label>
             <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+
             <label for="role"><i class="fa fa-user-tag"></i> Role</label>
             <select id="role" name="role" required>
                 <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
                 <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
             </select>
+
             <button type="submit"><i class="fa fa-save"></i> Save Changes</button>
         </form>
+
         <div class="back-link">
-            <a href="/user-management"><i class="fa fa-arrow-left"></i> Back to User Management</a>
+            <a href="/user_management"><i class="fa fa-arrow-left"></i> Back to User Management</a>
         </div>
     </div>
+
+    <script src="/static/js/validation.js"></script>
 </body>
 </html>

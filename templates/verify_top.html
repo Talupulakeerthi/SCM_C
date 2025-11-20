@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCMLite - Verify MFA</title>
+  <link rel="stylesheet" href="/static/css/mfa.css">
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(120deg, #121226, #1e1e2f);
+      color: #eceff1;
+      margin: 0;
+      padding: 0;
+    }
+    .verify-container {
+      background: #1e1e2f;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      max-width: 400px;
+      margin: 80px auto;
+      text-align: center;
+    }
+    .verify-container h2 {
+      color: #8c9eff;
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+    .verify-container p {
+      color: #cfd8dc;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+    .flash {
+      background: linear-gradient(90deg, #ff3d00 0%, #ff9100 100%);
+      color: #fff;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    input[type="text"] {
+      padding: 14px 18px;
+      border: 1.5px solid #37474f;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      background: #263238;
+      color: #eceff1;
+      text-align: center;
+      letter-spacing: 4px;
+      font-weight: 600;
+    }
+    input[type="text"]:focus {
+      border-color: #8c9eff;
+      outline: none;
+      box-shadow: 0 0 8px #8c9eff50;
+    }
+    button {
+      background: linear-gradient(90deg, #8c9eff 0%, #536dfe 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 5px 18px rgba(140,158,255,0.3);
+    }
+    button:hover {
+      background: linear-gradient(90deg, #536dfe 0%, #8c9eff 100%);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 20px rgba(140,158,255,0.5);
+    }
+    .resend-hint {
+      font-size: 0.95rem;
+      color: #9fa8da;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="verify-container">
+    <h2>🔐 Verify with Authenticator</h2>
+    <p>Enter the 6-digit code from your Authenticator app.</p>
+
+    {% if flash %}
+    <div class="flash">{{ flash }}</div>
+    {% endif %}
+
+    <form method="post" action="/mfa/relogin/verify">
+      <input type="text" name="code" maxlength="6" placeholder="Enter 6-digit code" required>
+      <button type="submit">Verify</button>
+    </form>
+
+    <div class="resend-hint">
+      Lost access to your authenticator? Contact the administrator to reset MFA.
+    </div>
+  </div>
+</body>
+</html>

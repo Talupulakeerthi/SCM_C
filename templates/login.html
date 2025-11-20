@@ -5,177 +5,87 @@
   <title>SCMLite - Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      display: flex; justify-content: center; align-items: center; height: 100vh;
     }
 
     .login-container {
-      display: flex;
-      width: 950px;
-      max-width: 95%;
-      border-radius: 20px;
-      overflow: hidden;
-      background-color: white;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      animation: fadeIn 0.8s ease-in-out;
+      display: flex; width: 950px; max-width: 95%;
+      border-radius: 20px; overflow: hidden; background-color: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15); animation: fadeIn 0.8s ease-in-out;
     }
 
     .left-panel {
       flex: 1;
-      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS1u7IX08TICt7ooatAGCNXZIFBXgaIgVXmRQVrfl4IYyTfRgP4BoNartYRbg41mUYbKQ&usqp=CAU') no-repeat center center;
-      background-size: cover;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 40px;
-    }
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS1u7IX08TICt7ooatAGCNXZIFBXgaIgVXmRQVrfl4IYyTfRgP4BoNartYRbg41mUYbKQ&usqp=CAU')
+      no-repeat center center / cover;
 
-    .left-panel::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 0;
+      position: relative; display: flex; flex-direction: column;
+      justify-content: center; align-items: center; text-align: center; padding: 40px;
     }
-
-    .left-panel h3,
-    .left-panel p,
-    .left-panel a {
-      position: relative;
-      color: #fff;
-      z-index: 1;
-    }
-
-    .left-panel h3 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-    }
-
-    .left-panel p {
-      font-size: 0.95rem;
-      margin-bottom: 20px;
-    }
-
+    .left-panel::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 0; }
+    .left-panel h3, .left-panel p, .left-panel a { position: relative; color: #fff; z-index: 1; }
+    .left-panel h3 { font-size: 1.8rem; margin-bottom: 10px; }
+    .left-panel p { font-size: 0.95rem; margin-bottom: 20px; }
     .left-panel .alt-button {
-      padding: 10px 24px;
-      background-color: transparent;
-      border: 2px solid white;
-      color: white;
-      font-weight: bold;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      padding: 10px 24px; background: transparent; border: 2px solid #fff; color: #fff;
+      font-weight: bold; border-radius: 10px; cursor: pointer; transition: all 0.3s ease;
     }
+    .left-panel .alt-button:hover { background-color: rgba(255, 255, 255, 0.1); }
 
-    .left-panel .alt-button:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
+    .right-panel { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+    h2 { font-size: 2rem; font-weight: 600; color: #2c3e50; margin-bottom: 10px; }
+    p  { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
 
-    .right-panel {
-      flex: 1;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
+    form { display: flex; flex-direction: column; }
     input {
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 1.5px solid #ccc;
-      border-radius: 10px;
-      font-size: 14px;
-      transition: 0.3s ease;
-      background-color: #f9f9f9;
+      padding: 12px; margin-bottom: 15px; border: 1.5px solid #ccc; border-radius: 10px;
+      font-size: 14px; transition: 0.3s ease; background-color: #f9f9f9;
     }
-
-    input:focus {
-      border-color: #3498db;
-      outline: none;
-      box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
-    }
+    input:focus { border-color: #3498db; outline: none; box-shadow: 0 0 8px rgba(52, 152, 219, 0.2); }
 
     button {
-      padding: 12px;
-      background-color: #27ae60;
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s ease;
+      padding: 12px; background-color: #27ae60; color: #fff; font-size: 15px; font-weight: 600;
+      border: none; border-radius: 10px; cursor: pointer; transition: 0.3s ease;
     }
+    button:hover { background-color: #219150; }
 
-    button:hover {
-      background-color: #219150;
-    }
-
-    .g-recaptcha {
-      margin: 15px 0;
-    }
+    .g-recaptcha { margin: 15px 0; }
 
     .flash {
-      background-color: #ffdddd;
-      border-left: 6px solid #e74c3c;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      color: #c0392b;
-      font-weight: 500;
+      background-color: #ffdddd; border-left: 6px solid #e74c3c;
+      padding: 10px; margin-bottom: 15px; border-radius: 6px; color: #c0392b; font-weight: 500;
     }
 
-    @keyframes fadeIn {
+    .helper-links {
+      display: flex; justify-content: center; gap: 14px; margin-top: 10px; font-size: 0.9rem;
+    }
+    .helper-links a {
+      color: #007BFF; text-decoration: none;
+    }
+    .helper-links a:hover { text-decoration: underline; }
+
+    @keyframes fadeIn { 
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
-      .login-container {
-        flex-direction: column;
-      }
-
-      .left-panel, .right-panel {
-        padding: 30px;
-      }
+      .login-container { flex-direction: column; }
+      .left-panel, .right-panel { padding: 30px; }
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
+
     <!-- LEFT PANEL -->
     <div class="left-panel">
       <h3>New here?</h3>
@@ -192,13 +102,23 @@
         <div class="flash">{{ flash }}</div>
       {% endif %}
 
-      <form method="POST">
-        <input type="email" name="username" placeholder="Email Address" required>
-        <input type="password" name="password" placeholder="Password" required>
+      <!-- ✅ ONLY ONE FORM — With JS Validation -->
+      <form action="/login" method="POST" onsubmit="return validateLoginForm()">
+        <input type="email" id="username" name="username" placeholder="Email Address" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
         <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+
         <button type="submit">Login</button>
       </form>
+
+      <div class="helper-links">
+        <a href="/forgot-password">Forgot Password?</a>
+      </div>
     </div>
   </div>
+
+  <!-- JS Validation File -->
+  <script src="/static/js/validation.js"></script>
 </body>
 </html>
