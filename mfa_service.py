@@ -1,4 +1,3 @@
-# main/mfa_service.py
 import pyotp
 from io import BytesIO
 import qrcode
@@ -17,8 +16,5 @@ def verify_code(secret: str, code: str, window: int = 1) -> bool:
 def qr_png(otpauth_uri: str) -> bytes:
     img = qrcode.make(otpauth_uri)
     buf = BytesIO()
-    img.save(buf, format="PNG")
+    img.save(buf, "PNG")
     return buf.getvalue()
-
-
-

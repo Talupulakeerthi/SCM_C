@@ -11,6 +11,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.openapi.utils import get_openapi
 from pymongo import MongoClient
+import secrets
 
 # MFA router (we’ll wire it up later)
 from mfa_router import router as mfa_router, init as mfa_init
@@ -36,19 +37,23 @@ from jose import JWTError, jwt          # python-jose
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-
+from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
+
+# ensure load_dotenv() already called above
 
 def send_email(to_email: str, subject: str, body: str):
     import smtplib
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
-    print("====== EMAIL DEBUG START ======")
-    print("EMAIL_USER:", EMAIL_USER)
-    print("EMAIL_PASS length:", len(EMAIL_PASS))
-    print("Sending to:", to_email)
+    logger.debug("send_email() -> %s", to_email)
+    if not EMAIL_USER or not EMAIL_PASS:
+        logger.warning("EMAIL_USER/PASS missing. Writing verification to sent_emails.log")
+        with open("sent_emails.log", "a", encoding="utf-8") as f:
+            f.write(f"TO: {to_email}\n{body}\n\n---\n")
+        return
 
     msg = MIMEMultipart()
     msg["From"] = EMAIL_USER
@@ -57,23 +62,16 @@ def send_email(to_email: str, subject: str, body: str):
     msg.attach(MIMEText(body, "plain"))
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.set_debuglevel(1)  # ← SHOW FULL SMTP LOG
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+        server.set_debuglevel(1)
+        server.ehlo()
         server.starttls()
-
-        print("Attempting login...")
         server.login(EMAIL_USER, EMAIL_PASS)
-
-        print("Login successful! Sending email...")
-        server.sendmail(EMAIL_USER, to_email, msg.as_string())
+        server.sendmail(EMAIL_USER, [to_email], msg.as_string())
         server.quit()
-
-        print("====== EMAIL SENT SUCCESSFULLY ======")
-
-    except Exception as e:
-        print("❌ EMAIL FAILED:", e)
-        print("====== EMAIL DEBUG END ======")
-
+        logger.info("Email sent to %s", to_email)
+    except Exception:
+        logger.exception("Email send failed for %s", to_email)
 
 # ---------------------------
 # Logging Configuration
@@ -99,8 +97,80 @@ if not logger.handlers:
 # ---------------------------
 load_dotenv()
 
+import re
+import dns.resolver
+
+# Strict-ish email regex (good balance)
+EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
+
+
+def is_valid_email_format(email: str) -> bool:
+    """Basic regex email format validation."""
+    return bool(EMAIL_RE.match(email))
+
+def has_mx_record(domain: str) -> bool:
+    """Return True if domain has an MX record (i.e., can receive email)."""
+    try:
+        answers = dns.resolver.resolve(domain, "MX", lifetime=5)
+        return len(answers) > 0
+    except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
+        return False
+    except Exception:
+        # be conservative — return False if anything odd
+        return False
+
+def is_real_domain_email(email: str) -> bool:
+    """Check format and that the domain has an MX record."""
+    if not is_valid_email_format(email):
+        return False
+    domain = email.split("@", 1)[1].lower()
+    return has_mx_record(domain)
+
+
 EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
+
+if not EMAIL_USER or not EMAIL_PASS:
+    logger.warning("EMAIL_USER or EMAIL_PASS not set. Emails will fail.")
+
+def send_email(to_email: str, subject: str, body: str):
+    """
+    Send verification/reset emails via Gmail SMTP.
+    If EMAIL_USER/PASS not set or send fails, fallback to sent_emails.log for dev.
+    """
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    logger.debug("send_email() -> to=%s subject=%s", to_email, subject)
+
+    if not EMAIL_USER or not EMAIL_PASS:
+        logger.warning("EMAIL_USER or EMAIL_PASS not set. Writing to sent_emails.log instead.")
+        with open("sent_emails.log", "a", encoding="utf-8") as f:
+            f.write(f"--- TO: {to_email} SUBJECT: {subject} ---\n{body}\n\n")
+        return
+
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_USER
+    msg["To"] = to_email
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+        server.set_debuglevel(1)    # print debug conversation in terminal
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.sendmail(EMAIL_USER, [to_email], msg.as_string())
+        server.quit()
+        logger.info("Email sent to %s", to_email)
+    except Exception:
+        logger.exception("Failed to send email to %s. Check EMAIL_USER/PASS and network.", to_email)
+        with open("sent_emails.log", "a", encoding="utf-8") as f:
+            f.write(f"FAILED_SEND -> TO: {to_email} SUBJECT: {subject}\n{body}\n\n")
 
 
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
@@ -157,6 +227,13 @@ logins_collection = db["logins"]
 shipment_collection = db["shipments"]
 collection = db["sensor_data_collection"]
 password_resets = db["password_resets"]
+
+# Ensure unique email index to prevent races/duplicates
+try:
+    users_collection.create_index("email", unique=True)
+except Exception as e:
+    logger.warning("Could not create unique index on users_collection.email: %s", e)
+
 
 # collection = db["device-data"]  # if you switch later
 
@@ -628,30 +705,115 @@ def post_signup(
     confirm_password: str = Form(...),
     role: str = Form("user"),
 ):
+        # 0. Real domain email validation
+    if not is_real_domain_email(email):
+        request.session["flash"] = "Invalid email domain. Enter a real email provider (Gmail, Outlook, Yahoo, company domain)."
+        return RedirectResponse("/signup", status_code=302)
+
+    # 1. Password check
     if password != confirm_password:
         request.session["flash"] = "Passwords do not match."
-        return RedirectResponse(url="/signup", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse("/signup", status_code=302)
 
+    # 2. Email exists check
     if users_collection.find_one({"email": email}):
         request.session["flash"] = "Email already registered."
-        return RedirectResponse(url="/signup", status_code=status.HTTP_302_FOUND)
+        return RedirectResponse("/signup", status_code=302)
 
+    # 3. Set role
     if role not in ["user", "admin"]:
         role = "user"
 
+    # 4. Create verification token
+    token = secrets.token_urlsafe(32)
+    verification_expires_at = datetime.utcnow() + timedelta(hours=24)
+
     password_hash = pwd_context.hash(password)
-    users_collection.insert_one(
-        {
-            "name": fullname,
-            "email": email,
-            "password_hash": password_hash,
-            "role": role,
-            "created_at": datetime.utcnow(),
-        }
+
+    # 5. Insert into DB
+    users_collection.insert_one({
+        "name": fullname,
+        "email": email,
+        "password_hash": password_hash,
+        "role": role,
+        "created_at": datetime.utcnow(),
+        "email_verified": False,
+        "verification_token": token,
+        "verification_expires_at": verification_expires_at,
+    })
+
+    # 6. Send verification email
+    verification_link = f"http://127.0.0.1:8000/verify-email?token={token}"
+
+    email_body = f"""
+Hello {fullname},
+
+Please verify your email by visiting the link below (valid for 24 hours):
+{verification_link}
+
+If you did not sign up, ignore this message.
+"""
+
+    try:
+        send_email(email, "Verify your SCMLite email", email_body)
+    except Exception as e:
+        logger.exception("send_email failed: %s", e)
+
+    # 7. Flash + redirect
+    request.session["flash"] = "Account created. Check your email for verification."
+    return RedirectResponse("/login", status_code=302)
+
+# >>> EMAIL VERIFICATION ROUTE
+
+@app.get("/verify-email")
+def get_verify_email(request: Request, token: str = None):
+    if not token:
+        request.session["flash"] = "Missing verification token."
+        return RedirectResponse("/login", status_code=302)
+
+    user = users_collection.find_one({"verification_token": token})
+    if not user:
+        request.session["flash"] = "Invalid verification link."
+        return RedirectResponse("/login", status_code=302)
+
+    if user.get("email_verified"):
+        request.session["flash"] = "Email already verified."
+        return RedirectResponse("/login", status_code=302)
+
+    if user.get("verification_expires_at") and user["verification_expires_at"] < datetime.utcnow():
+        request.session["flash"] = "Verification link expired. Request a new one."
+        return RedirectResponse(f"/resend-verification?email={user['email']}", status_code=302)
+
+    users_collection.update_one(
+        {"email": user["email"]},
+        {"$set": {"email_verified": True}, "$unset": {"verification_token": "", "verification_expires_at": ""}}
     )
 
-    request.session["flash"] = "Account created successfully! Please log in."
-    return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+    request.session["flash"] = "Email verified successfully. Please log in."
+    return RedirectResponse("/login", status_code=302)
+
+
+#resend-verification
+@app.post("/resend-verification")
+def post_resend_verification(request: Request, email: str = Form(...)):
+    user = users_collection.find_one({"email": email})
+    if not user:
+        request.session["flash"] = "Email not registered."
+        return RedirectResponse("/login", status_code=302)
+    if user.get("email_verified"):
+        request.session["flash"] = "Email already verified."
+        return RedirectResponse("/login", status_code=302)
+
+    new_token = secrets.token_urlsafe(32)
+    expires = datetime.utcnow() + timedelta(hours=24)
+    users_collection.update_one({"email": email}, {"$set": {"verification_token": new_token, "verification_expires_at": expires}})
+
+    verification_link = f"http://127.0.0.1:8000/verify-email?token={new_token}"
+    send_email(email, "Verify your email - SCMLite", f"Click here to verify: {verification_link}")
+
+    request.session["flash"] = "Verification email sent (check spam)."
+    return RedirectResponse("/login", status_code=302)
+
 @app.get("/forgot-password", response_class=HTMLResponse)
 def get_forgot_password(request: Request):
     flash = request.session.pop("flash", None)

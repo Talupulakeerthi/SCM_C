@@ -125,7 +125,7 @@
   <div class="card">
     <h2>MFA Setup for {{ email }}</h2>
     <p>Scan this QR in <strong>Google Authenticator</strong> or <strong>Microsoft Authenticator</strong>:</p>
-    <img src="/mfa/qrcode.png" alt="QR Code">
+    <img src="{{ qr_url }}" alt="QR Code" style="width: 200px; height: 200px;">
     <p>Or add manually:</p>
     <div class="secret">{{ secret }}</div>
 

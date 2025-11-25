@@ -44,14 +44,29 @@ def mfa_setup(request: Request):
 
     mfa = user.get("mfa") or {}
     secret = mfa.get("secret")
+
     if not secret:
         secret = new_secret()
-        _users.update_one({"email": email}, {"$set": {"mfa": {"enabled": False, "secret": secret}}})
+        _users.update_one(
+            {"email": email},
+            {"$set": {"mfa": {"enabled": False, "secret": secret}}}
+        )
 
+    # Build otpauth:// URI
     uri = provisioning_uri(email, secret)
+
+    # ✔ FIX: Pass the QR route URL to the template
+    qr_url = "/mfa/qrcode.png"
+
     return _templates.TemplateResponse(
         "mfa_setup.html",
-        {"request": request, "email": email, "secret": secret, "otpauth_uri": uri}
+        {
+            "request": request,
+            "email": email,
+            "secret": secret,
+            "otpauth_uri": uri,
+            "qr_url": qr_url
+        },
     )
 
 @router.get("/qrcode.png")
@@ -60,10 +75,16 @@ def mfa_qr(request: Request):
     user = _users.find_one({"email": email})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+
     secret = (user.get("mfa") or {}).get("secret")
     if not secret:
         raise HTTPException(status_code=400, detail="MFA secret missing")
-    return Response(content=qr_png(provisioning_uri(email, secret)), media_type="image/png")
+
+    uri = provisioning_uri(email, secret)
+    png_bytes = qr_png(uri)
+    return Response(content=png_bytes, media_type="image/png")
+
+
 
 @router.post("/enable")
 def mfa_enable(request: Request, code: str = Form(...)):
@@ -236,3 +257,22 @@ def finalize_mfa_login(request: Request):
     if role == "admin":
         return RedirectResponse("/admin-dashboard", status_code=302)
     return RedirectResponse("/dashboard", status_code=302)
+
+
+
+
+def mfa_qr(request: Request):
+    email = _require_stage(request)
+    user = _users.find_one({"email": email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    secret = (user.get("mfa") or {}).get("secret")
+    if not secret:
+        raise HTTPException(status_code=400, detail="MFA secret missing")
+
+    # FIX: Generate otpauth URI then QR
+    uri = provisioning_uri(email, secret)
+    png_bytes = qr_png(uri)
+
+    return Response(content=png_bytes, media_type="image/png")
