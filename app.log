@@ -2340,3 +2340,33 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-11-21 16:48:43,970 - app - INFO - Logout endpoint accessed
 2025-11-21 16:48:44,069 - app - INFO - Session e32ffc40-852f-43c5-bb0a-36aac214373d revoked successfully
 2025-11-21 16:48:44,078 - app - INFO - Login endpoint accessed
+2025-11-25 15:38:53,045 - app - INFO - Login endpoint accessed
+2025-11-25 15:39:14,907 - app - INFO - Login form submitted
+2025-11-25 15:39:15,574 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 15:39:17,511 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-25 16:10:55,713 - app - INFO - Login form submitted
+2025-11-25 16:10:56,387 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 16:11:00,108 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-11-25 16:11:01,923 - app - INFO - Logout endpoint accessed
+2025-11-25 16:11:02,037 - app - INFO - Session e5c8e565-e802-42ae-b496-11f6d6d30e26 revoked successfully
+2025-11-25 16:11:02,041 - app - INFO - Login endpoint accessed
+2025-11-25 16:11:08,146 - app - INFO - Login form submitted
+2025-11-25 16:11:27,200 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 16:11:38,294 - app - INFO - Logout endpoint accessed
+2025-11-25 16:11:38,400 - app - INFO - Session daafb751-15a5-4049-9e7b-a96637d330f1 revoked successfully
+2025-11-25 16:11:38,405 - app - INFO - Login endpoint accessed
+2025-11-25 16:11:47,735 - app - DEBUG - send_email() -> to=keerthitalupula246@gmail.com subject=Reset your SCMLite password
+2025-11-25 16:11:52,160 - app - INFO - Email sent to keerthitalupula246@gmail.com
+2025-11-25 16:12:26,732 - app - INFO - Login form submitted
+2025-11-25 16:12:27,300 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 16:12:29,825 - app - INFO - Logout endpoint accessed
+2025-11-25 16:12:29,917 - app - INFO - Session 570a8318-25ec-4bcc-a0be-c30010f54abf revoked successfully
+2025-11-25 16:12:29,923 - app - INFO - Login endpoint accessed
+2025-11-25 16:58:45,880 - app - INFO - Login endpoint accessed
+2025-11-25 16:59:13,181 - app - INFO - Login form submitted
+2025-11-25 16:59:14,002 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 16:59:58,045 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-11-25 16:59:59,718 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 17:00:05,133 - app - INFO - Logout endpoint accessed
+2025-11-25 17:00:05,216 - app - INFO - Session 19a0572d-cd22-452e-a796-3b150a336622 revoked successfully
+2025-11-25 17:00:05,221 - app - INFO - Login endpoint accessed

@@ -10,17 +10,18 @@ pymongo
 # Templating engine
 jinja2
 
-# Password hashing
+# Password hashing (important order!)
 passlib[bcrypt]
+bcrypt==4.0.1
 
-# Form and file handling
+# Form/file handling
 python-multipart
 
 # Session management
 itsdangerous
 starlette
 
-# Environment variable loading
+# Environment variables
 python-dotenv
 
 # HTTP requests
@@ -31,6 +32,11 @@ kafka-python
 
 # JWT tokens
 PyJWT
-
-# JOSE (JavaScript Object Signing and Encryption) - for JWT handling
 python-jose
+
+# MFA / TOTP
+pyotp
+
+# QR Generation
+qrcode
+Pillow

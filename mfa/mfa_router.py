@@ -6,7 +6,8 @@ from pymongo.collection import Collection
 from datetime import datetime
 
 # Import the helpers. If you run app directly (python app.py), use absolute import:
-from mfa_service import new_secret, provisioning_uri, verify_code, qr_png
+from .mfa_service import new_secret, provisioning_uri, verify_code, qr_png
+
 # If you switch to package mode (uvicorn main.app:app), change to:
 # from .mfa_service import new_secret, provisioning_uri, verify_code, qr_png
 

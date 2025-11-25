@@ -14,7 +14,8 @@ from pymongo import MongoClient
 import secrets
 
 # MFA router (we’ll wire it up later)
-from mfa_router import router as mfa_router, init as mfa_init
+from mfa.mfa_router import router as mfa_router, init as mfa_init
+
 
 # ----------------------------------------------------------
 # Standard libraries
