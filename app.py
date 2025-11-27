@@ -269,7 +269,10 @@ def _hash_token(token: str) -> str:
 # Session creation
 # -----------------------------
 def create_session_record(email: str, user_agent: Optional[str] = None, ip: Optional[str] = None):
-    """Creates and stores a new session entry in MongoDB."""
+    # Fetch user from DB
+    user = users_collection.find_one({"email": email})
+    username = user.get("name", "Unknown") if user else "Unknown"
+
     session_id = str(uuid.uuid4())
     refresh_token_raw = _random_token()
     refresh_token_hash = _hash_token(refresh_token_raw)
@@ -278,6 +281,7 @@ def create_session_record(email: str, user_agent: Optional[str] = None, ip: Opti
     session_doc = {
         "session_id": session_id,
         "email": email,
+        "username": username,     # <-- FIXED (now defined)
         "refresh_token_hash": refresh_token_hash,
         "created_at": datetime.utcnow(),
         "last_seen": datetime.utcnow(),
@@ -596,7 +600,11 @@ def root():
     logger.info("Root endpoint accessed")
     return RedirectResponse(url="/login")
 
-@app.get("/login", response_class=HTMLResponse, name="login")
+# ===============================
+# LOGIN ROUTES (FINAL – NO DUPLICATES)
+# ===============================
+
+@app.get("/login", response_class=HTMLResponse)
 def get_login(request: Request):
     logger.info("Login endpoint accessed")
     flash = request.session.pop("flash", None)
@@ -605,7 +613,7 @@ def get_login(request: Request):
         {"request": request, "site_key": RECAPTCHA_SITE_KEY, "flash": flash},
     )
 
-# >>> MFA ADDITION: replace /login with this version
+
 @app.post("/login")
 async def post_login(
     request: Request,
@@ -615,15 +623,14 @@ async def post_login(
 ):
     logger.info("Login form submitted")
 
-    # ──────────────────────────────────────────────
-    # 1️⃣ Verify reCAPTCHA
-    # ──────────────────────────────────────────────
+    # ------------------------------------------
+    # 1️⃣ VERIFY RECAPTCHA
+    # ------------------------------------------
     if not DEV_SKIP_RECAPTCHA:
         try:
             r = requests.post(
                 "https://www.google.com/recaptcha/api/siteverify",
-                data={"secret": RECAPTCHA_SECRET_KEY,
-                      "response": g_recaptcha_response},
+                data={"secret": RECAPTCHA_SECRET_KEY, "response": g_recaptcha_response},
                 timeout=10,
             )
             if not r.json().get("success"):
@@ -633,11 +640,10 @@ async def post_login(
             request.session["flash"] = "reCAPTCHA check failed."
             return RedirectResponse("/login", status_code=302)
 
-    # ──────────────────────────────────────────────
-    # 2️⃣ Validate user credentials
-    # ──────────────────────────────────────────────
+    # ------------------------------------------
+    # 2️⃣ CHECK USER IN DATABASE
+    # ------------------------------------------
     user = users_collection.find_one({"email": username})
-
     if not user or not pwd_context.verify(password, user["password_hash"]):
         logins_collection.insert_one({
             "email": username,
@@ -649,9 +655,9 @@ async def post_login(
 
     role = user.get("role", "user")
 
-    # ──────────────────────────────────────────────
-    # 3️⃣ Admin → BYPASS MFA
-    # ──────────────────────────────────────────────
+    # ------------------------------------------
+    # 3️⃣ ADMIN → BYPASS MFA
+    # ------------------------------------------
     if role == "admin":
         session_info = create_session_record(user["email"])
         access_token = create_access_token(
@@ -659,6 +665,7 @@ async def post_login(
             session_id=session_info["session_id"]
         )
 
+        # store in session
         request.session["access_token"] = access_token
         request.session["username"] = user["email"]
         request.session["role"] = role
@@ -672,12 +679,11 @@ async def post_login(
 
         return RedirectResponse("/admin-dashboard", status_code=302)
 
-    # ──────────────────────────────────────────────
-    # 4️⃣ Normal User → MFA Check
-    # ──────────────────────────────────────────────
+    # ------------------------------------------
+    # 4️⃣ NORMAL USER → MFA CHECK
+    # ------------------------------------------
     mfa_info = user.get("mfa", {})
 
-    # MFA already enabled → go to verification page
     if mfa_info.get("enabled"):
         request.session["pending_mfa_email"] = user["email"]
         request.session["pending_mfa_role"] = role
@@ -685,10 +691,11 @@ async def post_login(
         request.session["flash"] = "Enter your MFA code."
         return RedirectResponse("/mfa/relogin", status_code=302)
 
-    # First-time MFA setup
+    # ------------------------------------------
+    # 5️⃣ FIRST TIME USER → MFA SETUP
+    # ------------------------------------------
     request.session["mfa_temp_user"] = user["email"]
     return RedirectResponse("/mfa/setup", status_code=302)
-
 
 
 # >>> SIGNUP ROUTES (needed for login.html link)
@@ -897,15 +904,26 @@ def post_forgot_password(request: Request, email: str = Form(...)):
 def get_dashboard(request: Request, current_user: dict = Depends(get_current_user_from_token)):
     logger.info(f"Dashboard endpoint accessed by {current_user.get('email')}")
     return templates.TemplateResponse(
-        "dashboard.html", {"request": request, "name": current_user.get("name")}
+        "dashboard.html",
+        {
+            "request": request,
+            "name": current_user.get("name"),
+            "role": current_user.get("role")      # <-- IMPORTANT
+        }
     )
 
 @app.get("/admin-dashboard", response_class=HTMLResponse)
 def get_admin_dashboard(request: Request, current_user: dict = Depends(get_current_admin_user)):
     logger.info(f"Admin dashboard endpoint accessed by {current_user.get('email')}")
     return templates.TemplateResponse(
-        "admin_dashboard.html", {"request": request, "name": current_user.get("name")}
+        "admin_dashboard.html",
+        {
+            "request": request,
+            "name": current_user.get("name"),
+            "role": current_user.get("role")      # <-- IMPORTANT
+        }
     )
+
 
 @app.get("/create-shipment", response_class=HTMLResponse)
 def get_create_shipment(request: Request, current_user: dict = Depends(get_current_user_from_token)):
@@ -974,6 +992,31 @@ def user_management(request: Request, current_user: dict = Depends(get_current_a
     logger.info(f"User management endpoint accessed by {current_user.get('email')}")
     users = list(users_collection.find({}, {"_id": 0, "name": 1, "email": 1, "role": 1}))
     return templates.TemplateResponse("user_management.html", {"request": request, "users": users})
+
+@app.get("/revoke_session/{session_id}")
+def revoke_session_admin(session_id: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
+    result = sessions_collection.update_one(
+        {"session_id": session_id},
+        {"$set": {"revoked": True}}
+    )
+
+    if result.modified_count > 0:
+        request.session["flash"] = "Session revoked successfully."
+    else:
+        request.session["flash"] = "Session not found."
+
+    return RedirectResponse("/active_sessions", status_code=302)
+
+@app.get("/active_sessions", response_class=HTMLResponse)
+def get_active_sessions(request: Request, current_user: dict = Depends(get_current_admin_user)):
+    sessions = list(sessions_collection.find({}, {"_id": 0}))
+    flash = request.session.pop("flash", None)
+    return templates.TemplateResponse(
+        "active_sessions.html",
+        {"request": request, "sessions": sessions, "flash": flash}
+    )
+
+
 
 @app.get("/edit_user/{email}", response_class=HTMLResponse)
 async def edit_user(email: str, request: Request):
@@ -1156,80 +1199,80 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # -----------------------------
 # LOGOUT ROUTE
 # -----------------------------
+# @app.get("/login", response_class=HTMLResponse)
+# def get_login(request: Request):
+#     flash = request.session.pop("flash", None)
+#     return templates.TemplateResponse(
+#         "login.html",
+#         {"request": request, "site_key": RECAPTCHA_SITE_KEY, "flash": flash},
+#     )
 
-@app.get("/login", response_class=HTMLResponse)
-def get_login(request: Request):
-    flash = request.session.pop("flash", None)
-    return templates.TemplateResponse(
-        "login.html",
-        {"request": request, "site_key": RECAPTCHA_SITE_KEY, "flash": flash},
-    )
+# @app.post("/login")
+# def post_login(
+#     request: Request,
+#     username: str = Form(...),
+#     password: str = Form(...),
+#     g_recaptcha_response: str = Form(alias="g-recaptcha-response"),
+# ):
+#     # ──────────────────────────────────────────────
+#     # 1️⃣ Verify reCAPTCHA (optional dev skip)
+#     # ──────────────────────────────────────────────
+#     recaptcha_ok = True if DEV_SKIP_RECAPTCHA else False
+#     if not DEV_SKIP_RECAPTCHA:
+#         try:
+#             r = requests.post(
+#                 "https://www.google.com/recaptcha/api/siteverify",
+#                 data={"secret": RECAPTCHA_SECRET_KEY, "response": g_recaptcha_response},
+#                 timeout=10,
+#             )
+#             recaptcha_ok = bool(r.json().get("success"))
+#         except Exception:
+#             logger.exception("reCAPTCHA verification failed (network/parse error).")
+#             recaptcha_ok = False
 
-@app.post("/login")
-def post_login(
-    request: Request,
-    username: str = Form(...),
-    password: str = Form(...),
-    g_recaptcha_response: str = Form(alias="g-recaptcha-response"),
-):
-    # ──────────────────────────────────────────────
-    # 1️⃣ Verify reCAPTCHA (optional dev skip)
-    # ──────────────────────────────────────────────
-    recaptcha_ok = True if DEV_SKIP_RECAPTCHA else False
-    if not DEV_SKIP_RECAPTCHA:
-        try:
-            r = requests.post(
-                "https://www.google.com/recaptcha/api/siteverify",
-                data={"secret": RECAPTCHA_SECRET_KEY, "response": g_recaptcha_response},
-                timeout=10,
-            )
-            recaptcha_ok = bool(r.json().get("success"))
-        except Exception:
-            logger.exception("reCAPTCHA verification failed (network/parse error).")
-            recaptcha_ok = False
+#     if not recaptcha_ok:
+#         request.session["flash"] = "reCAPTCHA failed."
+#         return RedirectResponse("/login", status_code=302)
 
-    if not recaptcha_ok:
-        request.session["flash"] = "reCAPTCHA failed."
-        return RedirectResponse("/login", status_code=302)
+#     # ──────────────────────────────────────────────
+#     # 2️⃣ Validate user credentials
+#     # ──────────────────────────────────────────────
+#     user = users_collection.find_one({"email": username})
+#     if not user or not pwd_context.verify(password, user["password_hash"]):
+#         logins_collection.insert_one(
+#             {"email": username, "login_time": datetime.utcnow(), "status": "failed"}
+#         )
+#         request.session["flash"] = "Invalid credentials."
+#         return RedirectResponse("/login", status_code=302)
 
-    # ──────────────────────────────────────────────
-    # 2️⃣ Validate user credentials
-    # ──────────────────────────────────────────────
-    user = users_collection.find_one({"email": username})
-    if not user or not pwd_context.verify(password, user["password_hash"]):
-        logins_collection.insert_one(
-            {"email": username, "login_time": datetime.utcnow(), "status": "failed"}
-        )
-        request.session["flash"] = "Invalid credentials."
-        return RedirectResponse("/login", status_code=302)
+#     # ──────────────────────────────────────────────
+#     # 3️⃣ Check if user has MFA enabled
+#     # ──────────────────────────────────────────────
+#     mfa_info = user.get("mfa", {})
+#     if mfa_info.get("enabled"):
+#         # Store temporarily to verify MFA next
+#         request.session["pending_mfa_email"] = user["email"]
+#         request.session["pending_mfa_role"] = user.get("role", "user")
+#         request.session["pending_mfa_name"] = user.get("name", "")
+#         request.session["flash"] = "Enter your MFA code from the Authenticator app."
+#         return RedirectResponse("/mfa/verify", status_code=302)
 
-    # ──────────────────────────────────────────────
-    # 3️⃣ Check if user has MFA enabled
-    # ──────────────────────────────────────────────
-    mfa_info = user.get("mfa", {})
-    if mfa_info.get("enabled"):
-        # Store temporarily to verify MFA next
-        request.session["pending_mfa_email"] = user["email"]
-        request.session["pending_mfa_role"] = user.get("role", "user")
-        request.session["pending_mfa_name"] = user.get("name", "")
-        request.session["flash"] = "Enter your MFA code from the Authenticator app."
-        return RedirectResponse("/mfa/verify", status_code=302)
+#     # ──────────────────────────────────────────────
+#     # 4️⃣ If MFA not enabled, log in directly
+#     # ──────────────────────────────────────────────
+#     token = create_access_token({"sub": user["email"]})
+#     request.session["access_token"] = token
+#     request.session["user"] = {
+#         "email": user["email"],
+#         "role": user.get("role", "user"),
+#         "name": user.get("name"),
+#     }
 
-    # ──────────────────────────────────────────────
-    # 4️⃣ If MFA not enabled, log in directly
-    # ──────────────────────────────────────────────
-    token = create_access_token({"sub": user["email"]})
-    request.session["access_token"] = token
-    request.session["user"] = {
-        "email": user["email"],
-        "role": user.get("role", "user"),
-        "name": user.get("name"),
-    }
+#     logins_collection.insert_one(
+#         {"email": username, "login_time": datetime.utcnow(), "status": "success"}
+#     )
+#     return RedirectResponse("/dashboard", status_code=302)
 
-    logins_collection.insert_one(
-        {"email": username, "login_time": datetime.utcnow(), "status": "success"}
-    )
-    return RedirectResponse("/dashboard", status_code=302)
 
 
 # ---------------------------

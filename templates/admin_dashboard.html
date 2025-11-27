@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
-  <!-- Font Awesome for icons (optional, but recommended) -->
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html, body {
       font-family: 'Segoe UI', sans-serif;
       height: 100vh;
-      background: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg') no-repeat center center fixed;
+      background: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg')
+                no-repeat center center fixed;
       background-size: cover;
       color: #1e1e1e;
     }
 
     .dashboard-container {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0,0,0,0.4);
       backdrop-filter: blur(10px);
       min-height: 100vh;
       display: flex;
@@ -33,7 +32,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0,0,0,0.6);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
@@ -57,7 +56,7 @@
     }
 
     .nav-menu a, .nav-menu summary {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255,255,255,0.2);
       color: #fff;
       padding: 0.6rem 1rem;
       border-radius: 8px;
@@ -69,57 +68,14 @@
       gap: 0.5rem;
     }
 
-    .nav-menu a:hover, summary:hover {
-      background-color: #00b4d8;
-      color: #fff;
-    }
+    .nav-menu a:hover { background-color: #00b4d8; }
 
     .logout-btn {
       background: linear-gradient(to right, #ff4e50, #f9d423);
       color: #000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     }
 
-    .logout-btn:hover {
-      transform: scale(1.05);
-    }
-
-    details {
-      position: relative;
-    }
-
-    summary::after {
-      content: '▼';
-      font-size: 10px;
-      margin-left: 6px;
-    }
-
-    details[open] summary::after {
-      content: '▲';
-    }
-
-    .dropdown-content {
-      position: absolute;
-      top: 40px;
-      background: rgba(255,255,255,0.95);
-      min-width: 180px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      z-index: 10;
-    }
-
-    .dropdown-content a {
-      padding: 12px 18px;
-      display: block;
-      color: #222;
-      border-bottom: 1px solid #eee;
-      text-decoration: none;
-    }
-
-    .dropdown-content a:hover {
-      background: #f0f8ff;
-      color: #27ae60;
-    }
+    .logout-btn:hover { transform: scale(1.05); }
 
     .main-content {
       flex: 1;
@@ -130,7 +86,7 @@
     .main-content h2 {
       font-size: 2.5rem;
       font-weight: bold;
-      color: #ffffff;
+      color: #fff;
       margin-bottom: 3rem;
       text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
     }
@@ -143,13 +99,13 @@
     }
 
     .panel {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255,255,255,0.95);
       border-radius: 16px;
       padding: 2rem;
       width: 280px;
       text-align: center;
       box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
+      transition: 0.3s ease;
     }
 
     .panel:hover {
@@ -161,16 +117,9 @@
       font-size: 2.5rem;
       margin-bottom: 1rem;
       color: #0077b6;
-      background: rgba(0, 119, 182, 0.15);
-      padding: 1rem;
-      border-radius: 50%;
     }
 
-    .panel h3 {
-      font-size: 1.3rem;
-      color: #023047;
-      margin-bottom: 1rem;
-    }
+    .panel h3 { margin-bottom: 1rem; color: #023047; }
 
     .btn {
       padding: 0.7rem 1.5rem;
@@ -178,10 +127,10 @@
       font-weight: bold;
       color: #fff;
       background: linear-gradient(to right, #00b4d8, #0077b6);
-      border: none;
       border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      transition: 0.3s ease;
     }
 
     .btn:hover {
@@ -190,50 +139,70 @@
     }
   </style>
 </head>
+
 <body>
-  <div class="dashboard-container">
-    <!-- Top Navigation -->
-    <div class="topbar">
-      <div class="brand">
-        <i class="fa fa-cubes"></i>
-        <h1>Admin Dashboard</h1>
-      </div>
-      <div class="nav-menu">
-        <details>
-          <summary><i class="fa fa-shipping-fast"></i> Manage Shipment</summary>
-          <div class="dropdown-content">
-            <a href="/create-shipment"><i class="fa fa-plus"></i> Create Shipment</a>
-            <a href="/edit-shipment"><i class="fa fa-edit"></i> Edit Shipment</a>
-          </div>
-        </details>
-        <a href="/user_management"><i class="fa fa-users"></i> Users</a>
-        <a href="/device-data"><i class="fa fa-microchip"></i> Device Data</a>
-        <a class="logout-btn" href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
-      </div>
+<div class="dashboard-container">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">
+      <i class="fa fa-cubes"></i>
+      <h1>Admin Dashboard</h1>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <h2>Welcome, Admin</h2>
-      <div class="panel-container">
-        <div class="panel">
-          <i class="fa fa-shipping-fast"></i>
-          <h3>Manage Shipment</h3>
-          <a href="/edit-shipment" class="btn">Go to Shipments</a>
+    <div class="nav-menu">
+      <details>
+        <summary><i class="fa fa-shipping-fast"></i> Manage Shipment</summary>
+        <div class="dropdown-content">
+          <a href="/create-shipment">Create Shipment</a>
+          <a href="/edit-shipment">Edit Shipment</a>
         </div>
-        <div class="panel">
-          <i class="fa fa-users"></i>
-          <h3>User Management</h3>
-          <a href="/user_management" class="btn">Manage Users</a>
-        </div>
-        <div class="panel">
-          <i class="fa fa-microchip"></i>
-          <h3>Device Data</h3>
-          <a href="/device-data" class="btn">View Device Data</a>
-        </div>
-      </div>
+      </details>
+
+      <a href="/user_management"><i class="fa fa-users"></i> Users</a>
+      <a href="/device-data"><i class="fa fa-microchip"></i> Device Data</a>
+
+      <!-- ⭐ ADDED ACTIVE SESSIONS -->
+      <a href="/active-sessions"><i class="fa fa-shield-alt"></i> Active Sessions</a>
+
+      <a class="logout-btn" href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
     </div>
   </div>
-  
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <h2>Welcome, Admin</h2>
+
+    <div class="panel-container">
+
+      <div class="panel">
+        <i class="fa fa-shipping-fast"></i>
+        <h3>Manage Shipment</h3>
+        <a href="/edit-shipment" class="btn">Go to Shipments</a>
+      </div>
+
+      <div class="panel">
+        <i class="fa fa-users"></i>
+        <h3>User Management</h3>
+        <a href="/user_management" class="btn">Manage Users</a>
+      </div>
+
+      <div class="panel">
+        <i class="fa fa-microchip"></i>
+        <h3>Device Data</h3>
+        <a href="/device-data" class="btn">View Device Data</a>
+      </div>
+
+      <!-- ⭐ ADDED ACTIVE SESSIONS PANEL -->
+      <div class="panel">
+        <i class="fa fa-shield"></i>
+        <h3>Active Sessions</h3>
+        <a href="/active_sessions" class="btn">View Sessions</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 </body>
 </html>

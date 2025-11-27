@@ -2370,3 +2370,111 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-11-25 17:00:05,133 - app - INFO - Logout endpoint accessed
 2025-11-25 17:00:05,216 - app - INFO - Session 19a0572d-cd22-452e-a796-3b150a336622 revoked successfully
 2025-11-25 17:00:05,221 - app - INFO - Login endpoint accessed
+2025-11-25 17:39:18,709 - app - INFO - Login endpoint accessed
+2025-11-25 17:39:34,893 - app - INFO - Login form submitted
+2025-11-25 17:39:35,549 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 17:39:40,633 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-25 17:39:44,434 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-11-25 17:39:48,899 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 17:39:50,385 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-25 17:39:53,512 - app - INFO - Logout endpoint accessed
+2025-11-25 17:39:53,605 - app - INFO - Session 87a00c41-15e3-49c3-919b-a6691581683a revoked successfully
+2025-11-25 17:39:53,613 - app - INFO - Login endpoint accessed
+2025-11-25 17:40:17,924 - app - INFO - Login form submitted
+2025-11-25 17:40:26,587 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 17:40:29,869 - app - INFO - Login endpoint accessed
+2025-11-25 17:41:28,287 - app - INFO - Login form submitted
+2025-11-25 17:41:41,152 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 17:41:48,545 - app - INFO - Account page accessed by keerthitalupula246@gmail.com
+2025-11-25 17:41:51,681 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 17:41:55,947 - app - INFO - Login endpoint accessed
+2025-11-25 17:59:23,581 - app - INFO - Login endpoint accessed
+2025-11-25 17:59:45,245 - app - INFO - Login form submitted
+2025-11-25 17:59:54,243 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 17:59:56,275 - app - INFO - Login endpoint accessed
+2025-11-25 18:14:59,519 - app - INFO - Login form submitted
+2025-11-25 18:15:15,463 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:15:18,386 - app - INFO - Login endpoint accessed
+2025-11-25 18:32:40,325 - app - INFO - Login endpoint accessed
+2025-11-25 18:32:55,242 - app - INFO - Login form submitted
+2025-11-25 18:33:17,174 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:33:23,133 - app - INFO - Login endpoint accessed
+2025-11-25 18:33:55,192 - app - INFO - Login form submitted
+2025-11-25 18:33:55,731 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 18:33:58,816 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-11-25 18:34:04,022 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 18:34:06,456 - app - INFO - Device data endpoint accessed by admin@gmail.com
+2025-11-25 18:34:20,577 - app - INFO - Logout endpoint accessed
+2025-11-25 18:34:20,676 - app - INFO - Session b890f967-d63b-4be0-bb21-274bb361fbb8 revoked successfully
+2025-11-25 18:34:20,681 - app - INFO - Login endpoint accessed
+2025-11-25 18:39:07,862 - app - INFO - Login form submitted
+2025-11-25 18:39:20,240 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:40:03,827 - app - INFO - Logout endpoint accessed
+2025-11-25 18:40:03,897 - app - INFO - Session 07adeb00-732a-449c-b946-8569091b31dd revoked successfully
+2025-11-25 18:40:03,903 - app - INFO - Login endpoint accessed
+2025-11-25 18:40:18,896 - app - INFO - Login form submitted
+2025-11-25 18:40:19,502 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 18:48:58,263 - app - INFO - Login endpoint accessed
+2025-11-25 18:49:19,733 - app - INFO - Login form submitted
+2025-11-25 18:49:26,291 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:49:36,973 - app - INFO - Account page accessed by keerthitalupula246@gmail.com
+2025-11-25 18:49:40,963 - app - INFO - Create shipment endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:49:44,716 - app - INFO - Logout endpoint accessed
+2025-11-25 18:49:44,911 - app - INFO - Session 6d485ddd-7e95-4e29-bf7a-b2946b7a9105 revoked successfully
+2025-11-25 18:49:44,917 - app - INFO - Login endpoint accessed
+2025-11-25 18:50:00,234 - app - INFO - Login form submitted
+2025-11-25 18:50:01,087 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 18:50:07,860 - app - INFO - Logout endpoint accessed
+2025-11-25 18:50:07,913 - app - INFO - Session 898cae6e-8dab-487f-bdf9-2d3b2e1302d3 revoked successfully
+2025-11-25 18:50:07,920 - app - INFO - Login endpoint accessed
+2025-11-25 18:56:38,445 - app - INFO - Login form submitted
+2025-11-25 18:56:39,094 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 18:56:44,939 - app - INFO - Logout endpoint accessed
+2025-11-25 18:56:45,009 - app - INFO - Session d9bff1ae-fde5-42fd-965c-3f460b82f4a8 revoked successfully
+2025-11-25 18:56:45,017 - app - INFO - Login endpoint accessed
+2025-11-25 18:56:56,331 - app - INFO - Login form submitted
+2025-11-25 18:57:10,260 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 18:57:14,853 - app - INFO - Logout endpoint accessed
+2025-11-25 18:57:14,932 - app - INFO - Session d90e7e0e-7bb8-4e08-98e0-244e1ead44fc revoked successfully
+2025-11-25 18:57:14,939 - app - INFO - Login endpoint accessed
+2025-11-25 19:21:00,389 - app - INFO - Login endpoint accessed
+2025-11-25 19:21:14,038 - app - INFO - Login form submitted
+2025-11-25 19:21:15,045 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 19:21:17,215 - app - INFO - Login endpoint accessed
+2025-11-25 19:21:55,395 - app - INFO - Login form submitted
+2025-11-25 19:22:04,538 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 19:22:04,990 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 19:22:09,120 - app - INFO - Logout endpoint accessed
+2025-11-25 19:22:09,200 - app - INFO - Session b8c3ff8b-6b54-4727-828d-09c8735ef4a4 revoked successfully
+2025-11-25 19:22:09,213 - app - INFO - Login endpoint accessed
+2025-11-25 20:09:40,265 - app - INFO - Login endpoint accessed
+2025-11-25 20:10:00,192 - app - INFO - Login form submitted
+2025-11-25 20:10:01,097 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 20:10:14,971 - app - INFO - Login endpoint accessed
+2025-11-25 20:10:36,656 - app - INFO - Login form submitted
+2025-11-25 20:10:54,414 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-25 20:10:57,916 - app - INFO - Logout endpoint accessed
+2025-11-25 20:10:58,035 - app - INFO - Session 34f917d7-931c-4f89-b5fd-4fdc65fe9782 revoked successfully
+2025-11-25 20:10:58,046 - app - INFO - Login endpoint accessed
+2025-11-25 20:11:14,428 - app - INFO - Login form submitted
+2025-11-25 20:11:27,885 - app - INFO - Login form submitted
+2025-11-25 20:11:28,770 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 20:31:20,961 - app - INFO - Login endpoint accessed
+2025-11-25 20:31:35,395 - app - INFO - Login form submitted
+2025-11-25 20:31:36,355 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 20:31:46,168 - app - INFO - User management endpoint accessed by admin@gmail.com
+2025-11-25 20:35:08,723 - app - INFO - Logout endpoint accessed
+2025-11-25 20:35:08,726 - app - INFO - Login endpoint accessed
+2025-11-25 20:35:30,521 - app - INFO - Login form submitted
+2025-11-25 20:35:31,474 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-25 20:37:35,740 - app - INFO - Login endpoint accessed
+2025-11-25 20:37:47,245 - app - INFO - Login form submitted
+2025-11-25 20:37:48,217 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-26 12:57:38,725 - app - INFO - Login endpoint accessed
+2025-11-26 12:57:43,860 - app - INFO - Login form submitted
+2025-11-26 12:57:44,513 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-26 12:57:55,037 - app - INFO - Account page accessed by admin@gmail.com
+2025-11-26 12:57:56,837 - app - INFO - Dashboard endpoint accessed by admin@gmail.com
+2025-11-26 12:57:58,269 - app - INFO - Logout endpoint accessed
+2025-11-26 12:57:58,357 - app - INFO - Session 57b668ce-5f5e-469e-af3c-749eda3dd517 revoked successfully
+2025-11-26 12:57:58,365 - app - INFO - Login endpoint accessed
