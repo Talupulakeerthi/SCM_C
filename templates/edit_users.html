@@ -91,14 +91,16 @@
         <h2><i class="fa fa-user-edit"></i> Edit User</h2>
 
         <!-- Validation added -->
-        <form action="/update-user/{{ user.email }}" method="POST" onsubmit="return validateEditUserForm()">
+        <form action="/update-user" method="POST">
+            <input type="hidden" name="old_email" value="{{ user.email }}">
+
 
             <label for="name"><i class="fa fa-user"></i> Full Name</label>
             <input type="text" id="name" name="name" value="{{ user.name }}" required>
 
-            <label for="email"><i class="fa fa-envelope"></i> Email</label>
-            <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+           <label for="new_email"><i class="fa fa-envelope"></i> Email</label>
 
+            <input type="email" id="new_email" name="new_email" value="{{ user.email }}" required>
             <label for="role"><i class="fa fa-user-tag"></i> Role</label>
             <select id="role" name="role" required>
                 <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>

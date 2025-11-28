@@ -2478,3 +2478,14 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-11-26 12:57:58,269 - app - INFO - Logout endpoint accessed
 2025-11-26 12:57:58,357 - app - INFO - Session 57b668ce-5f5e-469e-af3c-749eda3dd517 revoked successfully
 2025-11-26 12:57:58,365 - app - INFO - Login endpoint accessed
+2025-11-27 12:45:33,960 - app - INFO - Login endpoint accessed
+2025-11-27 12:45:42,877 - app - INFO - Login form submitted
+2025-11-27 12:46:08,104 - app - INFO - Dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-11-27 12:46:18,326 - app - INFO - Logout endpoint accessed
+2025-11-27 12:46:18,401 - app - INFO - Session fcd4e6ce-344e-4ad0-a9bd-3fd9008544bb revoked successfully
+2025-11-27 12:46:18,406 - app - INFO - Login endpoint accessed
+2025-11-27 12:46:24,594 - app - INFO - Login form submitted
+2025-11-27 12:46:25,389 - app - INFO - Admin dashboard endpoint accessed by admin@gmail.com
+2025-11-27 12:46:46,643 - app - INFO - Logout endpoint accessed
+2025-11-27 12:46:46,742 - app - INFO - Session 3d795ee9-b221-4632-9f41-cae77cb2693c revoked successfully
+2025-11-27 12:46:46,742 - app - INFO - Login endpoint accessed

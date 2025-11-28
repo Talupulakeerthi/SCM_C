@@ -15,6 +15,9 @@ import secrets
 
 # MFA router (we’ll wire it up later)
 from mfa.mfa_router import router as mfa_router, init as mfa_init
+#user role change email function
+from email_service import send_role_change_email
+
 
 
 # ----------------------------------------------------------
@@ -1038,50 +1041,119 @@ async def get_edit_user(request: Request, email: str, current_user: dict = Depen
 
     return templates.TemplateResponse("edit_user.html", {"request": request, "user": user, "flash": flash})
 
-@app.post("/update-user/{email}")
+@app.post("/update-user")
 async def update_user(
     request: Request,
-    email: str,
+    old_email: str = Form(...),
     name: str = Form(...),
     new_email: str = Form(...),
     role: str = Form(...),
     current_user: dict = Depends(get_current_admin_user),
 ):
-    logger.info(f"Update user form submitted for {email} by {current_user.get('email')}")
+    logger.info(f"Update user form submitted for {old_email} by {current_user.get('email')}")
+
+    # Fetch existing user BEFORE updating
+    old_user = users_collection.find_one({"email": old_email})
+    if not old_user:
+        request.session["flash"] = "User not found."
+        return RedirectResponse("/user_management", status_code=302)
+
     result = users_collection.update_one(
-        {"email": email}, {"$set": {"name": name, "email": new_email, "role": role}}
+        {"email": old_email},
+        {"$set": {"name": name, "email": new_email, "role": role}}
     )
+
     if result.modified_count == 1:
         request.session["flash"] = "User updated successfully."
-        logger.info(f"User {email} updated successfully by {current_user.get('email')}")
+
+        try:
+            subject = "Your SCMLite Account Was Updated"
+            body = f"""
+Hello {name},
+
+Your SCMLite account has been updated by an administrator.
+
+Previous Email: {old_email}
+New Email: {new_email}
+
+Previous Name: {old_user.get("name")}
+Updated Name: {name}
+
+Previous Role: {old_user.get("role")}
+Updated Role: {role}
+
+Updated By: {current_user.get('email')}
+Date (UTC): {datetime.utcnow()}
+"""
+
+            send_email(new_email, subject, body)
+
+        except Exception as e:
+            logger.exception(f"Failed to send update notification email to {new_email}: {e}")
+
     else:
         request.session["flash"] = "No changes made or user not found."
-        logger.warning(f"No changes or user {email} not found during update by {current_user.get('email')}")
-    return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
 
-@app.get("/delete-user/{email}")
-def delete_user(email: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
-    logger.info(f"Delete user endpoint accessed for {email} by {current_user.get('email')}")
-    users_collection.delete_one({"email": email})
-    request.session["flash"] = "User deleted."
-    logger.info(f"User {email} deleted by {current_user.get('email')}")
-    return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
+    return RedirectResponse("/user_management", status_code=302)
 
 @app.get("/assign-admin/{email}")
 def assign_admin(email: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
     logger.info(f"Assign admin endpoint accessed for {email} by {current_user.get('email')}")
+
     user = users_collection.find_one({"email": email})
     if not user:
         request.session["flash"] = "User not found."
         logger.warning(f"User {email} not found for admin assignment by {current_user.get('email')}")
         return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
-    result = users_collection.update_one({"email": email}, {"$set": {"role": "admin"}})
+
+    # If already admin
+    if user.get("role") == "admin":
+        request.session["flash"] = "User is already an admin."
+        return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
+
+    # Update role to admin
+    result = users_collection.update_one(
+        {"email": email},
+        {"$set": {"role": "admin"}}
+    )
+
     if result.modified_count == 1:
+        logger.info(f"{email} promoted to ADMIN by {current_user.get('email')}")
         request.session["flash"] = f"{email} is now an admin."
-        logger.info(f"{email} assigned admin role by {current_user.get('email')}")
+
+        # ===============================
+        # SEND EMAIL NOTIFICATION
+        # ===============================
+        try:
+            subject = "Your SCMLite Role Has Been Updated"
+            body = f"""
+Hello {user.get('name', '')},
+
+This is to inform you that your role has been updated to ADMIN in the SCMLite system.
+
+Updated By: {current_user.get('email')}
+Date & Time: {datetime.utcnow()} UTC
+
+You now have access to admin features such as:
+- User Management
+- Shipment Management
+- Session Monitoring
+
+If this was not intended, contact your system administrator immediately.
+
+Thank you,
+SCMLite Security System
+"""
+
+            send_email(email, subject, body)
+
+        except Exception as e:
+            logger.exception(f"Email notification failed for {email}: {e}")
+
     else:
-        request.session["flash"] = "No changes made or user already admin."
-        logger.warning(f"No changes made or user {email} already admin during assignment by {current_user.get('email')}")
+        request.session["flash"] = "No changes made."
+        logger.warning(f"No changes made while assigning admin to {email}")
+
     return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
 
 @app.get("/edit-shipment", response_class=HTMLResponse)
