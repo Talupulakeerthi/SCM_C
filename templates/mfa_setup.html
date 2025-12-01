@@ -4,139 +4,234 @@
   <meta charset="utf-8">
   <title>MFA Setup | SCMLite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
+    /* Root Colors */
     :root {
-      --bg: #121212;
-      --card: #1e1e1e;
-      --accent: #0078ff;
-      --fg: #f1f1f1;
-      --muted: #bdbdbd;
-      --error: #ff4f4f;
+      --bg: #0d1117;
+      --glass: rgba(255,255,255,0.06);
+      --border: rgba(58,139,255,0.4);
+      --accent: #3a8bff;
+      --muted: #9bbcff;
+      --text: #ffffff;
     }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: "Segoe UI", Roboto, sans-serif;
+      font-family: "Poppins", sans-serif;
       background: var(--bg);
-      color: var(--fg);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      margin: 0;
+      overflow: hidden;
+      color: var(--text);
     }
 
+    /* Background Shapes */
+    .curve1 {
+      position: absolute;
+      width: 1000px;
+      height: 950px;
+      background: linear-gradient(45deg, #0d1117, #3a8bff);
+      top: -250px;
+      right: -280px;
+      opacity: 0.45;
+      filter: blur(12px);
+      transform: rotate(24deg) skewY(34deg);
+    }
+    .curve2 {
+      position: absolute;
+      width: 1200px;
+      height: 900px;
+      background: #0d1117;
+      border-top: 3px solid #3a8bff;
+      bottom: -260px;
+      left: -260px;
+      opacity: 0.6;
+      transform: rotate(-22deg) skewY(-33deg);
+    }
+
+    /* Glass Card */
     .card {
-      background: var(--card);
-      padding: 2rem 2.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      width: 100%;
-      max-width: 400px;
+      width: 420px;
+      padding: 40px 35px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 25px rgba(58,139,255,0.4);
+      animation: fadeIn 0.8s ease forwards;
       text-align: center;
-      animation: fadeIn 0.4s ease-in-out;
+      position: relative;
+      z-index: 5;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     h2 {
-      margin-top: 0;
-      font-size: 1.5rem;
-      color: var(--accent);
+      font-size: 26px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(58,139,255,0.7);
     }
 
-    p {
+    .desc {
       color: var(--muted);
-      font-size: 0.95rem;
-      margin: 0.5rem 0 1rem 0;
+      font-size: 15px;
+      margin-bottom: 25px;
     }
 
-    img {
-      margin: 1rem auto;
-      width: 160px;
-      height: 160px;
-      border-radius: 0.5rem;
-      background: #fff;
-      padding: 0.5rem;
+    /* QR Code */
+    .qr-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+    .qr-box img {
+      width: 200px;
+      height: 200px;
+      background: white;
+      padding: 8px;
+      border-radius: 10px;
     }
 
-    .secret {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 0.5rem 1rem;
-      border-radius: 0.4rem;
-      display: inline-block;
-      font-weight: bold;
-      color: var(--accent);
-      letter-spacing: 1px;
-      margin-top: 0.5rem;
+    /* 6-digit OTP Inputs */
+    .otp-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
-    form {
-      margin-top: 1.5rem;
-    }
-
-    input {
-      width: 100%;
-      padding: 0.6rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: #2a2a2a;
-      color: var(--fg);
-      outline: none;
+    .otp-input {
+      width: 48px;
+      height: 55px;
+      font-size: 22px;
       text-align: center;
-      font-size: 1rem;
-      letter-spacing: 2px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+      transition: 0.25s;
+      backdrop-filter: blur(4px);
     }
 
-    input:focus {
+    .otp-input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 5px var(--accent);
+      box-shadow: 0 0 10px rgba(58,139,255,0.7);
+      background: rgba(255,255,255,0.15);
     }
 
+    /* Button */
     button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 0.5rem;
-      padding: 0.6rem 1.5rem;
-      margin-top: 1rem;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
       width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid var(--accent);
+      border-radius: 40px;
+      color: white;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 600;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      margin-top: 10px;
     }
 
-    button:hover {
-      background: #005fcc;
+    button::before {
+      content: "";
+      position: absolute;
+      height: 300%;
+      width: 100%;
+      background: linear-gradient(#0d1117, #3a8bff, #0d1117);
+      top: -100%;
+      left: 0;
+      transition: 0.5s;
+      z-index: -1;
     }
 
-    .footer {
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--muted);
+    button:hover::before {
+      top: 0;
     }
+
+    /* Back Link */
+    .back {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #6aaeff;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h2>MFA Setup for {{ email }}</h2>
-    <p>Scan this QR in <strong>Google Authenticator</strong> or <strong>Microsoft Authenticator</strong>:</p>
-    <img src="{{ qr_url }}" alt="QR Code" style="width: 200px; height: 200px;">
-    <p>Or add manually:</p>
-    <div class="secret">{{ secret }}</div>
 
-    <form action="/mfa/enable" method="post">
-      <input name="code" placeholder="Enter 6-digit code" required>
-      <button type="submit">Enable MFA</button>
+  <!-- Background shapes -->
+  <div class="curve1"></div>
+  <div class="curve2"></div>
+
+  <!-- Main Card -->
+  <div class="card">
+
+    <h2>MFA Setup</h2>
+    <p class="desc">Scan the QR code below using Google Authenticator or Microsoft Authenticator.</p>
+
+    <div class="qr-box">
+      <img src="{{ qr_url }}" alt="QR Code">
+    </div>
+
+    <p class="desc">Enter the 6-digit verification code:</p>
+
+    <form action="/mfa/enable" method="post" id="mfaForm">
+      <div class="otp-wrapper">
+        <input class="otp-input" maxlength="1" name="d1" required>
+        <input class="otp-input" maxlength="1" name="d2" required>
+        <input class="otp-input" maxlength="1" name="d3" required>
+        <input class="otp-input" maxlength="1" name="d4" required>
+        <input class="otp-input" maxlength="1" name="d5" required>
+        <input class="otp-input" maxlength="1" name="d6" required>
+      </div>
+
+      <input type="hidden" name="code" id="codeInput">
+
+      <button type="submit">Verify & Enable</button>
     </form>
 
-    <div class="footer">
-      <p>Once verified, you’ll need this code for each login.</p>
-    </div>
+    <a href="/login" class="back">← Back to Login</a>
+
   </div>
+
+  <script>
+    /* Auto-focus OTP inputs & combine into hidden field */
+    const inputs = document.querySelectorAll(".otp-input");
+    const hidden = document.getElementById("codeInput");
+
+    inputs.forEach((inp, i) => {
+      inp.addEventListener("input", () => {
+        if (inp.value.length === 1 && i < 5) inputs[i+1].focus();
+        updateCode();
+      });
+      inp.addEventListener("keydown", e => {
+        if (e.key === "Backspace" && i > 0 && !inp.value) inputs[i-1].focus();
+      });
+    });
+
+    function updateCode() {
+      hidden.value = Array.from(inputs).map(i => i.value).join("");
+    }
+  </script>
+
 </body>
 </html>

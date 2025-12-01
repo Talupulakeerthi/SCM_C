@@ -1,208 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
+<meta charset="UTF-8">
+<title>SCMLite — Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ================= GLOBAL ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: radial-gradient(circle at 20% 30%, #1d2b64, #1e1e2f 60%, #0b1f3a);
+  height: 100vh;
+  overflow-x: hidden;
+  color: #e8f1ff;
+}
 
-    html, body {
-      font-family: 'Segoe UI', sans-serif;
-      height: 100vh;
-      background: url('https://www.shutterstock.com/image-vector/logistics-cargo-truck-transport-low-260nw-2047780088.jpg')
-                no-repeat center center fixed;
-      background-size: cover;
-      color: #1e1e1e;
-    }
+/* ================= FLOATING SPHERES ================= */
+.sphere {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), rgba(255,255,255,0));
+  border-radius: 50%;
+  filter: blur(45px);
+  animation: float 8s infinite alternate ease-in-out;
+  opacity: 0.42;
+}
 
-    .dashboard-container {
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+.sphere.small {
+  width: 160px;
+  height: 160px;
+  animation-duration: 12s;
+  opacity: 0.32;
+}
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(0,0,0,0.6);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+.sphere1 { top: 80px; left: 150px; }
+.sphere2 { bottom: 120px; right: 100px; }
+.sphere3 { top: 260px; right: 350px; }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-40px); }
+}
 
-    .brand h1 {
-      color: #00d4ff;
-      font-size: 1.8rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 3px #000;
-    }
+/* ================= TOP NAV ================= */
+.topbar {
+  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.05);
+  padding: 12px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
 
-    .nav-menu {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+.topbar h1 {
+  color: #aee2ff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 0 12px #5cd8ff;
+}
 
-    .nav-menu a, .nav-menu summary {
-      background-color: rgba(255,255,255,0.2);
-      color: #fff;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+.nav-menu {
+  display: flex;
+  gap: 15px;
+}
 
-    .nav-menu a:hover { background-color: #00b4d8; }
+.nav-menu a {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  color: #dff6ff;
+  text-decoration: none;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  transition: 0.3s;
+}
 
-    .logout-btn {
-      background: linear-gradient(to right, #ff4e50, #f9d423);
-      color: #000;
-    }
+.nav-menu a:hover {
+  background: rgba(0,200,255,0.45);
+  color: #000;
+}
 
-    .logout-btn:hover { transform: scale(1.05); }
+.logout-btn {
+  background: linear-gradient(to right, #ff7777, #ffb347);
+  font-weight: 700;
+  color: #000 !important;
+}
 
-    .main-content {
-      flex: 1;
-      padding: 3rem 6vw;
-      text-align: center;
-    }
+/* ================= MAIN HEADER ================= */
+.content {
+  text-align: center;
+  padding-top: 50px;
+}
 
-    .main-content h2 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #fff;
-      margin-bottom: 3rem;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
-    }
+.content h2 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 65px;
+  color: #cfe9ff;
+  text-shadow: 0 0 12px #58c5ff;
+}
 
-    .panel-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-    }
+/* ================= SQUARE GLASS CARDS ================= */
+.icon-grid {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
 
-    .panel {
-      background: rgba(255,255,255,0.95);
-      border-radius: 16px;
-      padding: 2rem;
-      width: 280px;
-      text-align: center;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      transition: 0.3s ease;
-    }
+/* SQUARE GLASS CARD */
+.icon-card {
+  width: 160px;
+  height: 160px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 0 25px rgba(0,200,255,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.35s ease;
+  cursor: pointer;
+}
 
-    .panel:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-    }
+.icon-card:hover {
+  transform: translateY(-10px) scale(1.12);
+  box-shadow: 0 0 40px rgba(0,200,255,0.35);
+}
 
-    .panel i {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      color: #0077b6;
-    }
+/* ICON STYLE */
+.icon-card svg {
+  width: 42px;
+  height: 42px;
+  fill: #aee8ff;
+  transition: 0.3s;
+}
 
-    .panel h3 { margin-bottom: 1rem; color: #023047; }
+.icon-card:hover svg {
+  fill: #dffeff;
+  filter: drop-shadow(0 0 8px #67d4ff);
+}
 
-    .btn {
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      font-weight: bold;
-      color: #fff;
-      background: linear-gradient(to right, #00b4d8, #0077b6);
-      border-radius: 8px;
-      text-decoration: none;
-      display: inline-block;
-      transition: 0.3s ease;
-    }
-
-    .btn:hover {
-      background: linear-gradient(to right, #0096c7, #023e8a);
-      transform: translateY(-2px);
-    }
-  </style>
+/* LABEL */
+.icon-card span {
+  margin-top: 12px;
+  color: #e7f5ff;
+  font-size: 15px;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(0,150,255,0.4);
+}
+</style>
 </head>
 
 <body>
-<div class="dashboard-container">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="brand">
-      <i class="fa fa-cubes"></i>
-      <h1>Admin Dashboard</h1>
-    </div>
+<!-- FLOATING BACKGROUND SPHERES -->
+<div class="sphere sphere1"></div>
+<div class="sphere sphere2 small"></div>
+<div class="sphere sphere3"></div>
 
-    <div class="nav-menu">
-      <details>
-        <summary><i class="fa fa-shipping-fast"></i> Manage Shipment</summary>
-        <div class="dropdown-content">
-          <a href="/create-shipment">Create Shipment</a>
-          <a href="/edit-shipment">Edit Shipment</a>
-        </div>
-      </details>
+<!-- NAV BAR -->
+<div class="topbar">
+  <h1>SCMLite — Admin</h1>
 
-      <a href="/user_management"><i class="fa fa-users"></i> Users</a>
-      <a href="/device-data"><i class="fa fa-microchip"></i> Device Data</a>
-
-      <!-- ⭐ ADDED ACTIVE SESSIONS -->
-      <a href="/active-sessions"><i class="fa fa-shield-alt"></i> Active Sessions</a>
-
-      <a class="logout-btn" href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
-    </div>
+  <div class="nav-menu">
+    <a href="/create-shipment">Create Shipment</a>
+    <a href="/user_management">Users</a>
+    <a href="/device-data">Device Data</a>
+    <a href="/active_sessions">Active Sessions</a>
+    <a class="logout-btn" href="/logout">Logout</a>
   </div>
+</div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-    <h2>Welcome, Admin</h2>
+<!-- MAIN CONTENT -->
+<div class="content">
+  <h2>Welcome, Admin</h2>
 
-    <div class="panel-container">
+  <!-- SQUARE CARDS -->
+  <div class="icon-grid">
 
-      <div class="panel">
-        <i class="fa fa-shipping-fast"></i>
-        <h3>Manage Shipment</h3>
-        <a href="/edit-shipment" class="btn">Go to Shipments</a>
-      </div>
+    <!-- Manage Shipment -->
+    <a href="/edit-shipment" class="icon-card">
+      <svg viewBox="0 0 24 24"><path d="M3 3h18v2H3V3zm0 14h18v2H3v-2zm18-7H3v2h18V10z"/></svg>
+      <span>Manage Shipment</span>
+    </a>
 
-      <div class="panel">
-        <i class="fa fa-users"></i>
-        <h3>User Management</h3>
-        <a href="/user_management" class="btn">Manage Users</a>
-      </div>
+    <!-- User Management -->
+    <a href="/user_management" class="icon-card">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.2c-3.2 0-9.8 1.6-9.8 4.9V22h19.6v-2.9c0-3.3-6.6-4.9-9.8-4.9z"/></svg>
+      <span>User Management</span>
+    </a>
 
-      <div class="panel">
-        <i class="fa fa-microchip"></i>
-        <h3>Device Data</h3>
-        <a href="/device-data" class="btn">View Device Data</a>
-      </div>
+    <!-- Device Data -->
+    <a href="/device-data" class="icon-card">
+      <svg viewBox="0 0 24 24"><path d="M11 2h2v20h-2V2zm9 9v2H4v-2h16z"/></svg>
+      <span>Device Data</span>
+    </a>
 
-      <!-- ⭐ ADDED ACTIVE SESSIONS PANEL -->
-      <div class="panel">
-        <i class="fa fa-shield"></i>
-        <h3>Active Sessions</h3>
-        <a href="/active_sessions" class="btn">View Sessions</a>
-      </div>
+    <!-- Active Sessions -->
+    <a href="/active_sessions" class="icon-card">
+      <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5.5-3.8 10.7-8 12-4.2-1.3-8-6.5-8-12V6l8-4z"/></svg>
+      <span>Active Sessions</span>
+    </a>
 
-    </div>
   </div>
 
 </div>
+
 </body>
 </html>

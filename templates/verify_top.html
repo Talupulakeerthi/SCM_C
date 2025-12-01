@@ -1,107 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>SCMLite - Verify MFA</title>
-  <link rel="stylesheet" href="/static/css/mfa.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    :root {
+      --accent: #3a8bff;
+      --glass: rgba(255,255,255,0.06);
+      --border: rgba(58,139,255,0.4);
+      --muted: #9bbcff;
+      --bg: #0d1117;
+      --text: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(120deg, #121226, #1e1e2f);
-      color: #eceff1;
-      margin: 0;
-      padding: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
     }
-    .verify-container {
-      background: #1e1e2f;
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      max-width: 400px;
-      margin: 80px auto;
+
+    /* Background Shapes */
+    .curve1 {
+      position: absolute;
+      width: 1000px;
+      height: 950px;
+      background: linear-gradient(45deg, #0d1117, #3a8bff);
+      top: -250px;
+      right: -280px;
+      opacity: 0.45;
+      filter: blur(12px);
+      transform: rotate(24deg) skewY(34deg);
+    }
+    .curve2 {
+      position: absolute;
+      width: 1200px;
+      height: 900px;
+      background: #0d1117;
+      border-top: 3px solid #3a8bff;
+      bottom: -260px;
+      left: -260px;
+      opacity: 0.6;
+      transform: rotate(-22deg) skewY(-33deg);
+    }
+
+    /* Card */
+    .verify-box {
+      width: 420px;
+      padding: 40px 35px;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 25px rgba(58,139,255,0.4);
+      animation: fadeIn 0.8s ease forwards;
       text-align: center;
+      z-index: 10;
     }
-    .verify-container h2 {
-      color: #8c9eff;
-      font-size: 2rem;
-      margin-bottom: 12px;
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .verify-container p {
-      color: #cfd8dc;
-      font-size: 1.1rem;
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(58,139,255,0.7);
+    }
+
+    .desc {
+      font-size: 15px;
+      color: var(--muted);
       margin-bottom: 25px;
     }
+
+    /* Flash */
     .flash {
-      background: linear-gradient(90deg, #ff3d00 0%, #ff9100 100%);
-      color: #fff;
-      font-weight: 600;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 18px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    input[type="text"] {
-      padding: 14px 18px;
-      border: 1.5px solid #37474f;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      background: #263238;
-      color: #eceff1;
+      background: rgba(255,60,60,0.25);
+      border-left: 4px solid #ff4f4f;
+      padding: 10px;
+      color: #ffb3b3;
+      margin-bottom: 15px;
+      border-radius: 6px;
       text-align: center;
-      letter-spacing: 4px;
-      font-weight: 600;
     }
-    input[type="text"]:focus {
-      border-color: #8c9eff;
-      outline: none;
-      box-shadow: 0 0 8px #8c9eff50;
+
+    /* OTP Inputs */
+    .otp-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
     }
-    button {
-      background: linear-gradient(90deg, #8c9eff 0%, #536dfe 100%);
-      color: #fff;
-      border: none;
+
+    .otp-input {
+      width: 48px;
+      height: 55px;
+      font-size: 22px;
+      text-align: center;
       border-radius: 10px;
-      font-size: 1.08rem;
-      font-weight: 600;
-      padding: 14px 0;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+      transition: 0.25s;
+      backdrop-filter: blur(4px);
+    }
+
+    .otp-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(58,139,255,0.7);
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* Button */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid var(--accent);
+      border-radius: 40px;
+      color: white;
       cursor: pointer;
-      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
-      box-shadow: 0 5px 18px rgba(140,158,255,0.3);
+      font-size: 17px;
+      font-weight: 600;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+      margin-top: 5px;
     }
-    button:hover {
-      background: linear-gradient(90deg, #536dfe 0%, #8c9eff 100%);
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 6px 20px rgba(140,158,255,0.5);
+
+    button::before {
+      content: "";
+      position: absolute;
+      height: 300%;
+      width: 100%;
+      background: linear-gradient(#0d1117, #3a8bff, #0d1117);
+      top: -100%;
+      left: 0;
+      transition: 0.5s;
+      z-index: -1;
     }
-    .resend-hint {
-      font-size: 0.95rem;
-      color: #9fa8da;
-      margin-top: 10px;
+
+    button:hover::before {
+      top: 0;
+    }
+
+    /* Footer Hint */
+    .hint {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
     }
   </style>
 </head>
+
 <body>
-  <div class="verify-container">
-    <h2>🔐 Verify with Authenticator</h2>
-    <p>Enter the 6-digit code from your Authenticator app.</p>
+
+  <div class="curve1"></div>
+  <div class="curve2"></div>
+
+  <div class="verify-box">
+
+    <h2>Verify MFA</h2>
+    <p class="desc">Enter the 6-digit code from your Authenticator app.</p>
 
     {% if flash %}
     <div class="flash">{{ flash }}</div>
     {% endif %}
 
     <form method="post" action="/mfa/relogin/verify">
-      <input type="text" name="code" maxlength="6" placeholder="Enter 6-digit code" required>
+
+      <div class="otp-wrapper">
+        <input class="otp-input" maxlength="1" name="d1" required>
+        <input class="otp-input" maxlength="1" name="d2" required>
+        <input class="otp-input" maxlength="1" name="d3" required>
+        <input class="otp-input" maxlength="1" name="d4" required>
+        <input class="otp-input" maxlength="1" name="d5" required>
+        <input class="otp-input" maxlength="1" name="d6" required>
+      </div>
+
+      <!-- Hidden field to combine OTP -->
+      <input type="hidden" name="code" id="codeInput">
+
       <button type="submit">Verify</button>
     </form>
 
-    <div class="resend-hint">
-      Lost access to your authenticator? Contact the administrator to reset MFA.
+    <div class="hint">
+      Lost access? Contact admin to reset MFA.
     </div>
+
   </div>
+
+  <script>
+    /* Auto-focus OTP inputs & combine into single hidden input */
+    const inputs = document.querySelectorAll(".otp-input");
+    const hidden = document.getElementById("codeInput");
+
+    inputs.forEach((inp, i) => {
+      inp.addEventListener("input", () => {
+        if (inp.value.length === 1 && i < 5) inputs[i+1].focus();
+        updateCode();
+      });
+      inp.addEventListener("keydown", e => {
+        if (e.key === "Backspace" && i > 0 && !inp.value)
+          inputs[i-1].focus();
+      });
+    });
+
+    function updateCode() {
+      hidden.value = Array.from(inputs).map(i => i.value).join("");
+    }
+  </script>
+
 </body>
 </html>

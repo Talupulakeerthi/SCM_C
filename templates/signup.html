@@ -5,146 +5,286 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SCMLite - Sign Up</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* === LOADING OVERLAY === */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loader {
+      width: 55px;
+      height: 55px;
+      border: 5px solid #1e3a8a;
+      border-top: 5px solid #3a8bff;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      box-shadow: 0 0 15px rgba(58,139,255,0.8);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #eaf4ff;
-      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #0d1117;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-    }
-
-    .signup-container {
-      display: flex;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      width: 900px;
-      max-width: 95%;
     }
 
-    .signup-left {
-      flex: 1;
-      background: #d0e3ff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Background Shapes */
+    .curve1 {
+      position: absolute;
+      width: 1000px;
+      height: 950px;
+      background: linear-gradient(45deg, #0d1117, #3a8bff);
+      top: -250px;
+      right: -280px;
+      opacity: 0.45;
+      filter: blur(12px);
+      transform: rotate(24deg) skewY(34deg);
     }
 
-    .signup-left img {
-      max-width: 100%;
-      height: auto;
+    .curve2 {
+      position: absolute;
+      width: 1200px;
+      height: 900px;
+      background: #0d1117;
+      border-top: 3px solid #3a8bff;
+      bottom: -260px;
+      left: -260px;
+      opacity: 0.6;
+      transform: rotate(-22deg) skewY(-33deg);
     }
 
-    .signup-right {
-      flex: 1;
-      padding: 50px 40px;
-      background: #fff;
+    /* Signup Box */
+    .signup-box {
+      width: 460px;
+      padding: 45px 40px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      border: 1px solid rgba(58,139,255,0.4);
+      box-shadow: 0 0 25px rgba(58,139,255,0.5);
+      z-index: 3;
     }
 
-    h2 {
-      font-size: 28px;
+    .signup-box h2 {
+      text-align: center;
+      font-size: 32px;
+      color: #ffffff;
       margin-bottom: 10px;
-      color: #2c3e50;
+      text-shadow: 0 0 8px rgba(58,139,255,0.8);
     }
 
-    p {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: 30px;
+    .signup-box p {
+      text-align: center;
+      color: #9bbcff;
+      margin-bottom: 25px;
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
+    /* === GLASS INPUTS === */
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
     }
 
-    input {
-      padding: 12px 15px;
-      font-size: 15px;
-      border: 1.5px solid #ccc;
+    .input-group input {
+      width: 100%;
+      padding: 14px 12px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 10px;
-      background-color: #fafafa;
-      transition: border 0.3s;
-    }
-
-    input:focus {
-      border-color: #3f87f5;
-      outline: none;
-      background-color: #fff;
-      box-shadow: 0 0 5px rgba(63, 135, 245, 0.2);
-    }
-
-    button {
-      background: #3f87f5;
       color: white;
-      padding: 12px;
       font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s;
+      outline: none;
+      transition: 0.3s;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
     }
 
-    button:hover {
-      background: #316fd0;
+    .input-group input:focus {
+      border: 1px solid #3a8bff;
+      box-shadow:
+        0 0 12px rgba(58,139,255,0.6),
+        inset 0 0 6px rgba(58,139,255,0.3);
+      background: rgba(255,255,255,0.12);
     }
 
-    small {
-      font-size: 12px;
-      color: #888;
-      margin-top: 8px;
-      display: block;
+    /* Floating label */
+    .input-group label {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      color: #9bbcff;
+      transform: translateY(-50%);
+      transition: 0.3s ease;
+      pointer-events: none;
+    }
+
+    .input-group input:focus ~ label,
+    .input-group input:not(:placeholder-shown) ~ label {
+      top: -8px;
+      color: #3a8bff;
+      font-size: 13px;
+    }
+
+    /* Flash */
+    .flash {
+      background: rgba(255,60,60,0.25);
+      border-left: 3px solid #ff4444;
+      padding: 10px;
+      color: #ffb3b3;
+      margin-bottom: 15px;
+      border-radius: 6px;
       text-align: center;
     }
 
-    .flash {
-      background-color: #ffecec;
-      border-left: 4px solid red;
-      padding: 10px;
-      color: #900;
-      margin-bottom: 15px;
-      border-radius: 6px;
+    /* Button */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid #3a8bff;
+      border-radius: 40px;
+      font-size: 17px;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+    }
+
+    button::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 300%;
+      top: -100%;
+      left: 0;
+      background: linear-gradient(#0d1117, #3a8bff, #0d1117);
+      transition: 0.5s;
+      z-index: -1;
+    }
+
+    button:hover::before {
+      top: 0;
+    }
+
+    small {
+      display: block;
+      margin-top: 12px;
+      text-align: center;
+      color: #9bbcff;
+      font-size: 12px;
+    }
+
+    small a {
+      color: #6aaeff;
+      text-decoration: none;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .links a {
+      color: #6aaeff;
+      font-weight: 600;
+      text-decoration: none;
     }
   </style>
 </head>
 
 <body>
-  <div class="signup-container">
 
-    <div class="signup-left">
-      <img src="https://img.freepik.com/premium-vector/woman-sitting-computer-working-minimalist-vector-illustration_760443-390.jpg" alt="Signup Illustration">
+  <div class="curve1"></div>
+  <div class="curve2"></div>
+
+  <div class="signup-box">
+
+    <h2>SCMLite</h2>
+    <p>Create your account to get started</p>
+
+    {% if flash %}
+      <div class="flash">{{ flash }}</div>
+    {% endif %}
+
+    <form action="/signup" method="POST" onsubmit="return validateSignupForm()">
+
+      <div class="input-group">
+        <input type="text" id="fullname" name="fullname" placeholder=" " required>
+        <label>Full Name</label>
+      </div>
+
+      <div class="input-group">
+        <input type="email" id="email" name="email" placeholder=" " required>
+        <label>Email Address</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" name="password" placeholder=" " required>
+        <label>Password</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
+        <label>Confirm Password</label>
+      </div>
+
+      <button type="submit">Sign Up</button>
+
+      <small>I accept the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></small>
+
+    </form>
+
+    <div class="links">
+      <a href="javascript:void(0)" onclick="showLoaderAndGo('/login')">
+        Already have an account? Login
+      </a>
     </div>
 
-    <div class="signup-right">
-      <h2>SCMLite</h2>
-      <p>Create your account to get started</p>
-
-      {% if flash %}
-        <div class="flash">{{ flash }}</div>
-      {% endif %}
-
-      <!--  ✅ Correct Signup Form -->
-      <form action="/signup" method="POST" onsubmit="return validateSignupForm()">
-        <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
-        <input type="email" id="email" name="email" placeholder="Email Address" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
-
-        <button type="submit">Sign Up</button>
-
-        <small>I accept the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></small>
-      </form>
-
-    </div>
   </div>
 
-  <!--  ✅ Load JS Validation -->
+  <script>
+    function showLoaderAndGo(url) {
+      const overlay = document.getElementById("loaderOverlay");
+      overlay.classList.add("active");
+
+      setTimeout(() => {
+        window.location.href = url;
+      }, 600);
+    }
+  </script>
+
   <script src="/static/js/validation.js"></script>
+
+  <div id="loaderOverlay" class="loading-overlay">
+    <div class="loader"></div>
+  </div>
 
 </body>
 </html>
