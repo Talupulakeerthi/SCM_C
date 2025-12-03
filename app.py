@@ -13,11 +13,14 @@ from fastapi.openapi.utils import get_openapi
 from pymongo import MongoClient
 import secrets
 
-# MFA router (we’ll wire it up later)
+# MFA router
 from mfa.mfa_router import router as mfa_router, init as mfa_init
-#user role change email function
+
+# Email notification when user role changes
 from email_service import send_role_change_email
 
+# ⭐ ADD THIS IMPORT (Kafka producers)
+from kafka_app.producer import log_shipment_status, log_user_activity, log_event
 
 
 # ----------------------------------------------------------
@@ -37,13 +40,13 @@ from pathlib import Path
 # Auth & security
 # ----------------------------------------------------------
 from passlib.context import CryptContext
-from jose import JWTError, jwt          # python-jose
+from jose import JWTError, jwt
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
+
 
 # ensure load_dotenv() already called above
 
@@ -643,9 +646,7 @@ async def post_login(
             request.session["flash"] = "reCAPTCHA check failed."
             return RedirectResponse("/login", status_code=302)
 
-    # ------------------------------------------
     # 2️⃣ CHECK USER IN DATABASE
-    # ------------------------------------------
     user = users_collection.find_one({"email": username})
     if not user or not pwd_context.verify(password, user["password_hash"]):
         logins_collection.insert_one({
@@ -653,15 +654,30 @@ async def post_login(
             "login_time": datetime.utcnow(),
             "status": "failed"
         })
+        log_user_activity(username, "login_failed", request.client.host)
         request.session["flash"] = "Invalid credentials."
         return RedirectResponse("/login", status_code=302)
 
     role = user.get("role", "user")
 
+# 3️⃣ LOGIN SUCCESS → SAVE + KAFKA LOG
+    logins_collection.insert_one({
+        "email": user["email"],
+        "login_time": datetime.utcnow(),
+        "status": "success"
+    })
+
+# 🔥 Add this line EXACTLY here:
+    log_user_activity(user["email"], "admin_login_success", request.client.host)
+
     # ------------------------------------------
-    # 3️⃣ ADMIN → BYPASS MFA
+    # 4 ADMIN → BYPASS MFA
     # ------------------------------------------
     if role == "admin":
+        # ⭐ KAFKA LOG: admin login success
+        log_user_activity(user["email"], "admin_login_success")
+        log_event("admin_login", f"Admin {user['email']} logged in successfully")
+
         session_info = create_session_record(user["email"])
         access_token = create_access_token(
             {"sub": user["email"], "role": role},
@@ -688,6 +704,12 @@ async def post_login(
     mfa_info = user.get("mfa", {})
 
     if mfa_info.get("enabled"):
+        # ⭐ KAFKA LOG: user login success (MFA required)
+        log_user_activity(user["email"], "login_password_verified")
+        log_event("mfa_pending", f"User {user['email']} waiting for MFA verification")
+
+
+
         request.session["pending_mfa_email"] = user["email"]
         request.session["pending_mfa_role"] = role
         request.session["pending_mfa_name"] = user.get("name", "")
@@ -1220,14 +1242,83 @@ def account_page(request: Request, current_user: dict = Depends(get_current_user
     logger.info(f"Account page accessed by {current_user.get('email')}")
     return templates.TemplateResponse("account.html", {"request": request, "user": current_user})
 
+from typing import Optional
+
+
+from fastapi import Query
+
+from typing import Optional
+
 @app.get("/device-data", response_class=HTMLResponse)
-async def device_data(request: Request, current_user: dict = Depends(get_current_user_from_token)):
-    logger.info(f"Device data endpoint accessed by {current_user.get('email')}")
-    data = list(collection.find().sort([("_id", -1)]).limit(10))
+async def device_data(
+    request: Request,
+    current_user: dict = Depends(get_current_user_from_token),
+    device_id: Optional[str] = Query(default=None),   # string to allow ""
+):
+    logger.info(
+        f"Device data endpoint accessed by {current_user.get('email')} "
+        f"filter_device_id={device_id!r}"
+    )
+
+    # -----------------------------
+    # Build match condition
+    # -----------------------------
+    match_condition = {}
+    selected_device_id: Optional[int] = None
+
+    # If device_id is given and numeric, filter
+    if device_id:
+        if device_id.isdigit():
+            selected_device_id = int(device_id)
+            match_condition["Device_ID"] = selected_device_id
+        else:
+            logger.warning(f"Invalid device_id value: {device_id!r}")
+            selected_device_id = None
+
+    # -----------------------------
+    # Aggregation pipeline:
+    #  - sort by timestamp desc
+    #  - group to get latest record per Device_ID
+    #  - sort again by latest timestamp
+    #  - limit to 10 devices
+    # -----------------------------
+    pipeline = [
+        {"$match": match_condition},
+        {"$sort": {"timestamp": -1}},  # newest docs first
+        {"$group": {
+            "_id": "$Device_ID",
+            "latestRecord": {"$first": "$$ROOT"},
+        }},
+        {"$sort": {"latestRecord.timestamp": -1}},  # newest devices first
+        {"$limit": 10},
+    ]
+
+    results = list(collection.aggregate(pipeline))
+
+    # Flatten and format
+    data = [r["latestRecord"] for r in results]
+
     for item in data:
         item["_id"] = str(item["_id"])
-    return templates.TemplateResponse("device_data.html", {"request": request, "devices": data})
+        ts = item.get("timestamp")
+        if ts:
+            dt = datetime.fromtimestamp(ts / 1000)  # ms -> seconds
+            item["formatted_time"] = dt.strftime("%d %b %Y, %I:%M:%S %p")
+        else:
+            item["formatted_time"] = "N/A"
 
+    # Distinct devices for dropdown
+    device_ids = sorted(collection.distinct("Device_ID"))
+
+    return templates.TemplateResponse(
+        "device_data.html",
+        {
+            "request": request,
+            "devices": data,
+            "device_ids": device_ids,
+            "selected_device_id": selected_device_id,
+        },
+    )
 
 
 # ===============================

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   backend:
@@ -27,10 +25,9 @@ services:
     networks:
       - my_network
     restart: on-failure
-    # Refined entrypoint: Consolidated into a single line for robustness
-    entrypoint: sh -c "echo 'Waiting for Kafka to be ready...'; while ! nc -z kafka 9092; do sleep 2; echo 'Waiting for Kafka...'; done; echo 'Kafka is ready. Starting producer.'; python kafka/producer.py"
+    entrypoint: sh -c "echo 'Waiting for Kafka to be ready...'; while ! nc -z kafka 9092; do sleep 2; echo 'Waiting for Kafka...'; done; echo 'Kafka is ready. Starting producer.'; python kafka_app/producer.py"
     env_file:
-      - ./kafka/.env
+      - ./kafka_app/.env
 
   consumer:
     build:
@@ -44,7 +41,7 @@ services:
       - my_network
     restart: on-failure
     env_file:
-      - ./kafka/.env
+      - ./kafka_app/.env
 
   kafka:
     image: bitnami/kafka:latest

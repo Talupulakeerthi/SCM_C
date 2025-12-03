@@ -1,26 +1,21 @@
-# Dockerfile.producer (for Kafka producer script)
+# Dockerfile.producer (Kafka Producer)
 
 FROM python:3.12-slim
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Install netcat for health checks (used in docker-compose entrypoint)
+# Install netcat for waiting logic (used by docker-compose entrypoint)
 RUN apt-get update && \
     apt-get install -y netcat-traditional && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy the entire kafka directory into the container
-# This ensures that producer.py can find kafka/.env if it tries to load it,
-# although env_file in docker-compose.yml is the primary mechanism for Docker.
-COPY kafka/ kafka/
+# Copy the updated kafka_app folder
+COPY kafka_app/ kafka_app/
 
-# Install Python dependencies for the producer
-# kafka-python is needed for Kafka client
+# Install Python dependencies
 RUN pip install kafka-python python-dotenv
 
-# Command to run the producer script
-# This CMD is overridden by the 'entrypoint' in docker-compose.yml,
-# but it's good practice to define it here for standalone execution.
-CMD ["python", "kafka/producer.py"]
+# Default command (overridden by docker-compose entrypoint)
+CMD ["python", "kafka_app/producer.py"]

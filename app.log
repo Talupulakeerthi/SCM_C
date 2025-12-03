@@ -2876,3 +2876,16 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-12-01 13:14:31,868 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
 2025-12-01 13:14:47,140 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
 2025-12-01 13:15:02,436 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:19:54,378 - app - INFO - Login endpoint accessed
+2025-12-01 13:20:02,754 - app - INFO - Login form submitted
+2025-12-01 13:20:03,401 - app - INFO - Admin dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:20:05,128 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:20:20,431 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:20:35,703 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:20:50,964 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:40:25,310 - app - INFO - Login endpoint accessed
+2025-12-01 13:40:34,260 - app - INFO - Login form submitted
+2025-12-01 13:40:34,975 - app - INFO - Admin dashboard endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:40:36,189 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com filter_device_id=None
+2025-12-01 13:40:42,071 - app - INFO - Edit shipment endpoint accessed by keerthitalupula246@gmail.com
+2025-12-01 13:40:45,366 - app - INFO - User management endpoint accessed by keerthitalupula246@gmail.com

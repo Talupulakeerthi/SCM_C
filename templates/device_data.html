@@ -194,6 +194,8 @@ td[colspan="5"] {
                     <th><i class="fa fa-thermometer-half"></i> Temperature</th>
                     <th><i class="fa fa-route"></i> Route From</th>
                     <th><i class="fa fa-route"></i> Route To</th>
+                    <th><i class="fa fa-clock"></i> Date & Time</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -205,6 +207,8 @@ td[colspan="5"] {
                         <td>{{ device.First_Sensor_temperature }}</td>
                         <td>{{ device.Route_From }}</td>
                         <td>{{ device.Route_To }}</td>
+                        <td>{{ device.formatted_time }}</td>
+
                     </tr>
                     {% endfor %}
                 {% else %}
