@@ -2889,3 +2889,9 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-12-01 13:40:36,189 - app - INFO - Device data endpoint accessed by keerthitalupula246@gmail.com filter_device_id=None
 2025-12-01 13:40:42,071 - app - INFO - Edit shipment endpoint accessed by keerthitalupula246@gmail.com
 2025-12-01 13:40:45,366 - app - INFO - User management endpoint accessed by keerthitalupula246@gmail.com
+2025-12-04 13:24:03,937 - app - INFO - Login endpoint accessed
+2025-12-04 13:24:14,850 - app - INFO - Login form submitted
+2025-12-04 13:45:55,732 - app - INFO - Login endpoint accessed
+2025-12-04 13:46:01,677 - app - INFO - Login form submitted
+2025-12-04 13:50:46,624 - app - INFO - Login endpoint accessed
+2025-12-04 13:50:53,578 - app - INFO - Login form submitted

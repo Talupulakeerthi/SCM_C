@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from kafka/.env
-load_dotenv(dotenv_path='./kafka/.env')
+load_dotenv(dotenv_path='./.env')
 
 # Kafka settings
 KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
