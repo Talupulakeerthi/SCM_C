@@ -108,9 +108,10 @@
                 </div>
 
                 {% if not s.revoked %}
-                    <form action="/revoke-session/{{ s.session_id }}" method="post">
-                        <button class="btn-revoke">Revoke Session</button>
+                    <form id="form-{{ s.session_id }}" action="/revoke_session/{{ s.session_id }}" method="post">
+                        <button type="button" class="btn-revoke" onclick="confirmRevoke('{{ s.session_id }}')">Revoke Session</button>
                     </form>
+
                 {% endif %}
             </div>
         {% endfor %}
@@ -120,6 +121,25 @@
 
     <a href="/account" class="back-btn">Back to Account</a>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function confirmRevoke(sessionId) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "This will revoke the user's session immediately.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d32f2f",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, revoke it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('form-' + sessionId).submit();
+        }
+    });
+}
+</script>
 
 </body>
 </html>

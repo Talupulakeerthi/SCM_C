@@ -1,4 +1,4 @@
-# kafka/producer.py
+# kafka_app/producer.py
 from kafka import KafkaProducer
 import json
 import time

@@ -417,7 +417,7 @@ def decode_access_token(token: str):
     except JWTError:
         return None  # invalid or expired
     
-def create_access_token(data: dict, session_id: Optional[str] = None, expires_minutes: Optional[int] = None) -> str:
+def create_access_token(data: dict, session_id: Optional[str] = None, expires_minutes: Optional[int] = None):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES if expires_minutes is None else expires_minutes)
     to_encode.update({"exp": expire})
@@ -524,6 +524,21 @@ def revoke_session(session_id: str):
 def get_session_by_id(session_id: str):
     return sessions_collection.find_one({"session_id": session_id})
 
+# 🔥 PUT THIS HERE (DO NOT MOVE BELOW)
+def is_token_revoked(payload: dict) -> bool:
+    sid = payload.get("sid")
+    if not sid:
+        return True
+    sess = get_session_by_id(sid)
+    if not sess:
+        return True
+    if sess.get("revoked"):
+        return True
+    sessions_collection.update_one(
+        {"session_id": sid},
+        {"$set": {"last_seen": datetime.utcnow()}}
+    )
+    return False
 
 # ---------------------------
 # Dependencies
@@ -1018,18 +1033,14 @@ def user_management(request: Request, current_user: dict = Depends(get_current_a
     users = list(users_collection.find({}, {"_id": 0, "name": 1, "email": 1, "role": 1}))
     return templates.TemplateResponse("user_management.html", {"request": request, "users": users})
 
-@app.get("/revoke_session/{session_id}")
+@app.post("/revoke_session/{session_id}")
 def revoke_session_admin(session_id: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
     result = sessions_collection.update_one(
         {"session_id": session_id},
         {"$set": {"revoked": True}}
     )
 
-    if result.modified_count > 0:
-        request.session["flash"] = "Session revoked successfully."
-    else:
-        request.session["flash"] = "Session not found."
-
+    request.session["flash"] = "Session revoked successfully." if result.modified_count else "Session not found."
     return RedirectResponse("/active_sessions", status_code=302)
 
 @app.get("/active_sessions", response_class=HTMLResponse)

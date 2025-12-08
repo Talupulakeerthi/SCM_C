@@ -2895,3 +2895,5 @@ starlette.routing.NoMatchFound: No route exists for name "signup" and params "".
 2025-12-04 13:46:01,677 - app - INFO - Login form submitted
 2025-12-04 13:50:46,624 - app - INFO - Login endpoint accessed
 2025-12-04 13:50:53,578 - app - INFO - Login form submitted
+2025-12-08 20:24:42,725 - app - INFO - Login endpoint accessed
+2025-12-08 20:24:48,440 - app - INFO - Login form submitted
