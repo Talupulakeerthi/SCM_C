@@ -1,5 +1,5 @@
 # ==========================================================
-# main/app.py  — imports
+# main/app.py  — cleaned (duplicates removed)
 # ==========================================================
 from fastapi import FastAPI, Request, Form, status, Depends, HTTPException
 from fastapi.responses import RedirectResponse, HTMLResponse, JSONResponse
@@ -19,7 +19,7 @@ from mfa.mfa_router import router as mfa_router, init as mfa_init
 # Email notification when user role changes
 from email_service import send_role_change_email
 
-# ⭐ ADD THIS IMPORT (Kafka producers)
+# Kafka producers (logging)
 from kafka_app.producer import log_shipment_status, log_user_activity, log_event
 
 
@@ -29,7 +29,6 @@ from kafka_app.producer import log_shipment_status, log_user_activity, log_event
 import os
 import uuid
 import hashlib
-import secrets
 import logging
 import requests
 from datetime import datetime, timedelta
@@ -47,58 +46,6 @@ from pydantic import BaseModel
 import smtplib
 from email.mime.text import MIMEText
 
-
-# ensure load_dotenv() already called above
-
-def send_email(to_email: str, subject: str, body: str):
-    import smtplib
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-    logger.debug("send_email() -> %s", to_email)
-    if not EMAIL_USER or not EMAIL_PASS:
-        logger.warning("EMAIL_USER/PASS missing. Writing verification to sent_emails.log")
-        with open("sent_emails.log", "a", encoding="utf-8") as f:
-            f.write(f"TO: {to_email}\n{body}\n\n---\n")
-        return
-
-    msg = MIMEMultipart()
-    msg["From"] = EMAIL_USER
-    msg["To"] = to_email
-    msg["Subject"] = subject
-    msg.attach(MIMEText(body, "plain"))
-
-    try:
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
-        server.set_debuglevel(1)
-        server.ehlo()
-        server.starttls()
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.sendmail(EMAIL_USER, [to_email], msg.as_string())
-        server.quit()
-        logger.info("Email sent to %s", to_email)
-    except Exception:
-        logger.exception("Email send failed for %s", to_email)
-
-# ---------------------------
-# Logging Configuration
-# ---------------------------
-logger = logging.getLogger("app")
-logger.setLevel(logging.DEBUG)
-
-file_handler = logging.FileHandler("app.log")
-stream_handler = logging.StreamHandler()
-
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-file_handler.setFormatter(formatter)
-stream_handler.setFormatter(formatter)
-
-if not logger.handlers:
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
-
-
-
 # ---------------------------
 # Load environment variables
 # ---------------------------
@@ -111,10 +58,10 @@ import dns.resolver
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
-
 def is_valid_email_format(email: str) -> bool:
     """Basic regex email format validation."""
     return bool(EMAIL_RE.match(email))
+
 
 def has_mx_record(domain: str) -> bool:
     """Return True if domain has an MX record (i.e., can receive email)."""
@@ -124,8 +71,8 @@ def has_mx_record(domain: str) -> bool:
     except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN, dns.exception.Timeout):
         return False
     except Exception:
-        # be conservative — return False if anything odd
         return False
+
 
 def is_real_domain_email(email: str) -> bool:
     """Check format and that the domain has an MX record."""
@@ -139,7 +86,9 @@ EMAIL_USER = os.getenv("EMAIL_USER")
 EMAIL_PASS = os.getenv("EMAIL_PASS")
 
 if not EMAIL_USER or not EMAIL_PASS:
-    logger.warning("EMAIL_USER or EMAIL_PASS not set. Emails will fail.")
+    # logger not configured yet — will be set below; keep simple print here in worst case
+    pass
+
 
 def send_email(to_email: str, subject: str, body: str):
     """
@@ -180,6 +129,29 @@ def send_email(to_email: str, subject: str, body: str):
             f.write(f"FAILED_SEND -> TO: {to_email} SUBJECT: {subject}\n{body}\n\n")
 
 
+# ---------------------------
+# Logging Configuration
+# ---------------------------
+logger = logging.getLogger("app")
+logger.setLevel(logging.DEBUG)
+
+BASE_DIR = Path(__file__).resolve().parent
+
+file_handler = logging.FileHandler(str(BASE_DIR / "app.log"))
+stream_handler = logging.StreamHandler()
+
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+file_handler.setFormatter(formatter)
+stream_handler.setFormatter(formatter)
+
+if not logger.handlers:
+    logger.addHandler(file_handler)
+    logger.addHandler(stream_handler)
+
+
+# ---------------------------
+# Config / Constants
+# ---------------------------
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10"))
@@ -190,7 +162,6 @@ RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 MONGO_URI = os.getenv("MONGO_URI")
 DB_NAME = os.getenv("MONGO_DB_NAME", "SCMLiteDB")
 DEV_SKIP_RECAPTCHA = os.getenv("DEV_SKIP_RECAPTCHA", "false").lower() == "true"
-
 
 if not all([SECRET_KEY, ALGORITHM, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY, MONGO_URI]):
     raise ValueError(
@@ -203,9 +174,6 @@ if not all([SECRET_KEY, ALGORITHM, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY, MON
 # Initialize app
 # ---------------------------
 app = FastAPI()
-
-# BASE_DIR points to the current app directory (D:\SCM_C\SCM_C)
-BASE_DIR = Path(__file__).resolve().parent
 
 # Static and template directories
 STATIC_DIR = BASE_DIR / "static"
@@ -224,6 +192,7 @@ app.add_middleware(SessionMiddleware, secret_key=os.urandom(24))
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 # ---------------------------
 # MongoDB connection
 # ---------------------------
@@ -234,23 +203,15 @@ logins_collection = db["logins"]
 shipment_collection = db["shipments"]
 collection = db["sensor_data_collection"]
 password_resets = db["password_resets"]
+sessions_collection = db["sessions"]
 
-# Ensure unique email index to prevent races/duplicates
+
+# Ensure useful indexes
 try:
     users_collection.create_index("email", unique=True)
 except Exception as e:
     logger.warning("Could not create unique index on users_collection.email: %s", e)
 
-
-# collection = db["device-data"]  # if you switch later
-
-# ==========================================================
-# Session & Refresh Token Helpers
-# ==========================================================
-
-sessions_collection = db["sessions"]
-
-# Create useful indexes for cleanup & uniqueness
 try:
     sessions_collection.create_index("session_id", unique=True)
     sessions_collection.create_index("expires_at", expireAfterSeconds=0)
@@ -258,22 +219,21 @@ except Exception as e:
     logger.exception("Could not create indexes on sessions_collection: %s", e)
 
 
-# Constants
+# -----------------------------
+# Utility functions (tokens / sessions)
+# -----------------------------
 REFRESH_TOKEN_EXPIRE_DAYS = 1  # 1-day refresh lifetime
 
-# -----------------------------
-# Utility functions
-# -----------------------------
+
 def _random_token() -> str:
     return secrets.token_urlsafe(32)
+
 
 def _hash_token(token: str) -> str:
     """Return SHA-256 hash for refresh token (so we don't store raw tokens)."""
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
-# -----------------------------
-# Session creation
-# -----------------------------
+
 def create_session_record(email: str, user_agent: Optional[str] = None, ip: Optional[str] = None):
     # Fetch user from DB
     user = users_collection.find_one({"email": email})
@@ -287,7 +247,7 @@ def create_session_record(email: str, user_agent: Optional[str] = None, ip: Opti
     session_doc = {
         "session_id": session_id,
         "email": email,
-        "username": username,     # <-- FIXED (now defined)
+        "username": username,
         "refresh_token_hash": refresh_token_hash,
         "created_at": datetime.utcnow(),
         "last_seen": datetime.utcnow(),
@@ -304,9 +264,7 @@ def create_session_record(email: str, user_agent: Optional[str] = None, ip: Opti
         "expires_at": expires_at,
     }
 
-# -----------------------------
-# Session lookup & revocation
-# -----------------------------
+
 def revoke_session(session_id: str):
     """Marks a session as revoked."""
     sessions_collection.update_one(
@@ -314,73 +272,71 @@ def revoke_session(session_id: str):
         {"$set": {"revoked": True, "revoked_at": datetime.utcnow()}},
     )
 
+
 def get_session_by_id(session_id: str):
     """Fetches a session by ID."""
     return sessions_collection.find_one({"session_id": session_id})
 
 
 # ==========================================================
-# JWT Helper Functions
+# JWT Helper Functions (single canonical set)
 # ==========================================================
-
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "10"))
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "supersecretkey")
-ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-
-
 def create_access_token(data: dict, session_id: Optional[str] = None, expires_minutes: Optional[int] = None) -> str:
     """
-    Create a signed JWT for the authenticated user.
-    Optionally binds the token to a session_id.
+    Create a signed JWT. `data` is payload (e.g. {"sub": email, "role": role}).
+    Optionally bind token to a session_id and provide custom expiration (minutes).
     """
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=expires_minutes or ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-
-    # Attach session info
+    payload = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=(expires_minutes if expires_minutes is not None else ACCESS_TOKEN_EXPIRE_MINUTES))
+    payload.update({"exp": expire, "jti": str(uuid.uuid4())})
     if session_id:
-        to_encode.update({"sid": session_id})
-
-    # Unique token identifier (for tracing or logout)
-    to_encode.update({"jti": str(uuid.uuid4())})
-
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        payload["sid"] = session_id
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 
 def decode_access_token(token: str):
     """
-    Verify and decode a JWT.
-    Returns payload if valid, None if invalid/expired.
+    Decode and validate JWT. Returns payload dict if valid, None if invalid/expired.
     """
     try:
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    except JWTError:
+    except JWTError as exc:
+        logger.debug("JWT decode failed: %s", exc)
         return None
 
 
 def is_token_revoked(payload: dict) -> bool:
     """
-    Checks whether a session is revoked or expired.
-    Returns True if invalid/revoked.
+    Given decoded payload, return True if token/session is revoked or invalid.
+    Side-effect: updates last_seen timestamp for session if valid.
     """
+    if not payload or not isinstance(payload, dict):
+        return True
+
     sid = payload.get("sid")
     if not sid:
-        return True  # tokens without session id not trusted
+        # tokens without session id are not trusted in our flow
+        return True
 
     sess = get_session_by_id(sid)
     if not sess:
         return True
+
     if sess.get("revoked"):
         return True
+
     if sess.get("expires_at") and sess["expires_at"] < datetime.utcnow():
         return True
 
-    # Update last_seen timestamp
-    sessions_collection.update_one(
-        {"session_id": sid},
-        {"$set": {"last_seen": datetime.utcnow()}}
-    )
+    # update last_seen (best-effort)
+    try:
+        sessions_collection.update_one({"session_id": sid}, {"$set": {"last_seen": datetime.utcnow()}})
+    except Exception:
+        logger.exception("Failed to update last_seen for session %s", sid)
+
     return False
+
+
 # ==========================================================
 # MFA Initialization (after helpers)
 # ==========================================================
@@ -395,150 +351,27 @@ app.include_router(mfa_router)
 
 
 # ---------------------------
-# JWT helpers
+# OAuth2 (only used by Swagger locks)
 # ---------------------------
-def create_access_token(data: dict, session_id: Optional[str] = None, expires_minutes: Optional[int] = None) -> str:
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES if expires_minutes is None else expires_minutes)
-    to_encode.update({"exp": expire})
-    
-    if session_id:
-        to_encode.update({"sid": session_id})
-
-    to_encode.update({"jti": str(uuid.uuid4())})
-
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-def decode_access_token(token: str):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except JWTError:
-        return None  # invalid or expired
-    
-def create_access_token(data: dict, session_id: Optional[str] = None, expires_minutes: Optional[int] = None):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES if expires_minutes is None else expires_minutes)
-    to_encode.update({"exp": expire})
-    # add session id and jti
-    if session_id:
-        to_encode.update({"sid": session_id})
-    to_encode.update({"jti": str(uuid.uuid4())})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-def is_token_revoked(payload: dict) -> bool:
-    # payload is the decoded JWT
-    sid = payload.get("sid")
-    if not sid:
-        # tokens without session id are considered invalid for our flow
-        return True
-    sess = get_session_by_id(sid)
-    if not sess:
-        return True
-    if sess.get("revoked"):
-        return True
-    # optional: check refresh expiry? session document has expires_at
-    if sess.get("expires_at") and sess["expires_at"] < datetime.utcnow():
-        return True
-    # update last_seen
-    sessions_collection.update_one({"session_id": sid}, {"$set": {"last_seen": datetime.utcnow()}})
-    return False
-    
-@app.post("/token/refresh")
-def refresh_token_endpoint(request: Request, refresh_token: str = Form(...)):
-    """
-    Accepts refresh_token (raw string). Returns new access_token.
-    Refresh token is valid for 1 day (session.expires_at).
-    """
-    if not refresh_token:
-        raise HTTPException(status_code=400, detail="Missing refresh token")
-
-    refresh_hash = _hash_token(refresh_token)
-    sess = sessions_collection.find_one({"refresh_token_hash": refresh_hash})
-    if not sess:
-        raise HTTPException(status_code=401, detail="Invalid refresh token")
-
-    if sess.get("revoked"):
-        raise HTTPException(status_code=401, detail="Session revoked")
-
-    if sess.get("expires_at") and sess["expires_at"] < datetime.utcnow():
-        raise HTTPException(status_code=401, detail="Refresh token expired")
-
-    # OK → issue new access token
-    email = sess["email"]
-    user = users_collection.find_one({"email": email})
-    access_token = create_access_token(
-        {"sub": email, "role": user.get("role", "user")},
-        session_id=sess["session_id"]
-    )
-
-    sessions_collection.update_one(
-        {"session_id": sess["session_id"]},
-        {"$set": {"last_seen": datetime.utcnow()}}
-    )
-
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "expires_in_minutes": ACCESS_TOKEN_EXPIRE_MINUTES
-    }
-
-    #-----------------------------
-    #  Session & Refresh token helpers 
-    #-----------------------------
+# ---------------------------
+# Global Error Handlers
+# ---------------------------
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    # For HTML responses, redirect to login with a flash message
+    if request.headers.get("accept", "").startswith("text/html"):
+        request.session["flash"] = exc.detail
+        return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+    return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
 
 
-REFRESH_TOKEN_EXPIRE_DAYS = 1  # user asked: 1 day
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse({"detail": exc.errors()}, status_code=400)
 
-def _random_token() -> str:
-    return secrets.token_urlsafe(32)
-
-def _hash_token(token: str) -> str:
-    # store hashed refresh token in DB so raw token not stored in cleartext
-    # using sha256 (not password hashing) — you may choose bcrypt if you want slower hashing
-    return hashlib.sha256(token.encode("utf-8")).hexdigest()
-
-def create_session_record(email: str, user_agent: Optional[str] = None, ip: Optional[str] = None):
-    session_id = str(uuid.uuid4())
-    refresh_token_raw = _random_token()
-    refresh_token_hash = _hash_token(refresh_token_raw)
-    expires_at = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-    session_doc = {
-        "session_id": session_id,
-        "email": email,
-        "refresh_token_hash": refresh_token_hash,
-        "created_at": datetime.utcnow(),
-        "last_seen": datetime.utcnow(),
-        "user_agent": user_agent,
-        "ip": ip,
-        "expires_at": expires_at,
-        "revoked": False,
-    }
-    sessions_collection.insert_one(session_doc)
-    return {"session_id": session_id, "refresh_token": refresh_token_raw, "expires_at": expires_at}
-
-def revoke_session(session_id: str):
-    sessions_collection.update_one({"session_id": session_id}, {"$set": {"revoked": True, "revoked_at": datetime.utcnow()}})
-
-def get_session_by_id(session_id: str):
-    return sessions_collection.find_one({"session_id": session_id})
-
-# 🔥 PUT THIS HERE (DO NOT MOVE BELOW)
-def is_token_revoked(payload: dict) -> bool:
-    sid = payload.get("sid")
-    if not sid:
-        return True
-    sess = get_session_by_id(sid)
-    if not sess:
-        return True
-    if sess.get("revoked"):
-        return True
-    sessions_collection.update_one(
-        {"session_id": sid},
-        {"$set": {"last_seen": datetime.utcnow()}}
-    )
-    return False
 
 # ---------------------------
 # Dependencies
@@ -576,42 +409,6 @@ async def get_current_admin_user(current_user: dict = Depends(get_current_user_f
         )
     return current_user
 
-# ---------------------------
-# Global Error Handlers
-# ---------------------------
-@app.exception_handler(StarletteHTTPException)
-async def http_exception_handler(request: Request, exc: StarletteHTTPException):
-    # For HTML responses, redirect to login with a flash message
-    if request.headers.get("accept", "").startswith("text/html"):
-        request.session["flash"] = exc.detail
-        return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
-    return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
-
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse({"detail": exc.errors()}, status_code=400)
-
-# ---------------------------
-# Logging
-# ---------------------------
-logger = logging.getLogger("app")
-logger.setLevel(logging.DEBUG)
-
-file_handler = logging.FileHandler(str(BASE_DIR / "app.log"))
-stream_handler = logging.StreamHandler()
-
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-file_handler.setFormatter(formatter)
-stream_handler.setFormatter(formatter)
-
-if not logger.handlers:
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
-
-# ---------------------------
-# OAuth2 (only used by Swagger locks)
-# ---------------------------
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # ---------------------------
 # Routes
@@ -621,10 +418,10 @@ def root():
     logger.info("Root endpoint accessed")
     return RedirectResponse(url="/login")
 
-# ===============================
-# LOGIN ROUTES (FINAL – NO DUPLICATES)
-# ===============================
 
+# ===============================
+# LOGIN ROUTES
+# ===============================
 @app.get("/login", response_class=HTMLResponse)
 def get_login(request: Request):
     logger.info("Login endpoint accessed")
@@ -645,7 +442,7 @@ async def post_login(
     logger.info("Login form submitted")
 
     # ------------------------------------------
-    # 1️⃣ VERIFY RECAPTCHA
+    # 1️ VERIFY RECAPTCHA
     # ------------------------------------------
     if not DEV_SKIP_RECAPTCHA:
         try:
@@ -661,7 +458,7 @@ async def post_login(
             request.session["flash"] = "reCAPTCHA check failed."
             return RedirectResponse("/login", status_code=302)
 
-    # 2️⃣ CHECK USER IN DATABASE
+    # 2️ CHECK USER IN DATABASE
     user = users_collection.find_one({"email": username})
     if not user or not pwd_context.verify(password, user["password_hash"]):
         logins_collection.insert_one({
@@ -669,29 +466,39 @@ async def post_login(
             "login_time": datetime.utcnow(),
             "status": "failed"
         })
-        log_user_activity(username, "login_failed", request.client.host)
+        # log kafka
+        try:
+            log_user_activity(username, "login_failed", request.client.host)
+        except Exception:
+            logger.exception("log_user_activity failed for login_failed")
         request.session["flash"] = "Invalid credentials."
         return RedirectResponse("/login", status_code=302)
 
     role = user.get("role", "user")
 
-# 3️⃣ LOGIN SUCCESS → SAVE + KAFKA LOG
+    # 3️ LOGIN SUCCESS → SAVE + KAFKA LOG
     logins_collection.insert_one({
         "email": user["email"],
         "login_time": datetime.utcnow(),
         "status": "success"
     })
 
-# 🔥 Add this line EXACTLY here:
-    log_user_activity(user["email"], "admin_login_success", request.client.host)
+    # NOTE: keep this call for telemetry (original placement requested)
+    try:
+        log_user_activity(user["email"], "admin_login_success", request.client.host)
+    except Exception:
+        logger.exception("log_user_activity failed for admin_login_success")
 
     # ------------------------------------------
     # 4 ADMIN → BYPASS MFA
     # ------------------------------------------
     if role == "admin":
-        # ⭐ KAFKA LOG: admin login success
-        log_user_activity(user["email"], "admin_login_success")
-        log_event("admin_login", f"Admin {user['email']} logged in successfully")
+        # KAFKA LOG: admin login success
+        try:
+            log_user_activity(user["email"], "admin_login_success")
+            log_event("admin_login", f"Admin {user['email']} logged in successfully")
+        except Exception:
+            logger.exception("Kafka logging failed for admin login")
 
         session_info = create_session_record(user["email"])
         access_token = create_access_token(
@@ -714,16 +521,17 @@ async def post_login(
         return RedirectResponse("/admin-dashboard", status_code=302)
 
     # ------------------------------------------
-    # 4️⃣ NORMAL USER → MFA CHECK
+    # 4️ NORMAL USER → MFA CHECK
     # ------------------------------------------
     mfa_info = user.get("mfa", {})
 
     if mfa_info.get("enabled"):
-        # ⭐ KAFKA LOG: user login success (MFA required)
-        log_user_activity(user["email"], "login_password_verified")
-        log_event("mfa_pending", f"User {user['email']} waiting for MFA verification")
-
-
+        #  KAFKA LOG: user login success (MFA required)
+        try:
+            log_user_activity(user["email"], "login_password_verified")
+            log_event("mfa_pending", f"User {user['email']} waiting for MFA verification")
+        except Exception:
+            logger.exception("Kafka logging failed for MFA pending")
 
         request.session["pending_mfa_email"] = user["email"]
         request.session["pending_mfa_role"] = role
@@ -732,7 +540,7 @@ async def post_login(
         return RedirectResponse("/mfa/relogin", status_code=302)
 
     # ------------------------------------------
-    # 5️⃣ FIRST TIME USER → MFA SETUP
+    # 5️ FIRST TIME USER → MFA SETUP
     # ------------------------------------------
     request.session["mfa_temp_user"] = user["email"]
     return RedirectResponse("/mfa/setup", status_code=302)
@@ -744,6 +552,7 @@ def get_signup(request: Request):
     flash = request.session.pop("flash", None)
     return templates.TemplateResponse("signup.html", {"request": request, "flash": flash})
 
+
 @app.post("/signup")
 def post_signup(
     request: Request,
@@ -753,7 +562,7 @@ def post_signup(
     confirm_password: str = Form(...),
     role: str = Form("user"),
 ):
-        # 0. Real domain email validation
+    # 0. Real domain email validation
     if not is_real_domain_email(email):
         request.session["flash"] = "Invalid email domain. Enter a real email provider (Gmail, Outlook, Yahoo, company domain)."
         return RedirectResponse("/signup", status_code=302)
@@ -801,7 +610,6 @@ Please verify your email by visiting the link below (valid for 24 hours):
 
 If you did not sign up, ignore this message.
 """
-
     try:
         send_email(email, "Verify your SCMLite email", email_body)
     except Exception as e:
@@ -811,8 +619,8 @@ If you did not sign up, ignore this message.
     request.session["flash"] = "Account created. Check your email for verification."
     return RedirectResponse("/login", status_code=302)
 
-# >>> EMAIL VERIFICATION ROUTE
 
+# >>> EMAIL VERIFICATION ROUTE
 @app.get("/verify-email")
 def get_verify_email(request: Request, token: str = None):
     if not token:
@@ -841,7 +649,7 @@ def get_verify_email(request: Request, token: str = None):
     return RedirectResponse("/login", status_code=302)
 
 
-#resend-verification
+# resend-verification
 @app.post("/resend-verification")
 def post_resend_verification(request: Request, email: str = Form(...)):
     user = users_collection.find_one({"email": email})
@@ -862,6 +670,7 @@ def post_resend_verification(request: Request, email: str = Form(...)):
     request.session["flash"] = "Verification email sent (check spam)."
     return RedirectResponse("/login", status_code=302)
 
+
 @app.get("/forgot-password", response_class=HTMLResponse)
 def get_forgot_password(request: Request):
     flash = request.session.pop("flash", None)
@@ -875,6 +684,7 @@ def get_reset_password(request: Request, token: str):
         "reset_password.html",
         {"request": request, "token": token, "flash": flash}
     )
+
 
 @app.post("/reset-password")
 def reset_password(
@@ -909,6 +719,7 @@ def reset_password(
     request.session["flash"] = "Password reset successful. Please log in."
     return RedirectResponse("/login", status_code=302)
 
+
 @app.post("/forgot-password")
 def post_forgot_password(request: Request, email: str = Form(...)):
     user = users_collection.find_one({"email": email})
@@ -939,7 +750,6 @@ def post_forgot_password(request: Request, email: str = Form(...)):
 
 
 # >>> MFA ADDITION: finalize endpoint after MFA success
-
 @app.get("/dashboard", response_class=HTMLResponse)
 def get_dashboard(request: Request, current_user: dict = Depends(get_current_user_from_token)):
     logger.info(f"Dashboard endpoint accessed by {current_user.get('email')}")
@@ -948,9 +758,10 @@ def get_dashboard(request: Request, current_user: dict = Depends(get_current_use
         {
             "request": request,
             "name": current_user.get("name"),
-            "role": current_user.get("role")      # <-- IMPORTANT
+            "role": current_user.get("role")
         }
     )
+
 
 @app.get("/admin-dashboard", response_class=HTMLResponse)
 def get_admin_dashboard(request: Request, current_user: dict = Depends(get_current_admin_user)):
@@ -960,7 +771,7 @@ def get_admin_dashboard(request: Request, current_user: dict = Depends(get_curre
         {
             "request": request,
             "name": current_user.get("name"),
-            "role": current_user.get("role")      # <-- IMPORTANT
+            "role": current_user.get("role")
         }
     )
 
@@ -973,6 +784,7 @@ def get_create_shipment(request: Request, current_user: dict = Depends(get_curre
         "create_shipment.html",
         {"request": request, "user_name": current_user.get("name"), "flash": flash},
     )
+
 
 @app.post("/create-shipment", response_class=HTMLResponse)
 async def create_shipment(
@@ -1027,11 +839,13 @@ async def create_shipment(
         "create_shipment.html", {"request": request, "flash": flash_message}
     )
 
+
 @app.get("/user_management", response_class=HTMLResponse)
 def user_management(request: Request, current_user: dict = Depends(get_current_admin_user)):
     logger.info(f"User management endpoint accessed by {current_user.get('email')}")
     users = list(users_collection.find({}, {"_id": 0, "name": 1, "email": 1, "role": 1}))
     return templates.TemplateResponse("user_management.html", {"request": request, "users": users})
+
 
 @app.post("/revoke_session/{session_id}")
 def revoke_session_admin(session_id: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
@@ -1043,6 +857,7 @@ def revoke_session_admin(session_id: str, request: Request, current_user: dict =
     request.session["flash"] = "Session revoked successfully." if result.modified_count else "Session not found."
     return RedirectResponse("/active_sessions", status_code=302)
 
+
 @app.get("/active_sessions", response_class=HTMLResponse)
 def get_active_sessions(request: Request, current_user: dict = Depends(get_current_admin_user)):
     sessions = list(sessions_collection.find({}, {"_id": 0}))
@@ -1053,13 +868,13 @@ def get_active_sessions(request: Request, current_user: dict = Depends(get_curre
     )
 
 
-
 @app.get("/edit_user/{email}", response_class=HTMLResponse)
 async def edit_user(email: str, request: Request):
     user = users_collection.find_one({"email": email})
     if not user:
         return HTMLResponse("User not found", status_code=404)
     return templates.TemplateResponse("edit_users.html", {"request": request, "user": user})
+
 
 @app.get("/edit-users/{email}", response_class=HTMLResponse)
 async def get_edit_user(request: Request, email: str, current_user: dict = Depends(get_current_admin_user)):
@@ -1073,6 +888,7 @@ async def get_edit_user(request: Request, email: str, current_user: dict = Depen
         return RedirectResponse(url="/user_management", status_code=status.HTTP_302_FOUND)
 
     return templates.TemplateResponse("edit_user.html", {"request": request, "user": user, "flash": flash})
+
 
 @app.post("/update-user")
 async def update_user(
@@ -1118,7 +934,6 @@ Updated Role: {role}
 Updated By: {current_user.get('email')}
 Date (UTC): {datetime.utcnow()}
 """
-
             send_email(new_email, subject, body)
 
         except Exception as e:
@@ -1128,6 +943,7 @@ Date (UTC): {datetime.utcnow()}
         request.session["flash"] = "No changes made or user not found."
 
     return RedirectResponse("/user_management", status_code=302)
+
 
 @app.get("/assign-admin/{email}")
 def assign_admin(email: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
@@ -1154,9 +970,7 @@ def assign_admin(email: str, request: Request, current_user: dict = Depends(get_
         logger.info(f"{email} promoted to ADMIN by {current_user.get('email')}")
         request.session["flash"] = f"{email} is now an admin."
 
-        # ===============================
-        # SEND EMAIL NOTIFICATION
-        # ===============================
+        # EMAIL NOTIFICATION
         try:
             subject = "Your SCMLite Role Has Been Updated"
             body = f"""
@@ -1177,17 +991,15 @@ If this was not intended, contact your system administrator immediately.
 Thank you,
 SCMLite Security System
 """
-
             send_email(email, subject, body)
-
         except Exception as e:
             logger.exception(f"Email notification failed for {email}: {e}")
-
     else:
         request.session["flash"] = "No changes made."
         logger.warning(f"No changes made while assigning admin to {email}")
 
     return RedirectResponse("/user_management", status_code=status.HTTP_302_FOUND)
+
 
 @app.get("/edit-shipment", response_class=HTMLResponse)
 def get_edit_shipment(request: Request, current_user: dict = Depends(get_current_admin_user)):
@@ -1198,6 +1010,25 @@ def get_edit_shipment(request: Request, current_user: dict = Depends(get_current
         "edit_shipment.html",
         {"request": request, "shipments": shipments, "flash": flash},
     )
+
+
+@app.get("/edit-shipment/{shipment_id}", response_class=HTMLResponse)
+def get_edit_shipment_entry(shipment_id: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
+    """
+    Serve the standalone edit page for a single shipment.
+    Renders templates/edit_shipment_entries.html with the shipment document.
+    """
+    logger.info(f"Edit shipment page requested for {shipment_id} by {current_user.get('email')}")
+    shipment = shipment_collection.find_one({"shipment_id": shipment_id}, {"_id": 0})
+    if not shipment:
+        request.session["flash"] = "Shipment not found."
+        return RedirectResponse("/edit-shipment", status_code=status.HTTP_302_FOUND)
+    flash = request.session.pop("flash", None)
+    return templates.TemplateResponse(
+        "edit_shipment_entries.html",
+        {"request": request, "shipment": shipment, "flash": flash}
+    )
+
 
 @app.post("/edit-shipment")
 def post_edit_shipment(
@@ -1228,6 +1059,7 @@ def post_edit_shipment(
         logger.warning(f"No changes made or shipment {shipment_id} not found during update by {current_user.get('email')}")
     return RedirectResponse(url="/edit-shipment", status_code=status.HTTP_302_FOUND)
 
+
 @app.get("/delete-shipment/{shipment_id}")
 def delete_shipment(shipment_id: str, request: Request, current_user: dict = Depends(get_current_admin_user)):
     logger.info(f"Delete shipment endpoint accessed for {shipment_id} by {current_user.get('email')}")
@@ -1240,6 +1072,7 @@ def delete_shipment(shipment_id: str, request: Request, current_user: dict = Dep
         logger.warning(f"Shipment {shipment_id} not found or already deleted during deletion by {current_user.get('email')}")
     return RedirectResponse(url="/edit-shipment", status_code=status.HTTP_302_FOUND)
 
+
 @app.get("/all-shipments", response_class=HTMLResponse)
 def get_all_shipments(request: Request, current_user: dict = Depends(get_current_user_from_token)):
     logger.info(f"All shipments endpoint accessed by {current_user.get('email')}")
@@ -1248,36 +1081,31 @@ def get_all_shipments(request: Request, current_user: dict = Depends(get_current
         "all_shipments.html", {"request": request, "shipments": shipments, "role": current_user.get("role")}
     )
 
+
 @app.get("/account", response_class=HTMLResponse)
 def account_page(request: Request, current_user: dict = Depends(get_current_user_from_token)):
     logger.info(f"Account page accessed by {current_user.get('email')}")
     return templates.TemplateResponse("account.html", {"request": request, "user": current_user})
 
-from typing import Optional
 
-
+# Device data endpoint (keeps original aggregation logic)
 from fastapi import Query
 
-from typing import Optional
 
 @app.get("/device-data", response_class=HTMLResponse)
 async def device_data(
     request: Request,
     current_user: dict = Depends(get_current_user_from_token),
-    device_id: Optional[str] = Query(default=None),   # string to allow ""
+    device_id: Optional[str] = Query(default=None),
 ):
     logger.info(
         f"Device data endpoint accessed by {current_user.get('email')} "
         f"filter_device_id={device_id!r}"
     )
 
-    # -----------------------------
-    # Build match condition
-    # -----------------------------
     match_condition = {}
     selected_device_id: Optional[int] = None
 
-    # If device_id is given and numeric, filter
     if device_id:
         if device_id.isdigit():
             selected_device_id = int(device_id)
@@ -1286,39 +1114,29 @@ async def device_data(
             logger.warning(f"Invalid device_id value: {device_id!r}")
             selected_device_id = None
 
-    # -----------------------------
-    # Aggregation pipeline:
-    #  - sort by timestamp desc
-    #  - group to get latest record per Device_ID
-    #  - sort again by latest timestamp
-    #  - limit to 10 devices
-    # -----------------------------
     pipeline = [
         {"$match": match_condition},
-        {"$sort": {"timestamp": -1}},  # newest docs first
+        {"$sort": {"timestamp": -1}},
         {"$group": {
             "_id": "$Device_ID",
             "latestRecord": {"$first": "$$ROOT"},
         }},
-        {"$sort": {"latestRecord.timestamp": -1}},  # newest devices first
+        {"$sort": {"latestRecord.timestamp": -1}},
         {"$limit": 10},
     ]
 
     results = list(collection.aggregate(pipeline))
-
-    # Flatten and format
     data = [r["latestRecord"] for r in results]
 
     for item in data:
         item["_id"] = str(item["_id"])
         ts = item.get("timestamp")
         if ts:
-            dt = datetime.fromtimestamp(ts / 1000)  # ms -> seconds
+            dt = datetime.fromtimestamp(ts / 1000)
             item["formatted_time"] = dt.strftime("%d %b %Y, %I:%M:%S %p")
         else:
             item["formatted_time"] = "N/A"
 
-    # Distinct devices for dropdown
     device_ids = sorted(collection.distinct("Device_ID"))
 
     return templates.TemplateResponse(
@@ -1332,11 +1150,52 @@ async def device_data(
     )
 
 
-# ===============================
-# LOGIN ROUTES (Updated for MFA)
-# ===============================
+# ---------------------------
+# Token refresh endpoint
+# ---------------------------
+@app.post("/token/refresh")
+def refresh_token_endpoint(request: Request, refresh_token: str = Form(...)):
+    """
+    Accepts refresh_token (raw string). Returns new access_token.
+    Refresh token is valid for 1 day (session.expires_at).
+    """
+    if not refresh_token:
+        raise HTTPException(status_code=400, detail="Missing refresh token")
+
+    refresh_hash = _hash_token(refresh_token)
+    sess = sessions_collection.find_one({"refresh_token_hash": refresh_hash})
+    if not sess:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+    if sess.get("revoked"):
+        raise HTTPException(status_code=401, detail="Session revoked")
+
+    if sess.get("expires_at") and sess["expires_at"] < datetime.utcnow():
+        raise HTTPException(status_code=401, detail="Refresh token expired")
+
+    # OK → issue new access token
+    email = sess["email"]
+    user = users_collection.find_one({"email": email})
+    access_token = create_access_token(
+        {"sub": email, "role": user.get("role", "user")},
+        session_id=sess["session_id"]
+    )
+
+    sessions_collection.update_one(
+        {"session_id": sess["session_id"]},
+        {"$set": {"last_seen": datetime.utcnow()}}
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "expires_in_minutes": ACCESS_TOKEN_EXPIRE_MINUTES
+    }
 
 
+# ---------------------------
+# Logout (single canonical implementation)
+# ---------------------------
 @app.get("/logout")
 def logout(request: Request):
     logger.info("Logout endpoint accessed")
@@ -1366,87 +1225,6 @@ def logout(request: Request):
     request.session["flash"] = "Logged out successfully."
 
     return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-# -----------------------------
-# LOGOUT ROUTE
-# -----------------------------
-# @app.get("/login", response_class=HTMLResponse)
-# def get_login(request: Request):
-#     flash = request.session.pop("flash", None)
-#     return templates.TemplateResponse(
-#         "login.html",
-#         {"request": request, "site_key": RECAPTCHA_SITE_KEY, "flash": flash},
-#     )
-
-# @app.post("/login")
-# def post_login(
-#     request: Request,
-#     username: str = Form(...),
-#     password: str = Form(...),
-#     g_recaptcha_response: str = Form(alias="g-recaptcha-response"),
-# ):
-#     # ──────────────────────────────────────────────
-#     # 1️⃣ Verify reCAPTCHA (optional dev skip)
-#     # ──────────────────────────────────────────────
-#     recaptcha_ok = True if DEV_SKIP_RECAPTCHA else False
-#     if not DEV_SKIP_RECAPTCHA:
-#         try:
-#             r = requests.post(
-#                 "https://www.google.com/recaptcha/api/siteverify",
-#                 data={"secret": RECAPTCHA_SECRET_KEY, "response": g_recaptcha_response},
-#                 timeout=10,
-#             )
-#             recaptcha_ok = bool(r.json().get("success"))
-#         except Exception:
-#             logger.exception("reCAPTCHA verification failed (network/parse error).")
-#             recaptcha_ok = False
-
-#     if not recaptcha_ok:
-#         request.session["flash"] = "reCAPTCHA failed."
-#         return RedirectResponse("/login", status_code=302)
-
-#     # ──────────────────────────────────────────────
-#     # 2️⃣ Validate user credentials
-#     # ──────────────────────────────────────────────
-#     user = users_collection.find_one({"email": username})
-#     if not user or not pwd_context.verify(password, user["password_hash"]):
-#         logins_collection.insert_one(
-#             {"email": username, "login_time": datetime.utcnow(), "status": "failed"}
-#         )
-#         request.session["flash"] = "Invalid credentials."
-#         return RedirectResponse("/login", status_code=302)
-
-#     # ──────────────────────────────────────────────
-#     # 3️⃣ Check if user has MFA enabled
-#     # ──────────────────────────────────────────────
-#     mfa_info = user.get("mfa", {})
-#     if mfa_info.get("enabled"):
-#         # Store temporarily to verify MFA next
-#         request.session["pending_mfa_email"] = user["email"]
-#         request.session["pending_mfa_role"] = user.get("role", "user")
-#         request.session["pending_mfa_name"] = user.get("name", "")
-#         request.session["flash"] = "Enter your MFA code from the Authenticator app."
-#         return RedirectResponse("/mfa/verify", status_code=302)
-
-#     # ──────────────────────────────────────────────
-#     # 4️⃣ If MFA not enabled, log in directly
-#     # ──────────────────────────────────────────────
-#     token = create_access_token({"sub": user["email"]})
-#     request.session["access_token"] = token
-#     request.session["user"] = {
-#         "email": user["email"],
-#         "role": user.get("role", "user"),
-#         "name": user.get("name"),
-#     }
-
-#     logins_collection.insert_one(
-#         {"email": username, "login_time": datetime.utcnow(), "status": "success"}
-#     )
-#     return RedirectResponse("/dashboard", status_code=302)
-
 
 
 # ---------------------------
@@ -1483,11 +1261,5 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
-app.openapi = custom_openapi
 
-@app.get("/logout")
-def logout(request: Request):
-    logger.info("Logout endpoint accessed")
-    request.session.clear()  # Clear all session data, including JWT in session
-    request.session["flash"] = "Logged out successfully."
-    return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
+app.openapi = custom_openapi

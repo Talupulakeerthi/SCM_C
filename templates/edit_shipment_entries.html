@@ -1,101 +1,333 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Edit Shipment</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            background: url('/static/im1.jpg') no-repeat center center fixed;
-            background-size: cover;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .form-container {
-            background: rgba(255,255,255,0.19);
-            backdrop-filter: blur(7px);
-            padding: 32px 24px;
-            max-width: 500px;
-            margin: 60px auto;
-            border-radius: 18px;
-            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.09);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 22px;
-            color: #1976d2;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        label {
-            font-weight: 500;
-            color: #1976d2;
-            margin-bottom: 3px;
-            margin-top: 8px;
-        }
-        input, select {
-            width: 100%;
-            padding: 11px 12px;
-            border: 1.5px solid #d1d8e0;
-            border-radius: 8px;
-            font-size: 15px;
-            background: rgba(255,255,255,0.85);
-            color: #222;
-            margin-bottom: 12px;
-            transition: border 0.2s;
-        }
-        input:focus, select:focus {
-            border-color: #27ae60;
-            outline: none;
-        }
-        button {
-            background: linear-gradient(90deg, #27ae60 0%, #36b1f4 100%);
-            color: white;
-            padding: 12px;
-            width: 100%;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            margin-top: 12px;
-        }
-        button:hover {
-            background: linear-gradient(90deg, #1e8449 0%, #2980b9 100%);
-            transform: translateY(-2px) scale(1.03);
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 18px;
-            color: #27ae60;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        a:hover {
-            text-decoration: underline;
-            color: #1976d2;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>Edit Shipment | SCMLite</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* === Page / background === */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,#071025 0%, #0d2946 50%, #071025 100%);
+      min-height: 100vh;
+      color: #eaf2ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* background glow */
+    .curve1, .curve2 {
+      position: fixed; border-radius:50%; filter: blur(120px); opacity:0.32; z-index:0;
+    }
+    .curve1 { width:650px; height:650px; background:#1e6eff; top:-140px; left:-140px; }
+    .curve2 { width:850px; height:850px; background:#005bd6; bottom:-200px; right:-200px; }
+
+    /* navbar */
+    .navbar {
+      width:100%; padding:18px 40px; display:flex; align-items:center; justify-content:space-between;
+      backdrop-filter: blur(8px); background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(58,139,255,0.12); z-index:10; position:sticky; top:0;
+    }
+    .brand { color:#8fbfff; font-weight:700; font-size:20px; display:flex; gap:10px; align-items:center; }
+    .nav-links a { color:#9bbcff; text-decoration:none; margin-left:18px; font-weight:600; }
+    .nav-links a:hover { color:#dff0ff; }
+
+    /* card */
+    .card {
+      width:90%; max-width:1000px; margin:40px auto; background: rgba(255,255,255,0.04);
+      border-radius:18px; padding:28px 34px; border:1px solid rgba(58,139,255,0.16);
+      box-shadow: 0 10px 30px rgba(10,40,80,0.4); z-index:2; position:relative;
+    }
+    .card h2 { text-align:center; font-size:28px; margin-bottom:6px; color:#fff; text-shadow:0 0 8px rgba(58,139,255,0.9); }
+    .card p.lead { text-align:center; color:#9bbcff; margin-bottom:22px; }
+
+    /* form layout */
+    .form-row { display:flex; gap:22px; margin-bottom:18px; flex-wrap:wrap; }
+    .form-group { flex:1; display:flex; flex-direction:column; min-width:200px; }
+    label { color:#9bbcff; font-weight:600; margin-bottom:8px; }
+    input[type="text"], input[type="date"], select, textarea {
+      padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,0.12); background:rgba(0,0,0,0.28);
+      color:#fff; font-size:15px; outline:none; transition: box-shadow .18s, border-color .18s;
+    }
+    textarea { min-height:110px; resize:vertical; padding-top:14px; }
+    input:focus, select:focus, textarea:focus { border-color:#3a8bff; box-shadow:0 0 12px rgba(58,139,255,0.22); }
+
+    /* buttons */
+    .form-buttons { display:flex; gap:16px; justify-content:center; margin-top:22px; }
+    .btn {
+      padding:12px 28px; border-radius:40px; border:2px solid #3a8bff; background:transparent; color:#fff; font-weight:700;
+      cursor:pointer; font-size:16px;
+    }
+    .btn.primary { background:linear-gradient(180deg,#3a8bff,#2a6fd6); border-color:transparent; box-shadow:0 8px 20px rgba(58,139,255,0.14); }
+    .btn.danger { background:transparent; border-color:#ff5a6a; color:#ffb6bc; }
+
+    /* inline error */
+    .form-error { color:#ff5a6a; font-size:13px; margin-top:8px; display:none; }
+    .form-error.show { display:block; }
+
+    .input-error { border-color: #ff5a6a !important; box-shadow: 0 0 16px rgba(255,90,106,0.12) !important; }
+
+    /* small screens */
+    @media (max-width:720px) {
+      .form-row { flex-direction:column; }
+      .card { padding:18px; margin:18px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2><i class="fa fa-edit"></i> Edit Shipment</h2>
-        <form action="/edit-shipment/{{ shipment.shipment_id }}" method="post">
-            <label>PO Number</label>
-            <input type="text" name="po_number" value="{{ shipment.po_number }}" required>
-            <label>Route Details</label>
-            <input type="text" name="route_details" value="{{ shipment.route_details }}" required>
-            <label>Device</label>
-            <input type="text" name="device" value="{{ shipment.device }}" required>
-            <label>Goods Type</label>
-            <input type="text" name="goods_type" value="{{ shipment.goods_type }}" required>
-            <label>Expected Delivery Date</label>
-            <input type="date" name="expected_delivery_date" value="{{ shipment.expected_delivery_date }}" required>
-            <button type="submit"><i class="fa fa-save"></i> Update Shipment</button>
-        </form>
-        <a href="/edit-shipment"><i class="fa fa-arrow-left"></i> Back to Shipments</a>
+
+  <div class="curve1"></div>
+  <div class="curve2"></div>
+
+  <div class="navbar">
+    <div class="brand"><i class="fa fa-truck"></i> SCMLite</div>
+    <div class="nav-links">
+      <a href="/dashboard"><i class="fa fa-home"></i> Home</a>
+      <a href="/create-shipment"><i class="fa fa-plus"></i> Create</a>
+      <a href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
     </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fa fa-edit"></i> Edit Shipment</h2>
+    <p class="lead">Make changes and click <strong>Update Shipment</strong></p>
+
+    <!-- NOTE: novalidate prevents native browser tooltips so our JS runs first -->
+    <form id="editForm" action="/edit-shipment/{{ shipment.shipment_id }}" method="post" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="po_number">PO Number</label>
+          <input id="po_number" name="po_number" type="text" value="{{ shipment.po_number }}" />
+          <div class="form-error" id="err_po_number"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="route_details">Route Details</label>
+          <select id="route_details" name="route_details">
+            <option value="">Select Route</option>
+            <option {% if shipment.route_details == 'Delhi - Mumbai' %}selected{% endif %}>Delhi - Mumbai</option>
+            <option {% if shipment.route_details == 'Hyderabad - Bangalore' %}selected{% endif %}>Hyderabad - Bangalore</option>
+            <option {% if shipment.route_details == 'Chennai - Pune' %}selected{% endif %}>Chennai - Pune</option>
+          </select>
+          <div class="form-error" id="err_route_details"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="device">Device</label>
+          <select id="device" name="device">
+            <option value="">Select Device</option>
+            <option {% if shipment.device == 'Sensor 1' %}selected{% endif %}>Sensor 1</option>
+            <option {% if shipment.device == 'Sensor 2' %}selected{% endif %}>Sensor 2</option>
+          </select>
+          <div class="form-error" id="err_device"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="goods_type">Goods Type</label>
+          <select id="goods_type" name="goods_type">
+            <option value="">Select</option>
+            <option {% if shipment.goods_type == 'Pharma' %}selected{% endif %}>Pharma</option>
+            <option {% if shipment.goods_type == 'Food' %}selected{% endif %}>Food</option>
+          </select>
+          <div class="form-error" id="err_goods_type"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="expected_delivery_date">Expected Delivery Date</label>
+          <input id="expected_delivery_date" name="expected_delivery_date" type="date" value="{{ shipment.expected_delivery_date }}" />
+          <div class="form-error" id="err_expected_delivery_date"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="delivery_number">Delivery Number</label>
+          <input id="delivery_number" name="delivery_number" type="text" value="{{ shipment.delivery_number }}" />
+          <div class="form-error" id="err_delivery_number"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="origin">Origin</label>
+          <input id="origin" name="origin" type="text" value="{{ shipment.origin }}" />
+          <div class="form-error" id="err_origin"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="destination">Destination</label>
+          <input id="destination" name="destination" type="text" value="{{ shipment.destination }}" />
+          <div class="form-error" id="err_destination"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1 1 100%;">
+          <label for="shipment_description">Shipment Description</label>
+          <textarea id="shipment_description" name="shipment_description">{{ shipment.shipment_description }}</textarea>
+          <div class="form-error" id="err_shipment_description"></div>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn primary"><i class="fa fa-save"></i> Update Shipment</button>
+        <a href="/edit-shipment" class="btn danger" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    /***************
+     * Validation
+     ***************/
+    (function () {
+      console.log("Validation engine loaded ✓");
+
+      // Helper selectors
+      function $(id) { return document.getElementById(id); }
+
+      // Error helpers
+      function showError(el, msg) {
+        if (!el) return;
+        el.classList.add("input-error");
+        const err = $("err_" + el.id);
+        if (err) { err.textContent = msg; err.classList.add("show"); }
+      }
+      function clearError(el) {
+        if (!el) return;
+        el.classList.remove("input-error");
+        const err = $("err_" + el.id);
+        if (err) { err.textContent = ""; err.classList.remove("show"); }
+      }
+
+      function isEmptyValue(v) { return !v || String(v).trim() === ""; }
+      function isValidDateStr(v) {
+        if (isEmptyValue(v)) return false;
+        const d = new Date(v);
+        return !isNaN(d.getTime());
+      }
+
+      // Form and fields
+      const form = $("editForm");
+      const fields = {
+        po_number: $("po_number"),
+        route_details: $("route_details"),
+        device: $("device"),
+        goods_type: $("goods_type"),
+        expected_delivery_date: $("expected_delivery_date"),
+        delivery_number: $("delivery_number"),
+        origin: $("origin"),
+        destination: $("destination"),
+        shipment_description: $("shipment_description")
+      };
+
+      // Attach simple 'clear on input' to fields
+      Object.values(fields).forEach(el => {
+        if (!el) return;
+        el.addEventListener("input", () => clearError(el));
+      });
+
+      // Console debug helper
+      function logFields() {
+        console.log("Edit validation — field values:");
+        for (const k in fields) {
+          const el = fields[k];
+          console.log(" ", k, "=", el ? el.value : "MISSING");
+        }
+      }
+
+      // The core validator
+      function validateEditForm() {
+        console.log("Running Edit Shipment validation...");
+        logFields();
+
+        // clear previous state
+        Object.values(fields).forEach(clearError);
+
+        let ok = true;
+
+        // PO number: at least 2 chars
+        if (!fields.po_number || fields.po_number.value.trim().length < 2) {
+          showError(fields.po_number, "PO Number must be at least 2 characters.");
+          ok = false;
+        }
+
+        // route
+        if (!fields.route_details || isEmptyValue(fields.route_details.value)) {
+          showError(fields.route_details, "Select a route.");
+          ok = false;
+        }
+
+        // device
+        if (!fields.device || isEmptyValue(fields.device.value)) {
+          showError(fields.device, "Select a device.");
+          ok = false;
+        }
+
+        // goods
+        if (!fields.goods_type || isEmptyValue(fields.goods_type.value)) {
+          showError(fields.goods_type, "Select goods type.");
+          ok = false;
+        }
+
+        // expected delivery date must be valid
+        if (!fields.expected_delivery_date || !isValidDateStr(fields.expected_delivery_date.value)) {
+          showError(fields.expected_delivery_date, "Enter a valid delivery date.");
+          ok = false;
+        }
+
+        // delivery number
+        if (!fields.delivery_number || fields.delivery_number.value.trim().length < 1) {
+          showError(fields.delivery_number, "Delivery number is required.");
+          ok = false;
+        }
+
+        // origin / destination
+        if (!fields.origin || fields.origin.value.trim().length < 2) {
+          showError(fields.origin, "Origin is required.");
+          ok = false;
+        }
+        if (!fields.destination || fields.destination.value.trim().length < 2) {
+          showError(fields.destination, "Destination is required.");
+          ok = false;
+        }
+
+        // description
+        if (!fields.shipment_description || fields.shipment_description.value.trim().length < 6) {
+          showError(fields.shipment_description, "Provide a brief description (6+ chars).");
+          ok = false;
+        }
+
+        if (!ok) {
+          console.warn("✖ Edit validation FAILED.");
+          return false;
+        }
+
+        console.log("✔ Edit validation PASSED — submitting form.");
+        return true;
+      }
+
+      // Attach handler
+      form.addEventListener("submit", function (ev) {
+        // run validator; if false prevent default submit
+        const ok = validateEditForm();
+        if (!ok) {
+          ev.preventDefault();
+          // scroll to first error field for UX
+          const first = document.querySelector(".input-error");
+          if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
+        } else {
+          // allow form to submit normally
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>

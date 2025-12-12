@@ -14,6 +14,7 @@
       --accent: #3a8bff;
       --muted: #9bbcff;
       --text: #ffffff;
+      --error: #ff5a6a;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -89,7 +90,7 @@
     .qr-box {
       display: flex;
       justify-content: center;
-      margin-bottom: 25px;
+      margin-bottom: 18px;
     }
     .qr-box img {
       width: 200px;
@@ -104,7 +105,7 @@
       display: flex;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .otp-input {
@@ -173,6 +174,38 @@
       text-decoration: underline;
     }
 
+    /* ================
+       Validation styles
+       ================ */
+
+    .form-error {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 8px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .form-error.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .input-error {
+      border-color: var(--error) !important;
+      box-shadow: 0 0 14px rgba(255,90,106,0.18) !important;
+    }
+
+    @keyframes shakeX {
+      0%{ transform: translateX(0) }
+      20%{ transform: translateX(-6px) }
+      40%{ transform: translateX(6px) }
+      60%{ transform: translateX(-4px) }
+      80%{ transform: translateX(4px) }
+      100%{ transform: translateX(0) }
+    }
+    .shake { animation: shakeX 420ms ease; }
+
   </style>
 </head>
 
@@ -189,20 +222,23 @@
     <p class="desc">Scan the QR code below using Google Authenticator or Microsoft Authenticator.</p>
 
     <div class="qr-box">
+      <!-- Replace {{ qr_url }} with server-rendered QR in your template system -->
       <img src="{{ qr_url }}" alt="QR Code">
     </div>
 
     <p class="desc">Enter the 6-digit verification code:</p>
 
-    <form action="/mfa/enable" method="post" id="mfaForm">
-      <div class="otp-wrapper">
-        <input class="otp-input" maxlength="1" name="d1" required>
-        <input class="otp-input" maxlength="1" name="d2" required>
-        <input class="otp-input" maxlength="1" name="d3" required>
-        <input class="otp-input" maxlength="1" name="d4" required>
-        <input class="otp-input" maxlength="1" name="d5" required>
-        <input class="otp-input" maxlength="1" name="d6" required>
+    <form action="/mfa/enable" method="post" id="mfaForm" novalidate>
+      <div class="otp-wrapper" id="otpWrapper">
+        <input class="otp-input" maxlength="1" name="d1" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
+        <input class="otp-input" maxlength="1" name="d2" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
+        <input class="otp-input" maxlength="1" name="d3" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
+        <input class="otp-input" maxlength="1" name="d4" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
+        <input class="otp-input" maxlength="1" name="d5" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
+        <input class="otp-input" maxlength="1" name="d6" inputmode="numeric" pattern="\d*" autocomplete="one-time-code" required>
       </div>
+
+      <div class="form-error" id="otpError" role="alert" aria-live="polite"></div>
 
       <input type="hidden" name="code" id="codeInput">
 
@@ -213,24 +249,126 @@
 
   </div>
 
+  <!-- ===============================
+       Validation + Console-logging
+       =============================== -->
   <script>
-    /* Auto-focus OTP inputs & combine into hidden field */
-    const inputs = document.querySelectorAll(".otp-input");
-    const hidden = document.getElementById("codeInput");
+    // Console message on load
+    console.log("MFA Validation Loaded ✓");
 
+    // Elements
+    const inputs = Array.from(document.querySelectorAll(".otp-input"));
+    const hidden = document.getElementById("codeInput");
+    const form = document.getElementById("mfaForm");
+    const otpError = document.getElementById("otpError");
+    const otpWrapper = document.getElementById("otpWrapper");
+
+    console.log("OTP fields detected:", inputs.length);
+
+    // Helper: update hidden code and log
+    function updateCode() {
+      const code = inputs.map(i => i.value.trim()).join("");
+      hidden.value = code;
+      console.log("Current OTP:", code);
+      return code;
+    }
+
+    // Error helpers
+    function showOtpError(msg) {
+      otpError.textContent = msg;
+      otpError.classList.add("show");
+      inputs.forEach(i => i.classList.add("input-error"));
+    }
+    function clearOtpError() {
+      otpError.textContent = "";
+      otpError.classList.remove("show");
+      inputs.forEach(i => i.classList.remove("input-error"));
+    }
+
+    // Input handlers: digit-only, auto-advance, paste, key nav
     inputs.forEach((inp, i) => {
-      inp.addEventListener("input", () => {
-        if (inp.value.length === 1 && i < 5) inputs[i+1].focus();
+      inp.addEventListener("input", (e) => {
+        const before = inp.value;
+        const cleaned = inp.value.replace(/\D/g, "");
+        if (cleaned !== inp.value) inp.value = cleaned;
+        if (inp.value.length > 1) inp.value = inp.value.slice(-1);
+        if (inp.value !== before) {
+          console.log(`Input changed in box ${i+1}:`, inp.value);
+        } else {
+          console.log(`Input typed in box ${i+1}:`, inp.value);
+        }
+
         updateCode();
+        clearOtpError();
+
+        if (inp.value && i < inputs.length - 1) {
+          inputs[i+1].focus();
+          console.log(`Focus moved → Box ${i+2}`);
+        }
       });
-      inp.addEventListener("keydown", e => {
-        if (e.key === "Backspace" && i > 0 && !inp.value) inputs[i-1].focus();
+
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !inp.value && i > 0) {
+          inputs[i-1].focus();
+          console.log(`Backspace → Moved back to Box ${i}`);
+        }
+        if (e.key === "ArrowLeft" && i > 0) {
+          inputs[i-1].focus();
+          console.log(`ArrowLeft → Box ${i}`);
+        }
+        if (e.key === "ArrowRight" && i < inputs.length-1) {
+          inputs[i+1].focus();
+          console.log(`ArrowRight → Box ${i+2}`);
+        }
+      });
+
+      inp.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, "");
+        console.log("Paste detected:", paste);
+        for (let k = 0; k < paste.length && (i + k) < inputs.length; k++) {
+          inputs[i+k].value = paste[k];
+        }
+        updateCode();
+        const nextIndex = Math.min(inputs.length - 1, i + paste.length);
+        inputs[nextIndex].focus();
+        console.log(`Paste populated up to box ${nextIndex+1}`);
       });
     });
 
-    function updateCode() {
-      hidden.value = Array.from(inputs).map(i => i.value).join("");
-    }
+    // Submit validation + logging
+    form.addEventListener("submit", function (ev) {
+      console.log("MFA Validation Triggered");
+      const code = updateCode();
+
+      if (code.length !== 6 || /\D/.test(code)) {
+        ev.preventDefault();
+        console.warn("❌ OTP Validation Failed — Incomplete or invalid code");
+        showOtpError("Please enter the 6-digit verification code.");
+
+        // focus / scroll to first empty
+        const firstEmpty = inputs.find(i => !i.value) || inputs[0];
+        try { firstEmpty.focus({preventScroll:false}); } catch(e) {}
+        firstEmpty.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        // shake wrapper
+        otpWrapper.classList.remove("shake");
+        void otpWrapper.offsetWidth; // reflow
+        otpWrapper.classList.add("shake");
+        setTimeout(() => otpWrapper.classList.remove("shake"), 500);
+        return false;
+      }
+
+      console.log("✔ OTP Validation Passed — Submitting Form...");
+      clearOtpError();
+      // allow form to submit normally
+      return true;
+    });
+
+    // Clear displayed error when user types
+    inputs.forEach(i => i.addEventListener("input", () => {
+      if (otpError.classList.contains("show")) clearOtpError();
+    }));
   </script>
 
 </body>

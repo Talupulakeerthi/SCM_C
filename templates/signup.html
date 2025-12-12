@@ -25,10 +25,7 @@
       z-index: 9999;
     }
 
-    .loading-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .loading-overlay.active { opacity: 1; pointer-events: all; }
 
     .loader {
       width: 55px;
@@ -39,10 +36,7 @@
       animation: spin 0.9s linear infinite;
       box-shadow: 0 0 15px rgba(58,139,255,0.8);
     }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     body {
       font-family: "Poppins", sans-serif;
@@ -66,7 +60,6 @@
       filter: blur(12px);
       transform: rotate(24deg) skewY(34deg);
     }
-
     .curve2 {
       position: absolute;
       width: 1200px;
@@ -99,17 +92,10 @@
       text-shadow: 0 0 8px rgba(58,139,255,0.8);
     }
 
-    .signup-box p {
-      text-align: center;
-      color: #9bbcff;
-      margin-bottom: 25px;
-    }
+    .signup-box p { text-align: center; color: #9bbcff; margin-bottom: 25px; }
 
     /* === GLASS INPUTS === */
-    .input-group {
-      position: relative;
-      margin-bottom: 25px;
-    }
+    .input-group { position: relative; margin-bottom: 25px; }
 
     .input-group input {
       width: 100%;
@@ -151,6 +137,11 @@
       font-size: 13px;
     }
 
+    /* Validation styles (works with validation.js) */
+    .form-error { color: #b00020; font-size: .9rem; margin-top: 6px; display: block; }
+    .input-error { border-color: #b00020 !important; box-shadow: 0 0 8px rgba(176,0,32,0.15) !important; background: rgba(255,255,255,0.06) !important; }
+    .input-error + label, .input-group .input-error ~ label { top: -8px; color: #b00020; font-size: 13px; }
+
     /* Flash */
     .flash {
       background: rgba(255,60,60,0.25);
@@ -189,33 +180,13 @@
       z-index: -1;
     }
 
-    button:hover::before {
-      top: 0;
-    }
+    button:hover::before { top: 0; }
 
-    small {
-      display: block;
-      margin-top: 12px;
-      text-align: center;
-      color: #9bbcff;
-      font-size: 12px;
-    }
+    small { display: block; margin-top: 12px; text-align: center; color: #9bbcff; font-size: 12px; }
+    small a { color: #6aaeff; text-decoration: none; }
 
-    small a {
-      color: #6aaeff;
-      text-decoration: none;
-    }
-
-    .links {
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .links a {
-      color: #6aaeff;
-      font-weight: 600;
-      text-decoration: none;
-    }
+    .links { text-align: center; margin-top: 15px; }
+    .links a { color: #6aaeff; font-weight: 600; text-decoration: none; }
   </style>
 </head>
 
@@ -233,32 +204,32 @@
       <div class="flash">{{ flash }}</div>
     {% endif %}
 
-    <form action="/signup" method="POST" onsubmit="return validateSignupForm()">
+    <!-- ===== FIXED FORM TAG ===== -->
+    <form id="signupForm" action="/signup" method="POST" novalidate>
 
       <div class="input-group">
-        <input type="text" id="fullname" name="fullname" placeholder=" " required>
-        <label>Full Name</label>
+        <input type="text" id="fullname" name="fullname" placeholder=" " required aria-describedby="fullname-error">
+        <label for="fullname">Full Name</label>
       </div>
 
       <div class="input-group">
-        <input type="email" id="email" name="email" placeholder=" " required>
-        <label>Email Address</label>
+        <input type="email" id="email" name="email" placeholder=" " required aria-describedby="email-error">
+        <label for="email">Email Address</label>
       </div>
 
       <div class="input-group">
-        <input type="password" id="password" name="password" placeholder=" " required>
-        <label>Password</label>
+        <input type="password" id="password" name="password" placeholder=" " required aria-describedby="password-error">
+        <label for="password">Password</label>
       </div>
 
       <div class="input-group">
-        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required>
-        <label>Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder=" " required aria-describedby="confirm_password-error">
+        <label for="confirm_password">Confirm Password</label>
       </div>
 
       <button type="submit">Sign Up</button>
 
       <small>I accept the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></small>
-
     </form>
 
     <div class="links">
@@ -272,18 +243,16 @@
   <script>
     function showLoaderAndGo(url) {
       const overlay = document.getElementById("loaderOverlay");
-      overlay.classList.add("active");
-
-      setTimeout(() => {
-        window.location.href = url;
-      }, 600);
+      if (overlay) overlay.classList.add("active");
+      setTimeout(() => { window.location.href = url; }, 600);
     }
   </script>
 
+  <!-- your consolidated validation script (ensure path is correct) -->
   <script src="/static/js/validation.js"></script>
 
-  <div id="loaderOverlay" class="loading-overlay">
-    <div class="loader"></div>
+  <div id="loaderOverlay" class="loading-overlay" aria-hidden="true">
+    <div class="loader" role="status" aria-label="Loading"></div>
   </div>
 
 </body>

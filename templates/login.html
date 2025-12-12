@@ -216,6 +216,30 @@
     .g-recaptcha {
       margin-top: 10px;
     }
+
+    /* ===== Validation styles ===== */
+    .form-error {
+      color: #b00020;
+      font-size: .9rem;
+      margin-top: 6px;
+      /* ensure it does not overlap label */
+      display: block;
+    }
+
+    .input-error {
+      border-color: #b00020 !important;
+      box-shadow: 0 0 8px rgba(176,0,32,0.15) !important;
+      background: rgba(255,255,255,0.06) !important;
+    }
+
+    /* optional: move floating label up a bit when input-error present */
+    .input-error + label,
+    .input-group .input-error ~ label {
+      top: -8px;
+      color: #b00020;
+      font-size: 13px;
+    }
+
   </style>
 </head>
 
@@ -231,44 +255,42 @@
       <div class="flash">{{ flash }}</div>
     {% endif %}
 
-    <form action="/login" method="POST" onsubmit="return validateLoginForm()">
+   <form id="loginForm" action="/login" method="POST" onsubmit="return validateLoginForm(event)" novalidate>
 
-      <div class="input-group">
-        <input type="email" id="username" name="username" placeholder=" " required>
-        <label>Email Address</label>
-      </div>
+  <div class="input-group">
+    <input id="username" name="username" placeholder=" " required aria-describedby="username-error">
+    <label for="username">Email Address</label>
+  </div>
 
-      <div class="input-group">
-        <input type="password" id="password" name="password" placeholder=" " required>
-        <label>Password</label>
-      </div>
+  <div class="input-group">
+    <input type="password" id="password" name="password" placeholder=" " required aria-describedby="password-error">
+    <label for="password">Password</label>
+  </div>
 
-      <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+  <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
 
-      <button type="submit">Login</button>
-    </form>
+  <button type="submit">Login</button>
+</form>
 
-    <div class="links">
-      <a href="/forgot-password">Forgot Password?</a><br>
-      <a href="javascript:void(0)" onclick="showLoaderAndGo('/signup')">Create an Account</a>
-    </div>
+<div class="links">
+  <a href="/forgot-password">Forgot Password?</a><br>
+  <a href="javascript:void(0)" onclick="showLoaderAndGo('/signup')">Create an Account</a>
+</div>
+
   </div>
 
   <script>
     function showLoaderAndGo(url) {
       const overlay = document.getElementById("loaderOverlay");
       overlay.classList.add("active");
-
-      setTimeout(() => {
-        window.location.href = url;
-      }, 600);
+      setTimeout(() => { window.location.href = url; }, 600);
     }
   </script>
 
   <script src="/static/js/validation.js"></script>
 
-  <div id="loaderOverlay" class="loading-overlay">
-    <div class="loader"></div>
+  <div id="loaderOverlay" class="loading-overlay" aria-hidden="true">
+    <div class="loader" role="status" aria-label="Loading"></div>
   </div>
 
 </body>

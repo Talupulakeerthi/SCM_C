@@ -1,152 +1,199 @@
-// =====================================================================
-// EMAIL VALIDATION HELPER
-// =====================================================================
+/* ===========================================================
+   GLOBAL VALIDATION ENGINE – Works for ALL forms
+   =========================================================== */
+
+/* ---------- Helper Functions ---------- */
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+function isEmpty(el) {
+  return !el || el.value.trim() === "";
+}
+
 function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// =====================================================================
-// LOGIN PAGE VALIDATION
-// =====================================================================
-function validateLoginForm() {
-    const email = document.getElementById("username")?.value.trim();
-    const password = document.getElementById("password")?.value.trim();
-
-    if (!email || !isValidEmail(email)) {
-        alert("Please enter a valid email address.");
-        return false;
-    }
-    if (!password || password.length < 4) {
-        alert("Password must be at least 4 characters.");
-        return false;
-    }
-    return true;
+function isValidDate(str) {
+  const d = new Date(str);
+  return !isNaN(d.getTime());
 }
 
-// =====================================================================
-// SIGNUP PAGE VALIDATION
-// =====================================================================
-function validateSignupForm() {
-    const name = document.getElementById("fullname")?.value.trim();
-    const email = document.getElementById("email")?.value.trim();
-    const pass = document.getElementById("password")?.value;
-    const confirm = document.getElementById("confirm_password")?.value;
+function showError(el, message) {
+  clearError(el);
 
-    if (!name) {
-        alert("Full name is required.");
-        return false;
-    }
-    if (!email || !isValidEmail(email)) {
-        alert("Enter a valid email address.");
-        return false;
-    }
-    if (!pass || pass.length < 6) {
-        alert("Password must be at least 6 characters.");
-        return false;
-    }
-    if (pass !== confirm) {
-        alert("Passwords do not match.");
-        return false;
-    }
-    return true;
+  const container = el.parentElement;
+  const err = document.createElement("div");
+  err.className = "form-error";
+  err.innerText = message;
+
+  el.classList.add("input-error");
+  container.appendChild(err);
 }
 
-// =====================================================================
-// FORGOT PASSWORD VALIDATION
-// =====================================================================
-function validateForgotPasswordForm() {
-    const email = document.getElementById("email")?.value.trim();
+function clearError(el) {
+  if (!el) return;
+  el.classList.remove("input-error");
 
-    if (!email || !isValidEmail(email)) {
-        alert("Enter a valid email address.");
-        return false;
-    }
-    return true;
+  const err = el.parentElement.querySelector(".form-error");
+  if (err) err.remove();
 }
 
-// =====================================================================
-// RESET PASSWORD VALIDATION
-// =====================================================================
-function validateResetPassword() {
-    const pass = document.getElementById("new_password")?.value;
-    const confirm = document.getElementById("confirm_password")?.value;
-
-    if (!pass || pass.length < 6) {
-        alert("Password must be at least 6 characters.");
-        return false;
-    }
-    if (pass !== confirm) {
-        alert("Passwords do not match.");
-        return false;
-    }
-    return true;
+function disableSubmit(form) {
+  const btn = form.querySelector("button[type=submit]");
+  if (btn) btn.disabled = true;
 }
 
-// =====================================================================
-// TOGGLE PASSWORD VISIBILITY
-// =====================================================================
-function togglePwd(id, btn) {
-    const input = document.getElementById(id);
-    const icon = btn.querySelector("i");
-
-    input.type = input.type === "password" ? "text" : "password";
-    icon.classList.toggle("fa-eye");
-    icon.classList.toggle("fa-eye-slash");
+function enableSubmit(form) {
+  const btn = form.querySelector("button[type=submit]");
+  if (btn) btn.disabled = false;
 }
 
-// =====================================================================
-// CREATE SHIPMENT VALIDATION
-// =====================================================================
-function validateShipmentForm() {
-    const requiredFields = [
-        "shipment_id",
-        "po_number",
-        "route_details",
-        "device",
-        "ndc_number",
-        "serial_number",
-        "container_number",
-        "goods_type",
-        "expected_delivery_date",
-        "delivery_number",
-        "batch_id",
-        "origin",
-        "destination",
-        "status",
-        "shipment_description"
-    ];
+/* ---------- Core Validator Runner ---------- */
 
-    for (let id of requiredFields) {
-        const field = document.getElementById(id);
-        if (!field || field.value.trim() === "") {
-            alert(`Please fill out: ${id.replace(/_/g, " ").toUpperCase()}`);
-            field.focus();
-            return false;
-        }
+function runValidators(validators, form, event) {
+  let ok = true;
+
+  validators.forEach(v => {
+    clearError(v.el);
+    if (!v.fn()) {
+      ok = false;
+      showError(v.el, v.msg);
     }
+  });
 
-    if (document.getElementById("shipment_description").value.trim().length < 10) {
-        alert("Shipment description must be at least 10 characters.");
-        return false;
-    }
+  if (!ok) {
+    event.preventDefault();
+    enableSubmit(form);
+  } else {
+    disableSubmit(form);
+  }
 
-    return true;
+  return ok;
 }
 
-// =====================================================================
-// EDIT USER VALIDATION
-// =====================================================================
-function validateEditUserForm() {
-    const name = document.getElementById("name")?.value.trim();
-    const role = document.getElementById("role")?.value.trim();
+/* ===========================================================
+   FORM-BASED VALIDATION SETS
+   =========================================================== */
 
-    if (!name) {
-        alert("Name cannot be empty.");
-        return false;
-    }
-    if (!role) {
-        alert("Please select a role.");
-        return false;
-    }
-    return true;
+/* ---------- LOGIN FORM ---------- */
+function validateLoginForm(ev) {
+  const form = ev.target;
+
+  const email = $("username");
+  const pass = $("password");
+
+  return runValidators([
+    { el: email, fn: () => !isEmpty(email) && isValidEmail(email.value), msg: "Enter a valid email." },
+    { el: pass, fn: () => !isEmpty(pass) && pass.value.length >= 4, msg: "Password must be at least 4 characters." }
+  ], form, ev);
 }
+
+/* ---------- SIGNUP FORM ---------- */
+function validateSignup(ev) {
+  const form = ev.target;
+
+  const name = $("fullname");
+  const email = $("email");
+  const pass = $("password");
+  const confirm = $("confirm_password");
+
+  return runValidators([
+    { el: name, fn: () => !isEmpty(name), msg: "Full name is required." },
+    { el: email, fn: () => isValidEmail(email.value), msg: "Enter a valid email." },
+    { el: pass, fn: () => pass.value.length >= 6, msg: "Password must be 6+ characters." },
+    { el: confirm, fn: () => pass.value === confirm.value, msg: "Passwords do not match." }
+  ], form, ev);
+}
+
+/* ---------- FORGOT PASSWORD FORM ---------- */
+function validateForgot(ev) {
+  const form = ev.target;
+  const email = $("email");
+  return runValidators([
+    { el: email, fn: () => isValidEmail(email.value), msg: "Enter a valid email." }
+  ], form, ev);
+}
+
+/* ---------- RESET PASSWORD FORM ---------- */
+function validateReset(ev) {
+  const form = ev.target;
+  const pass = $("new_password");
+  const confirm = $("confirm_password");
+
+  return runValidators([
+    { el: pass, fn: () => pass.value.length >= 6, msg: "Password must be 6+ characters." },
+    { el: confirm, fn: () => pass.value === confirm.value, msg: "Passwords must match." }
+  ], form, ev);
+}
+
+/* ---------- CREATE SHIPMENT ---------- */
+function validateShipment(ev) {
+  const form = ev.target;
+
+  const fields = [
+    { id: "shipment_id", len: 3 },
+    { id: "po_number", len: 1 },
+    { id: "route_details", len: 3 },
+    { id: "device", len: 1 },
+    { id: "ndc_number", len: 1 },
+    { id: "serial_number", len: 1 },
+    { id: "container_number", len: 1 },
+    { id: "goods_type", len: 1 },
+    { id: "expected_delivery_date", date: true },
+    { id: "delivery_number", len: 1 },
+    { id: "batch_id", len: 1 },
+    { id: "origin", len: 1 },
+    { id: "destination", len: 1 },
+    { id: "status", len: 1 },
+    { id: "shipment_description", len: 10 }
+  ];
+
+  const validators = fields.map(f => {
+    const el = $(f.id);
+    return {
+      el,
+      fn: () => {
+        if (f.date) return isValidDate(el.value);
+        return el.value.trim().length >= f.len;
+      },
+      msg: `${f.id.replace(/_/g, " ")} is required.`
+    };
+  });
+
+  return runValidators(validators, form, ev);
+}
+
+/* ---------- EDIT USER FORM ---------- */
+function validateEditUser(ev) {
+  const name = $("name");
+  const role = $("role");
+  const form = ev.target;
+
+  return runValidators([
+    { el: name, fn: () => !isEmpty(name), msg: "Name cannot be empty." },
+    { el: role, fn: () => !isEmpty(role), msg: "Select a role." }
+  ], form, ev);
+}
+
+/* ===========================================================
+   AUTO-ATTACH VALIDATION WHEN PAGE LOADS
+   =========================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const attach = (id, fn) => {
+    const f = document.querySelector(id);
+    if (f) f.addEventListener("submit", fn);
+  };
+
+  attach("#loginForm", validateLoginForm);
+  attach("#signupForm", validateSignup);
+  attach("#forgotForm", validateForgot);
+  attach("#resetForm", validateReset);
+  attach("#shipmentForm", validateShipment);
+  attach("#editUserForm", validateEditUser);
+
+  console.log("Validation engine loaded ✔");
+});

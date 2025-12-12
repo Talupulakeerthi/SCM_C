@@ -5,13 +5,31 @@ import time
 import random
 import os
 from dotenv import load_dotenv
+from kafka.errors import NoBrokersAvailable
+import time as _time
+
+import socket
+
+def detect_kafka_host():
+    """
+    Detect if running inside Docker or local machine.
+    If Docker: hostname 'kafka' will resolve.
+    If Local: fallback to localhost:9092.
+    """
+    try:
+        socket.gethostbyname("kafka")   # will work only inside Docker network
+        return "kafka:9092"
+    except:
+        return "localhost:9092"
+
 
 # Load environment variables from the kafka/.env file
 # Path is relative to project root where you usually run the script
 load_dotenv(dotenv_path="./kafka_app/.env")
 
 # --- Kafka Producer Settings from .env ---
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+KAFKA_BOOTSTRAP_SERVERS = detect_kafka_host()
+print(f"[Kafka] Using bootstrap servers: {KAFKA_BOOTSTRAP_SERVERS}")
 
 # Backward-compatible: old single topic name
 KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "sensor_data")
@@ -41,24 +59,51 @@ if not KAFKA_BOOTSTRAP_SERVERS:
 # -----------------------------
 _producer = None
 
-def get_producer() -> KafkaProducer:
+class NoOpProducer:
+    """Simple fallback producer that safely swallows sends when Kafka isn't available."""
+    def send(self, *args, **kwargs):
+        print("[Kafka][NoOpProducer] send() called - broker unavailable, message dropped.")
+        class Fut:
+            def get(self, timeout=None):
+                return None
+        return Fut()
+    def flush(self):
+        return None
+
+def get_producer() -> KafkaProducer | NoOpProducer:
     """
     Lazily create and reuse a single KafkaProducer instance.
-    Can be imported and used from other modules.
+    Retries a few times if the broker isn't ready, then falls back to NoOpProducer.
     """
     global _producer
     if _producer is None:
         print(f"[Kafka] Connecting to: {KAFKA_BOOTSTRAP_SERVERS} ...")
-        _producer = KafkaProducer(
-            bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(","),
-            value_serializer=lambda x: json.dumps(x).encode("utf-8"),
-            acks=PRODUCER_ACKS,
-            retries=PRODUCER_RETRIES,
-        )
-        _producer.flush()
-        print("[Kafka] Connected successfully.")
+        max_attempts = 5
+        delay = 1  # seconds
+        for attempt in range(1, max_attempts + 1):
+            try:
+                _producer = KafkaProducer(
+                    bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(","),
+                    value_serializer=lambda x: json.dumps(x).encode("utf-8"),
+                    acks=PRODUCER_ACKS,
+                    retries=PRODUCER_RETRIES,
+                )
+                _producer.flush()
+                print("[Kafka] Connected successfully.")
+                break
+            except NoBrokersAvailable as e:
+                print(f"[Kafka] Broker not available (attempt {attempt}/{max_attempts}): {e}")
+                if attempt == max_attempts:
+                    print("[Kafka] Falling back to NoOpProducer — messages will be dropped until broker is reachable.")
+                    _producer = NoOpProducer()
+                else:
+                    _time.sleep(delay)
+                    delay = min(5, delay * 2)  # exponential-ish backoff
+            except Exception as e:
+                print(f"[Kafka] Unexpected error while connecting: {e}")
+                _producer = NoOpProducer()
+                break
     return _producer
-
 # -----------------------------
 # Sensor data (existing use-case)
 # -----------------------------
