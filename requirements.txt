@@ -1,42 +1,27 @@
-# Core framework
 fastapi
-
-# ASGI server
 uvicorn[standard]
 
-# MongoDB client
-pymongo
+# Database
+pymongo==4.6.1
+dnspython
 
-# Templating engine
+# Templates & frontend
 jinja2
-
-# Password hashing (important order!)
-passlib[bcrypt]
-bcrypt==4.0.1
-
-# Form/file handling
 python-multipart
-
-# Session management
-itsdangerous
-starlette
-
-# Environment variables
-python-dotenv
-
-# HTTP requests
 requests
 
-# Kafka client
-kafka-python
-
-# JWT tokens
-PyJWT
-python-jose
-
-# MFA / TOTP
+# Security & Auth
+passlib[bcrypt]
+bcrypt==4.0.1
+python-jose[cryptography]
+itsdangerous
 pyotp
-
-# QR Generation
 qrcode
 Pillow
+
+# Core
+starlette
+python-dotenv
+
+# Messaging
+kafka-python
